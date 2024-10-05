@@ -70,7 +70,7 @@ export default function DataTableProyek() {
                                 </Badge>
                             </TableCell>
                             <TableCell className="text-base">
-                                <Link href={""}>
+                                <Link href={"/admin/proyek/1/detail"}>
                                     <Eye />
                                 </Link>
                             </TableCell>

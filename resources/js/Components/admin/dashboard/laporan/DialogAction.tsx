@@ -10,7 +10,7 @@ import {
     AlertDialogTrigger,
 } from "@/Components/ui/alert-dialog";
 import { Button } from "@/Components/ui/button";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/Components/ui/label";
 import { Textarea } from "@/Components/ui/textarea";
 import { Check, Info, Pencil, X } from "lucide-react";
 

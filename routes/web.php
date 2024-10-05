@@ -22,6 +22,10 @@ Route::get("/admin/proyek", function () {
     return Inertia::render('Admin/Proyek/Index');
 })->name('adminProyek');
 
+Route::get("/admin/proyek/create", function () {
+    return Inertia::render('Admin/Proyek/Create');
+})->name('addProyek');
+
 Route::get("/admin/proyek/{id}/detail", function () {
     return Inertia::render('Admin/Proyek/Detail');
 })->name('detailProyek');
