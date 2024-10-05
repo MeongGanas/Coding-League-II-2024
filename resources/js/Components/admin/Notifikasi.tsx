@@ -12,14 +12,14 @@ import { Link } from "@inertiajs/react";
 export default function Notifikasi() {
     return (
         <Popover>
-            <PopoverTrigger>
+            <PopoverTrigger asChild>
                 <Button
                     variant="ghost"
                     size="icon"
                     className="rounded-full relative"
                 >
                     <Bell className="h-6 w-6" />
-                    <Badge className="w-6 -right-2 absolute top-0 bg-[#98100A] felx items-center justify-center">
+                    <Badge className="w-6 -right-2 absolute top-0 bg-[#98100A] flex hover:bg-red-700 items-center justify-center">
                         99
                     </Badge>
                 </Button>
@@ -54,11 +54,11 @@ function ItemNotifikasi({ status }: { status: string }) {
             } border p-4`}
         >
             {status === "diterima" ? (
-                <Badge className="bg-[#ECFDF3] text-[#027A48] text-[15px] hover:bg-[#ECFDF3] font-light">
+                <Badge className="bg-[#ECFDF3] text-success text-[15px] hover:bg-success-bg font-light">
                     Laporan telah diterima!
                 </Badge>
             ) : status === "ditolak" ? (
-                <Badge className="bg-[#FEF3F2] text-[#B42318] text-[15px] hover:bg-[#FEF3F2] font-light">
+                <Badge className="bg-[#FEF3F2] text-primary text-[15px] hover:bg-primary-bg font-light">
                     Laporan ditolak!
                 </Badge>
             ) : (

@@ -38,6 +38,7 @@ export default {
                 primary: {
                     DEFAULT: "hsl(var(--primary))",
                     foreground: "hsl(var(--primary-foreground))",
+                    bg: "hsl(5, 86%, 97%)",
                 },
                 secondary: {
                     DEFAULT: "hsl(var(--secondary))",
@@ -54,6 +55,10 @@ export default {
                 destructive: {
                     DEFAULT: "hsl(var(--destructive))",
                     foreground: "hsl(var(--destructive-foreground))",
+                },
+                success: {
+                    DEFAULT: "hsl(var(--success))",
+                    bg: "hsl(144, 83%, 96%)",
                 },
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
