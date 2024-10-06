@@ -12,24 +12,16 @@ export default function Detail() {
 
     return (
         <LayoutAdmin>
-            <Head title="Detail Proyek" />
+            <Head title="Detail Sektor" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">
                     <BreadcrumbLinks basePath="/admin" />
                 </div>
-                <h1 className="text-3xl font-bold">Detail Proyek</h1>
+                <h1 className="text-3xl font-bold">Detail Sektor</h1>
                 <div className="bg-white rounded-md p-6 space-y-4 border">
                     <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
                         Social
                     </Badge>
-                    <div className="flex pb-5 mb-5 border-b gap-4">
-                        <div className="rounded-full p-3 h-fit bg-primary-bg text-primary">
-                            <BriefcaseBusiness className="w-5 h-5" />
-                        </div>
-                        <h1 className="font-bold text-xl sm:text-2xl">
-                            Laporan pengadaan perkakas masak untuk desa
-                        </h1>
-                    </div>
                     <div className="w-full">
                         <div className="overflow-x-auto flex gap-4 scroll-hidden">
                             <div className="min-w-96 h-60 rounded-md bg-neutral-300"></div>
@@ -38,18 +30,8 @@ export default function Detail() {
                             <div className="min-w-96 h-60 rounded-md bg-neutral-300"></div>
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        <DetailCard
-                            title="Tanggal"
-                            content={"1 July 2024 - 1 September 2024"}
-                        />
-                        <DetailCard
-                            title="Kecamatan"
-                            content="Kec. Karangwareng"
-                        />
-                    </div>
                     <div className="space-y-2">
-                        <h1 className="text-2xl font-bold">Rincian Laporan</h1>
+                        <h1 className="text-2xl font-bold">Deskripsi Sektor</h1>
                         <div className="space-y-4">
                             <p>
                                 Lorem ipsum dolor sit amet consectetur,
@@ -73,18 +55,11 @@ export default function Detail() {
                             </p>
                         </div>
                     </div>
-                    {isTerbit && (
-                        <div className="border-t pt-5">
-                            <h1 className="font-bold text-2xl mb-4">
-                                Mitra Yang Berpartisipasi
-                            </h1>
-                            <DataTableMitra />
-                        </div>
-                    )}
-                </div>
-                <div className="bg-white rounded-md p-6 border">
-                    <div className="block sm:flex space-y-3 sm:space-y-0 sm:w-fit sm:mx-auto gap-5">
-                        <DialogTerbit />
+                    <div className="border-t pt-5">
+                        <h1 className="font-bold text-2xl mb-4">
+                            Mitra Yang Berpartisipasi
+                        </h1>
+                        <DataTableMitra />
                     </div>
                 </div>
             </div>

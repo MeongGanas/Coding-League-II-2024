@@ -21,18 +21,13 @@ export default function SelectAndDownload({
     sektor?: boolean;
     mitra?: boolean;
 }) {
-    const cols = useMemo(() => {
-        let count = 2;
-        if (tahun) count += 1;
-        if (kuartal) count += 1;
-        if (sektor) count += 1;
-        if (mitra) count += 1;
-        return count;
-    }, [tahun, kuartal, sektor, mitra]);
-
     return (
         <div
-            className={`grid grid-cols-2 md:grid-cols-4 xl:grid-cols-${cols} gap-4 items-center`}
+            className={`grid grid-cols-2 md:grid-cols-4 ${
+                tahun && kuartal && sektor && mitra
+                    ? "xl:grid-cols-6"
+                    : "xl:grid-cols-4"
+            } gap-4 items-center`}
         >
             {tahun && (
                 <Select>

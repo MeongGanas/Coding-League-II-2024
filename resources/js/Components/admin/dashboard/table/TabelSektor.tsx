@@ -16,63 +16,55 @@ import {
     TableRow,
 } from "@/Components/ui/table";
 import { Link } from "@inertiajs/react";
-import { Eye } from "lucide-react";
+import { Eye, Pencil } from "lucide-react";
 import TablePagination from "./TabelPagination";
+import { Button } from "@/Components/ui/button";
 
-export default function DataTableProyek() {
+export default function DataTableSektor() {
     return (
         <div className="w-full">
             <div className="bg-white rounded-md border">
                 <Table className="overflow-x-auto">
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="min-w-[300px] uppercase font-bold text-black">
-                                Judul
+                            <TableHead className="uppercase font-bold text-black">
+                                Nama Sektor
                             </TableHead>
                             <TableHead className="uppercase font-bold text-black">
-                                Lokasi
+                                Deskripsi Sektor
                             </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                Jumlah Mitra
-                            </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                tgl mulai
-                            </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                Tgl Diterbitkan
-                            </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                Status
-                            </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
+                            <TableHead className="uppercase text-center font-bold text-black">
                                 Aksi
                             </TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         <TableRow className="odd:bg-[#FCFCFD] even:bg-white">
+                            <TableCell className="text-base">Sosial</TableCell>
                             <TableCell className="text-base min-w-[300px]">
-                                Riverina name team to play Rabbitohs in Albur
+                                Vestibulum mauris tincidunt ultrices donec.
+                                Egestas purus duis malesuada malesuada dictum
+                                orci sapien.
                             </TableCell>
-                            <TableCell className="text-base">
-                                Facebook
-                            </TableCell>
-                            <TableCell className="text-base">10</TableCell>
-                            <TableCell className="text-base">
-                                1 Juli 2024
-                            </TableCell>
-                            <TableCell className="text-base">
-                                1 Juli 2024
-                            </TableCell>
-                            <TableCell>
-                                <Badge className="text-success bg-success-bg hover:bg-success-bg">
-                                    Terbit
-                                </Badge>
-                            </TableCell>
-                            <TableCell className="text-base">
-                                <Link href={"/admin/proyek/1/detail"}>
-                                    <Eye />
-                                </Link>
+                            <TableCell className="justify-center flex items-center gap-1">
+                                <Button
+                                    asChild
+                                    variant={"ghost"}
+                                    className="px-2"
+                                >
+                                    <Link href={"/admin/sektor/1/detail"}>
+                                        <Eye />
+                                    </Link>
+                                </Button>
+                                <Button
+                                    asChild
+                                    variant={"ghost"}
+                                    className="px-2"
+                                >
+                                    <Link href={"/admin/sektor/1/edit"}>
+                                        <Pencil className="w-5 h-5" />
+                                    </Link>
+                                </Button>
                             </TableCell>
                         </TableRow>
                     </TableBody>

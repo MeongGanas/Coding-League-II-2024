@@ -16,38 +16,33 @@ import {
     TableRow,
 } from "@/Components/ui/table";
 import { Link } from "@inertiajs/react";
-import { Eye } from "lucide-react";
+import { Eye, Pencil } from "lucide-react";
 import TablePagination from "./TabelPagination";
+import { Button } from "@/Components/ui/button";
 
-export default function DataTableLaporan() {
+export default function DataTableKegiatan() {
     return (
         <div className="w-full">
             <div className="bg-white rounded-md border">
                 <Table className="overflow-x-auto">
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="min-w-[300px] uppercase font-bold text-black">
-                                Judul Laporan
+                            <TableHead className="min-w-[2z00px] uppercase font-bold text-black">
+                                Foto
                             </TableHead>
                             <TableHead className="uppercase font-bold text-black">
-                                Mitra
+                                Judul
                             </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                Lokasi
+                            <TableHead className="min-w-[200px] uppercase font-bold text-black">
+                                Deskripsi
                             </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                Realisasi
-                            </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                Tgl Realisasi
-                            </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                Laporan Dikirim
+                            <TableHead className="min-w-[200px] uppercase font-bold text-black">
+                                Tgl Diterbitkan
                             </TableHead>
                             <TableHead className="uppercase font-bold text-black">
                                 Status
                             </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
+                            <TableHead className="uppercase font-bold text-black text-center">
                                 Aksi
                             </TableHead>
                         </TableRow>
@@ -55,30 +50,45 @@ export default function DataTableLaporan() {
                     <TableBody>
                         <TableRow className="odd:bg-[#FCFCFD] even:bg-white">
                             <TableCell className="text-base min-w-[300px]">
-                                Riverina name team to play Rabbitohs in Albur
+                                <div className="w-[250px] h-32 rounded-md bg-neutral-400"></div>
                             </TableCell>
                             <TableCell className="text-base">
-                                Facebook
+                                Pengadaan sarana keterampilan Olahan Pangan
                             </TableCell>
                             <TableCell className="text-base">
-                                Kec. Karangwareng
+                                Vestibulum mauris tincidunt ultrices donec.
+                                Egestas purus duis malesuada malesuada dictum
+                                orci sapien.{" "}
                             </TableCell>
                             <TableCell className="text-base">
-                                Rp.###,###,###
+                                16 Juli 2024
                             </TableCell>
-                            <TableCell className="text-base">
-                                1 Juli 2024
-                            </TableCell>
-                            <TableCell className="text-base">16 July</TableCell>
                             <TableCell>
                                 <Badge className="text-success bg-success-bg hover:bg-success-bg">
-                                    Diterima
+                                    Terbit
                                 </Badge>
                             </TableCell>
-                            <TableCell className="text-base">
-                                <Link href={`/admin/laporan/1/detail`}>
-                                    <Eye />
-                                </Link>
+                            <TableCell>
+                                <div className="justify-center h-full flex items-center gap-1">
+                                    <Button
+                                        asChild
+                                        variant={"ghost"}
+                                        className="px-2"
+                                    >
+                                        <Link href={"/admin/kegiatan/1/detail"}>
+                                            <Eye />
+                                        </Link>
+                                    </Button>
+                                    <Button
+                                        asChild
+                                        variant={"ghost"}
+                                        className="px-2"
+                                    >
+                                        <Link href={"/admin/kegiatan/1/edit"}>
+                                            <Pencil className="w-5 h-5" />
+                                        </Link>
+                                    </Button>
+                                </div>
                             </TableCell>
                         </TableRow>
                     </TableBody>
@@ -109,15 +119,4 @@ export default function DataTableLaporan() {
             </div>
         </div>
     );
-}
-
-{
-    /* <Badge className="text-[#B54708] bg-[#FFFAEB] hover:bg-[#FFFAEB]">
-                                    Revisi
-                                </Badge> */
-}
-{
-    /* <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
-                                    Draf
-                                </Badge> */
 }

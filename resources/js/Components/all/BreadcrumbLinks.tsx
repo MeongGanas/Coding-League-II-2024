@@ -13,9 +13,11 @@ import React from "react";
 export default function BreadcrumbLinks({
     basePath,
     pagePath,
+    textWhite,
 }: {
     basePath: string;
     pagePath?: string;
+    textWhite?: boolean;
 }) {
     const currentPath = window.location.pathname.split("/").slice(1);
     const pathLoop = currentPath.slice(1, -1);
@@ -23,11 +25,15 @@ export default function BreadcrumbLinks({
     let builtPath = basePath;
 
     return (
-        <Breadcrumb className="mb-10">
+        <Breadcrumb>
             <BreadcrumbList>
                 <BreadcrumbItem>
                     <BreadcrumbLink href="/admin/dashboard">
-                        <Home className="w-5 h-5" />
+                        <Home
+                            className={`w-5 h-5 ${
+                                textWhite ? "text-white" : ""
+                            }`}
+                        />
                     </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
@@ -44,7 +50,11 @@ export default function BreadcrumbLinks({
                                 <BreadcrumbLink asChild>
                                     <Link
                                         href={builtPath}
-                                        className="capitalize"
+                                        className={`capitalize ${
+                                            textWhite
+                                                ? "text-white hover:text-primary-bg"
+                                                : ""
+                                        }`}
                                     >
                                         {path}
                                     </Link>

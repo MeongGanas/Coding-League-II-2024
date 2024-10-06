@@ -1,4 +1,5 @@
 import { Badge } from "@/Components/ui/badge";
+import { Button } from "@/Components/ui/button";
 import {
     Table,
     TableBody,
@@ -10,7 +11,7 @@ import {
 import { Link } from "@inertiajs/react";
 import { Eye } from "lucide-react";
 
-export default function DataTableMitra() {
+export default function DataTableProyekMitra() {
     return (
         <div className="w-full">
             <div className="bg-white rounded-md border">
@@ -49,9 +50,15 @@ export default function DataTableMitra() {
                                 1 Juli 2024
                             </TableCell>
                             <TableCell className="text-base">
-                                <Link href={"/admin/proyek/1/detail"}>
-                                    <Eye />
-                                </Link>
+                                <Button
+                                    asChild
+                                    variant={"ghost"}
+                                    className="px-2"
+                                >
+                                    <Link href={"/admin/mitra/1/detail"}>
+                                        <Eye />
+                                    </Link>
+                                </Button>
                             </TableCell>
                         </TableRow>
                     </TableBody>

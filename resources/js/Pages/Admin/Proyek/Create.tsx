@@ -89,7 +89,9 @@ export default function Create() {
         <LayoutAdmin>
             <Head title="Buat Proyek" />
             <div className="container px-5 py-10">
-                <BreadcrumbLinks basePath="/admin" pagePath="Buat Proyek" />
+                <div className="mb-10">
+                    <BreadcrumbLinks basePath="/admin" pagePath="Buat Proyek" />
+                </div>
                 <h1 className="font-bold text-2xl mb-5">Buat Proyek Baru</h1>
                 <Form {...form}>
                     <form onSubmit={submit} className="space-y-5">

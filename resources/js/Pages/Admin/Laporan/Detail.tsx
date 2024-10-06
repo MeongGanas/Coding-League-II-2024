@@ -16,7 +16,9 @@ export default function Detail() {
         <LayoutAdmin>
             <Head title="Detail Laporan" />
             <div className="container py-10 px-5 space-y-5">
-                <BreadcrumbLinks basePath="/admin" />
+                <div className="mb-10">
+                    <BreadcrumbLinks basePath="/admin" />
+                </div>
                 <h1 className="text-3xl font-bold">Detail Laporan</h1>
                 <div className="bg-white rounded-md p-6 space-y-4 border">
                     <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
