@@ -16,22 +16,27 @@ import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 
-const loginSchema = z.object({
+const registerSchema = z.object({
     email: z.string().email(),
+    nama_perusahaan: z.string(),
     password: z.string(),
+    confirm_password: z.string(),
 });
 
-type LoginSchema = z.infer<typeof loginSchema>;
+type RegisterSchema = z.infer<typeof registerSchema>;
 
-export default function Login() {
+export default function Register() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [showPass, setShowPass] = useState(false);
+    const [showPassConfirm, setShowPassConfirm] = useState(false);
 
-    const form = useForm<LoginSchema>({
-        resolver: zodResolver(loginSchema),
+    const form = useForm<RegisterSchema>({
+        resolver: zodResolver(registerSchema),
         defaultValues: {
             email: "",
+            nama_perusahaan: "",
             password: "",
+            confirm_password: "",
         },
     });
 
@@ -43,10 +48,10 @@ export default function Login() {
 
     return (
         <LayoutAuth>
-            <Head title="Login" />
+            <Head title="Register" />
 
             <div className="container">
-                <div className="bg-white grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 border rounded-md">
+                <div className="bg-white grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 border rounded-md items-center">
                     <div className="px-5 sm:px-10 py-10 lg:py-14 space-y-5">
                         <Link
                             href="/"
@@ -57,7 +62,7 @@ export default function Login() {
                         </Link>
                         <div className="space-y-3">
                             <h1 className="font-bold text-3xl">
-                                Selamat Datang
+                                Registrasi Mitra
                             </h1>
                             <p className="text-sm text-[#344054]">
                                 Silakan masukan email dan kata sandi untuk masuk
@@ -67,10 +72,10 @@ export default function Login() {
                         <Button variant={"outline"} asChild>
                             <span className="flex gap-1">
                                 <span className="text-[#344054]">
-                                    Belum punya akun mitra?
+                                    Sudah punya akun?
                                 </span>
-                                <Link href="/register" className="text-primary">
-                                    Registrasi di sini
+                                <Link href="/login" className="text-primary">
+                                    Klik di sini
                                 </Link>
                             </span>
                         </Button>
@@ -94,6 +99,28 @@ export default function Login() {
                                                     required
                                                     type="email"
                                                     placeholder="Masukan email anda"
+                                                    {...field}
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={control}
+                                    name="nama_perusahaan"
+                                    render={({ field }) => (
+                                        <FormItem className="grid gap-2">
+                                            <FormLabel className="font-bold text-base">
+                                                Nama Perusahaan
+                                                <span className="text-red-800">
+                                                    *
+                                                </span>
+                                            </FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    required
+                                                    placeholder="Masukan nama perusahaan anda"
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -147,15 +174,59 @@ export default function Login() {
                                         </FormItem>
                                     )}
                                 />
-                                <div className="w-full flex justify-end">
-                                    <Button
-                                        type="submit"
-                                        className="hover:bg-red-700 font-semibold gap-2 px-10"
-                                        disabled={isSubmitted}
-                                    >
-                                        Masuk
-                                    </Button>
-                                </div>
+                                <FormField
+                                    control={form.control}
+                                    name="confirm_password"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="font-bold text-base">
+                                                Konfirmasi Kata Sandi{" "}
+                                                <span className="text-red-800">
+                                                    *
+                                                </span>
+                                            </FormLabel>
+                                            <FormControl>
+                                                <div className="relative">
+                                                    <Input
+                                                        required
+                                                        type={
+                                                            showPassConfirm
+                                                                ? "text"
+                                                                : "password"
+                                                        }
+                                                        placeholder="Masukan konfirmasi kata sandi"
+                                                        {...field}
+                                                    />
+                                                    <Button
+                                                        variant={"ghost"}
+                                                        size={"icon"}
+                                                        type="button"
+                                                        className="absolute right-0 top-0"
+                                                        onClick={() => {
+                                                            setShowPassConfirm(
+                                                                !showPassConfirm
+                                                            );
+                                                        }}
+                                                    >
+                                                        {showPassConfirm ? (
+                                                            <EyeOff className="w-5 h-5 text-[#344054]" />
+                                                        ) : (
+                                                            <Eye className="w-5 h-5 text-[#344054]" />
+                                                        )}
+                                                    </Button>
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <Button
+                                    type="submit"
+                                    className="hover:bg-red-700 font-semibold gap-2 px-10"
+                                    disabled={isSubmitted}
+                                >
+                                    Daftar
+                                </Button>
                             </form>
                         </Form>
                     </div>
