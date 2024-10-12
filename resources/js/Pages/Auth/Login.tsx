@@ -15,6 +15,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import axios from "axios";
+import { toast } from 'react-hot-toast'
 
 const loginSchema = z.object({
     email: z.string().email(),
@@ -38,7 +40,25 @@ export default function Login() {
     const { handleSubmit, control } = form;
 
     const submit = handleSubmit((values) => {
-        console.log(values);
+        setIsSubmitted(true)
+
+        const promise = axios.post('/login', values);
+
+        console.log(values)
+
+        toast.promise(promise, {
+            loading: "Loading...",
+            success: () => {
+                setIsSubmitted(false)
+                window.location.replace('/mitra/dashboard')
+                return "Login Success"
+            },
+            error: (err) => {
+                console.log(err)
+                setIsSubmitted(false)
+                return err?.response.data.message || "Something went wrong!"
+            }
+        })
     });
 
     return (

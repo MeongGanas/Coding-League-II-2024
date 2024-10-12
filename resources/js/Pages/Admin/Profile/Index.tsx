@@ -1,12 +1,13 @@
 import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Button } from "@/Components/ui/button";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
+import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Pencil } from "lucide-react";
 
-export default function Index() {
+export default function Index({ auth: { user } }: PageProps) {
     return (
-        <LayoutAdmin>
+        <LayoutAdmin user={user}>
             <Head title="Profil" />
             <div className="container px-5 py-10 space-y-5">
                 <div className="mb-10">
@@ -24,21 +25,21 @@ export default function Index() {
                 <div className="bg-white py-6 px-6 lg:px-20 border rounded-md">
                     <div className="grid grid-cols-1 space-y-5 lg:space-y-0 lg:grid-cols-2 xl:grid-cols-3 items-center lg:gap-10">
                         <div className="w-full">
-                            <div className="bg-neutral-300 w-full h-72 rounded-md"></div>
+                            {user.image ? (
+                                <img src={`/storage/${user.image}`} alt="user_image" />
+                            ) : (
+                                <div className="bg-neutral-300 w-full h-72 rounded-md"></div>
+                            )}
                         </div>
                         <div className="xl:col-span-2 space-y-2">
                             <h1 className="text-2xl font-bold">
-                                Ardhiya Febrian Rachman
+                                {user.name}
                             </h1>
                             <p className="font-semibold text-base">
-                                info@email.com
+                                {user.email}
                             </p>
                             <p>
-                                Malesuada massa aliquam in viverra nec a non. Ut
-                                ac tellus ultricies nam ut. Purus sed pulvinar
-                                in gravida. Tincidunt consequat cum eu nunc duis
-                                ac aenean. Curabitur vestibulum donec
-                                scelerisque orci augue.
+                                {user.deskripsi}
                             </p>
                         </div>
                     </div>

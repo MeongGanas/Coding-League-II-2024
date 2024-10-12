@@ -3,14 +3,15 @@ import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
+import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
-import { Mail, MapPin, Pencil, Phone, Plus, Power } from "lucide-react";
+import { Mail, MapPin, Pencil, Phone } from "lucide-react";
 
-export default function Detail() {
+export default function Detail({ auth: { user } }: PageProps) {
     const isTerverifikasi = true;
 
     return (
-        <LayoutAdmin>
+        <LayoutAdmin user={user}>
             <Head title="Detail Mitra" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">

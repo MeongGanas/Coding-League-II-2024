@@ -15,39 +15,66 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
-import { CloudUpload, Save, Send } from "lucide-react";
+import { CloudUpload, Save } from "lucide-react";
 import { Textarea } from "@/Components/ui/textarea";
+import { PageProps } from "@/types";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-const proyekSchema = z.object({
-    nama: z.string(),
+const profileSchema = z.object({
+    name: z.string(),
     email: z.string(),
     deskripsi: z.string(),
-    foto: z
-        .instanceof(FileList)
-        .refine((file) => file?.length == 1, "File is required."),
+    image: z.instanceof(FileList).optional(),
 });
 
-type ProyekSchema = z.infer<typeof proyekSchema>;
+type ProfileSchema = z.infer<typeof profileSchema>;
 
-export default function Edit() {
+export default function Edit({ auth: { user } }: PageProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const form = useForm<ProyekSchema>({
-        resolver: zodResolver(proyekSchema),
+    const form = useForm<ProfileSchema>({
+        resolver: zodResolver(profileSchema),
         defaultValues: {
-            nama: "",
-            email: "",
-            deskripsi: "",
+            name: user.name,
+            email: user.email,
+            deskripsi: user.deskripsi || "",
         },
     });
 
     const { handleSubmit, control } = form;
 
-    const fileRef = form.register("foto");
+    const fileRef = form.register("image");
 
     const submit = handleSubmit((values) => {
-        console.log(values);
+        setIsSubmitted(true);
+
+        const formData = new FormData();
+        formData.append('_method', 'PATCH');
+        formData.append('name', values.name)
+        formData.append('deskripsi', values.deskripsi);
+        formData.append('email', values.email);
+
+        if (values.image && values.image?.length > 0) {
+            formData.append('image', values.image[0]);
+        }
+
+        const promise = axios.post(`/profil/${user.id}`, formData);
+
+        toast.promise(promise, {
+            loading: "Loading...",
+            success: () => {
+                setIsSubmitted(false);
+                window.location.replace('/admin/profile')
+                return "Update Profile Success!"
+            },
+            error: (err) => {
+                setIsSubmitted(false)
+                console.log(err)
+                return err?.response.data.message || "Something went wrong"
+            }
+        });
     });
 
     const handlePreview = (e: SyntheticEvent) => {
@@ -59,7 +86,7 @@ export default function Edit() {
     };
 
     return (
-        <LayoutAdmin>
+        <LayoutAdmin user={user}>
             <Head title="Ubah Profil" />
             <div className="container px-5 py-10">
                 <div className="mb-10">
@@ -73,55 +100,53 @@ export default function Edit() {
                                 <div className="bg-neutral-300 rounded-md w-full h-72"></div>
                                 <FormField
                                     control={form.control}
-                                    name="foto"
+                                    name="image"
                                     render={({ field }) => (
                                         <FormItem className="col-span-2">
-                                            <FormLabel className="font-bold text-base">
+                                            <FormLabel htmlFor="image" className="font-bold text-base">
                                                 Foto{" "}
                                                 <span className="text-red-800">
                                                     *
                                                 </span>
                                             </FormLabel>
-                                            <FormControl>
-                                                <label
-                                                    htmlFor="dropzone-file"
-                                                    className="flex flex-col items-center justify-center w-full border rounded-lg cursor-pointer bg-white hover:bg-gray-50 "
-                                                >
-                                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                        {preview && (
-                                                            <img
-                                                                src={preview}
-                                                                alt=""
-                                                                className="w-60"
-                                                            />
-                                                        )}
-                                                        <div className="rounded-full border-4 bg-[#FFDDDC] border-[#FFF1F0] text-primary p-2">
-                                                            <CloudUpload className="w-5 h-5" />
-                                                        </div>
-                                                        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold">
-                                                            <span className="text-primary">
-                                                                Klik untuk
-                                                                unggah
-                                                            </span>{" "}
-                                                            atau seret dan lepas
-                                                            kesini
-                                                        </p>
-                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                            PNG, JPG up to 10MB
-                                                        </p>
+                                            <label
+                                                htmlFor="image"
+                                                className="flex flex-col items-center justify-center w-full border rounded-lg cursor-pointer bg-white hover:bg-gray-50 "
+                                            >
+                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                    {preview && (
+                                                        <img
+                                                            src={preview}
+                                                            alt=""
+                                                            className="w-60 mb-2"
+                                                        />
+                                                    )}
+                                                    <div className="rounded-full border-4 bg-[#FFDDDC] border-[#FFF1F0] text-primary p-2">
+                                                        <CloudUpload className="w-5 h-5" />
                                                     </div>
+                                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold">
+                                                        <span className="text-primary">
+                                                            Klik untuk
+                                                            unggah
+                                                        </span>{" "}
+                                                        atau seret dan lepas
+                                                        kesini
+                                                    </p>
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                        PNG, JPG up to 10MB
+                                                    </p>
+                                                </div>
+                                                <FormControl>
                                                     <Input
-                                                        {...fileRef}
-                                                        id="dropzone-file"
+                                                        id="image"
                                                         type="file"
                                                         accept="image/png, image/jpg"
-                                                        className="hidden"
-                                                        onChange={(e) =>
-                                                            handlePreview(e)
-                                                        }
+                                                        className="opacity-0 h-0"
+                                                        {...fileRef}
+                                                        onChange={(e) => handlePreview(e)}
                                                     />
-                                                </label>
-                                            </FormControl>
+                                                </FormControl>
+                                            </label>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -130,7 +155,7 @@ export default function Edit() {
 
                             <FormField
                                 control={control}
-                                name="nama"
+                                name="name"
                                 render={({ field }) => (
                                     <FormItem className="grid gap-2">
                                         <FormLabel className="font-bold text-base">

@@ -5,14 +5,15 @@ import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
+import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { BriefcaseBusiness, Plus } from "lucide-react";
 
-export default function Detail() {
+export default function Detail({ auth: { user } }: PageProps) {
     const isTerbit = false;
 
     return (
-        <LayoutAdmin>
+        <LayoutAdmin user={user}>
             <Head title="Detail Kegiatan" />
             <div className="bg-[url('/images/admin/dashboard_bg.png')] bg-cover bg-no-repeat bg-center w-full h-72 relative">
                 <div className="h-full w-full bg-black/40 absolute top-0 left-0 flex items-center">

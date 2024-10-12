@@ -11,12 +11,13 @@ import {
     SelectValue,
 } from "@/Components/ui/select";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
+import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
-export default function Index() {
+export default function Index({ auth: { user } }: PageProps) {
     return (
-        <LayoutAdmin>
+        <LayoutAdmin user={user}>
             <Head title="Mitra" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">

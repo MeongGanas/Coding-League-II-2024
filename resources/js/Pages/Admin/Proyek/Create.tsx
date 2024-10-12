@@ -34,6 +34,7 @@ import { CalendarIcon, CloudUpload, Save, Send } from "lucide-react";
 import { Calendar } from "@/Components/ui/calendar";
 import { format } from "date-fns";
 import { Textarea } from "@/Components/ui/textarea";
+import { PageProps } from "@/types";
 
 const proyekSchema = z.object({
     nama: z.string(),
@@ -53,7 +54,7 @@ const proyekSchema = z.object({
 
 type ProyekSchema = z.infer<typeof proyekSchema>;
 
-export default function Create() {
+export default function Create({ auth: { user } }: PageProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -86,7 +87,7 @@ export default function Create() {
     };
 
     return (
-        <LayoutAdmin>
+        <LayoutAdmin user={user}>
             <Head title="Buat Proyek" />
             <div className="container px-5 py-10">
                 <div className="mb-10">
@@ -220,7 +221,7 @@ export default function Create() {
                                                             className={cn(
                                                                 "w-full pl-3 text-left font-normal",
                                                                 !field.value &&
-                                                                    "text-muted-foreground"
+                                                                "text-muted-foreground"
                                                             )}
                                                         >
                                                             {field.value ? (
@@ -250,9 +251,9 @@ export default function Create() {
                                                         disabled={(date) =>
                                                             date > new Date() ||
                                                             date <
-                                                                new Date(
-                                                                    "1900-01-01"
-                                                                )
+                                                            new Date(
+                                                                "1900-01-01"
+                                                            )
                                                         }
                                                         initialFocus
                                                     />
@@ -281,7 +282,7 @@ export default function Create() {
                                                             className={cn(
                                                                 "w-full pl-3 text-left font-normal",
                                                                 !field.value &&
-                                                                    "text-muted-foreground"
+                                                                "text-muted-foreground"
                                                             )}
                                                         >
                                                             {field.value ? (
@@ -311,9 +312,9 @@ export default function Create() {
                                                         disabled={(date) =>
                                                             date > new Date() ||
                                                             date <
-                                                                new Date(
-                                                                    "1900-01-01"
-                                                                )
+                                                            new Date(
+                                                                "1900-01-01"
+                                                            )
                                                         }
                                                         initialFocus
                                                     />

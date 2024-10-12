@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { CloudUpload, Send } from "lucide-react";
+import { PageProps } from "@/types";
 
 const kegiatanSchema = z.object({
     judul: z.string(),
@@ -27,7 +28,7 @@ const kegiatanSchema = z.object({
 
 type KegiatanSchema = z.infer<typeof kegiatanSchema>;
 
-export default function Create() {
+export default function Create({ auth: { user } }: PageProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -56,7 +57,7 @@ export default function Create() {
     };
 
     return (
-        <LayoutAdmin>
+        <LayoutAdmin user={user}>
             <Head title="Buat Kegiatan" />
             <div className="container px-5 py-10">
                 <div className="mb-10">

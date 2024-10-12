@@ -15,10 +15,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import ReCAPTCHA from 'react-google-recaptcha';
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const registerSchema = z.object({
     email: z.string().email(),
-    nama_perusahaan: z.string(),
+    name: z.string(),
     password: z.string(),
     confirm_password: z.string(),
 });
@@ -29,12 +32,14 @@ export default function Register() {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [showPass, setShowPass] = useState(false);
     const [showPassConfirm, setShowPassConfirm] = useState(false);
+    const [captchaValue, setCaptchaValue] = useState<null | string>(null);
+
 
     const form = useForm<RegisterSchema>({
         resolver: zodResolver(registerSchema),
         defaultValues: {
             email: "",
-            nama_perusahaan: "",
+            name: "",
             password: "",
             confirm_password: "",
         },
@@ -43,7 +48,26 @@ export default function Register() {
     const { handleSubmit, control } = form;
 
     const submit = handleSubmit((values) => {
-        console.log(values);
+        if (captchaValue) {
+            setIsSubmitted(true)
+            console.log(values)
+            const promise = axios.post('/register', values);
+
+            toast.promise(promise, {
+                loading: "Loading...",
+                success: () => {
+                    setIsSubmitted(false)
+                    window.location.replace('/login')
+                    return "Register Success!"
+                },
+                error: (err) => {
+                    setIsSubmitted(false)
+                    return err?.response.data.message || "Something went wrong"
+                }
+            })
+        } else {
+            toast.error('Anda harus memastikan anda bukan robot')
+        }
     });
 
     return (
@@ -108,7 +132,7 @@ export default function Register() {
                                 />
                                 <FormField
                                     control={control}
-                                    name="nama_perusahaan"
+                                    name="name"
                                     render={({ field }) => (
                                         <FormItem className="grid gap-2">
                                             <FormLabel className="font-bold text-base">
@@ -120,7 +144,7 @@ export default function Register() {
                                             <FormControl>
                                                 <Input
                                                     required
-                                                    placeholder="Masukan nama perusahaan anda"
+                                                    placeholder="Masukan name perusahaan anda"
                                                     {...field}
                                                 />
                                             </FormControl>
@@ -219,6 +243,10 @@ export default function Register() {
                                             <FormMessage />
                                         </FormItem>
                                     )}
+                                />
+                                <ReCAPTCHA
+                                    sitekey="6LcOdl8qAAAAACiZPikTiZhxSACCzdN7dMYKljiO"
+                                    onChange={(val) => setCaptchaValue(val)}
                                 />
                                 <Button
                                     type="submit"

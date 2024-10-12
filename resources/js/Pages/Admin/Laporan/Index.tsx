@@ -4,11 +4,12 @@ import SearchForm from "@/Components/admin/Search";
 import SelectAndDownload from "@/Components/admin/SelectAndDownload";
 import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
+import { PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 
-export default function Index() {
+export default function Index({ auth: { user } }: PageProps) {
     return (
-        <LayoutAdmin>
+        <LayoutAdmin user={user}>
             <Head title="Laporan" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">

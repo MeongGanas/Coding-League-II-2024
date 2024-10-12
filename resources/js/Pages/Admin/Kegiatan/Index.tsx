@@ -4,12 +4,13 @@ import SearchForm from "@/Components/admin/Search";
 import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Button } from "@/Components/ui/button";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
+import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
-export default function Index() {
+export default function Index({ auth: { user } }: PageProps) {
     return (
-        <LayoutAdmin>
+        <LayoutAdmin user={user}>
             <Head title="Kegiatan" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">

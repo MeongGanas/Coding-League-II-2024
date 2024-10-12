@@ -4,10 +4,11 @@ import SelectAndDownload from "@/Components/admin/SelectAndDownload";
 import WelcomeAdmin from "@/Components/admin/dashboard/WelcomeAdmin";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { Head } from "@inertiajs/react";
+import { PageProps } from "@/types";
 
-export default function Dashboard() {
+export default function Dashboard({ auth: { user } }: PageProps) {
     return (
-        <LayoutAdmin>
+        <LayoutAdmin user={user}>
             <Head title="Dashboard Admin" />
 
             <WelcomeAdmin />

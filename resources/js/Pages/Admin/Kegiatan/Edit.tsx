@@ -17,6 +17,7 @@ import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { CloudUpload, Send } from "lucide-react";
 import { Textarea } from "@/Components/ui/textarea";
+import { PageProps } from "@/types";
 
 const proyekSchema = z.object({
     nama: z.string(),
@@ -28,7 +29,7 @@ const proyekSchema = z.object({
 
 type ProyekSchema = z.infer<typeof proyekSchema>;
 
-export default function Create() {
+export default function Create({ auth: { user } }: PageProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -57,7 +58,7 @@ export default function Create() {
     };
 
     return (
-        <LayoutAdmin>
+        <LayoutAdmin user={user}>
             <Head title="Ubah Sektor" />
             <div className="container px-5 py-10">
                 <BreadcrumbLinks

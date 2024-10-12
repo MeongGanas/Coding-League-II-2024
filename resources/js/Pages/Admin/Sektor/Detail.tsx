@@ -1,17 +1,15 @@
-import DetailCard from "@/Components/admin/dashboard/DetailCard";
-import { DialogTerbit } from "@/Components/admin/dashboard/proyek/DialogTerbit";
 import DataTableMitra from "@/Components/admin/dashboard/proyek/TabelProyekMitra";
 import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Badge } from "@/Components/ui/badge";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
+import { PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
-import { BriefcaseBusiness } from "lucide-react";
 
-export default function Detail() {
+export default function Detail({ auth: { user } }: PageProps) {
     const isTerbit = false;
 
     return (
-        <LayoutAdmin>
+        <LayoutAdmin user={user}>
             <Head title="Detail Sektor" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">

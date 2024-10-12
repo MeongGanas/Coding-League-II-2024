@@ -8,12 +8,13 @@ import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Badge } from "@/Components/ui/badge";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import formatPrice from "@/lib/formatPrice";
+import { PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 import { BriefcaseBusiness } from "lucide-react";
 
-export default function Detail() {
+export default function Detail({ auth: { user } }: PageProps) {
     return (
-        <LayoutAdmin>
+        <LayoutAdmin user={user}>
             <Head title="Detail Laporan" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">
