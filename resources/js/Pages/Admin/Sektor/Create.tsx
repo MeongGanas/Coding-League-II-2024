@@ -18,11 +18,13 @@ import { Input } from "@/Components/ui/input";
 import { Textarea } from "@/Components/ui/textarea";
 import { CloudUpload, Send } from "lucide-react";
 import { PageProps } from "@/types";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const sektorSchema = z.object({
-    nama: z.string(),
+    name: z.string(),
     deskripsi: z.string(),
-    foto_thumbnail: z
+    image: z
         .instanceof(FileList)
         .refine((file) => file?.length == 1, "File is required."),
 });
@@ -36,17 +38,37 @@ export default function Create({ auth: { user } }: PageProps) {
     const form = useForm<SektorSchema>({
         resolver: zodResolver(sektorSchema),
         defaultValues: {
-            nama: "",
+            name: "",
             deskripsi: "",
         },
     });
 
     const { handleSubmit, control } = form;
 
-    const fileRef = form.register("foto_thumbnail");
+    const fileRef = form.register("image");
 
     const submit = handleSubmit((values) => {
-        console.log(values);
+        setIsSubmitted(true)
+
+        const formData = new FormData()
+        formData.append('name', values.name)
+        formData.append('deskripsi', values.deskripsi)
+        formData.append('image', values.image[0])
+
+        const promise = axios.post('/admin/sektor', formData);
+
+        toast.promise(promise, {
+            loading: "Loading...",
+            success: () => {
+                setIsSubmitted(false)
+                window.location.replace('/admin/sektor')
+                return "Add Sektor Success"
+            },
+            error: (err) => {
+                setIsSubmitted(false)
+                return err?.response.data.message || "Something went wrong"
+            }
+        })
     });
 
     const handlePreview = (e: SyntheticEvent) => {
@@ -70,7 +92,7 @@ export default function Create({ auth: { user } }: PageProps) {
                         <div className="bg-white rounded-md p-6 space-y-5 border">
                             <FormField
                                 control={form.control}
-                                name="foto_thumbnail"
+                                name="image"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="font-bold text-base">
@@ -82,14 +104,14 @@ export default function Create({ auth: { user } }: PageProps) {
                                         <FormControl>
                                             <label
                                                 htmlFor="dropzone-file"
-                                                className="flex flex-col items-center justify-center w-full border rounded-lg cursor-pointer bg-white hover:bg-gray-50 "
+                                                className="flex flex-col items-center justify-center w-full border rounded-lg cursor-pointer bg-white hover:bg-gray-50"
                                             >
                                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                                     {preview && (
                                                         <img
                                                             src={preview}
                                                             alt=""
-                                                            className="w-60"
+                                                            className="w-60 mb-5"
                                                         />
                                                     )}
                                                     <div className="rounded-full border-4 bg-[#FFDDDC] border-[#FFF1F0] text-primary p-2">
@@ -111,7 +133,7 @@ export default function Create({ auth: { user } }: PageProps) {
                                                     id="dropzone-file"
                                                     type="file"
                                                     accept="image/png, image/jpg"
-                                                    className="hidden"
+                                                    className="h-0 opacity-0"
                                                     onChange={(e) =>
                                                         handlePreview(e)
                                                     }
@@ -124,7 +146,7 @@ export default function Create({ auth: { user } }: PageProps) {
                             />
                             <FormField
                                 control={control}
-                                name="nama"
+                                name="name"
                                 render={({ field }) => (
                                     <FormItem className="grid gap-2">
                                         <FormLabel className="font-bold text-base">

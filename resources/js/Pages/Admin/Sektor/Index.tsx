@@ -3,11 +3,12 @@ import SearchForm from "@/Components/admin/Search";
 import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Button } from "@/Components/ui/button";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
-import { PageProps } from "@/types";
+import { PageProps, SektorsProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
-export default function Index({ auth: { user } }: PageProps) {
+export default function Index({ auth: { user }, sektors }: PageProps<{ sektors: SektorsProps }>) {
+    console.log(sektors)
     return (
         <LayoutAdmin user={user}>
             <Head title="Sektor" />
@@ -28,7 +29,7 @@ export default function Index({ auth: { user } }: PageProps) {
                     </Button>
                 </div>
                 <SearchForm />
-                <DataTableSektor />
+                <DataTableSektor sektors={sektors} />
             </div>
         </LayoutAdmin>
     );

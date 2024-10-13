@@ -7,6 +7,44 @@ export interface User {
     deskripsi: string;
 }
 
+export interface Sektor {
+    id: number;
+    name: string;
+    deskripsi: string;
+    image: string;
+}
+
+export interface SektorsProps {
+    current_page: number;
+    data: Sektor[];
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: { url: string | null; label: string; active: boolean }[];
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+}
+
+export interface PaginationProps {
+    current_page: number;
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: { url: string | null; label: string; active: boolean }[];
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>
 > = T & {

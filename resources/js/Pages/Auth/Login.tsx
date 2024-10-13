@@ -17,10 +17,12 @@ import { Input } from "@/Components/ui/input";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import axios from "axios";
 import { toast } from 'react-hot-toast'
+import { Checkbox } from "@/Components/ui/checkbox";
 
 const loginSchema = z.object({
     email: z.string().email(),
     password: z.string(),
+    remember: z.boolean()
 });
 
 type LoginSchema = z.infer<typeof loginSchema>;
@@ -34,6 +36,7 @@ export default function Login() {
         defaultValues: {
             email: "",
             password: "",
+            remember: false
         },
     });
 
@@ -43,8 +46,6 @@ export default function Login() {
         setIsSubmitted(true)
 
         const promise = axios.post('/login', values);
-
-        console.log(values)
 
         toast.promise(promise, {
             loading: "Loading...",
@@ -85,14 +86,14 @@ export default function Login() {
                             </p>
                         </div>
                         <Button variant={"outline"} asChild>
-                            <span className="flex gap-1">
+                            <Link href="/register" className="flex gap-1">
                                 <span className="text-[#344054]">
                                     Belum punya akun mitra?
                                 </span>
-                                <Link href="/register" className="text-primary">
+                                <span className="text-primary">
                                     Registrasi di sini
-                                </Link>
-                            </span>
+                                </span>
+                            </Link>
                         </Button>
                     </div>
                     <div className="border-t xl:col-span-2 lg:border-t-0 lg:border-l px-5 sm:px-10 py-10 lg:py-14">
@@ -164,6 +165,23 @@ export default function Login() {
                                                 </div>
                                             </FormControl>
                                             <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <FormField
+                                    control={form.control}
+                                    name="remember"
+                                    render={({ field }) => (
+                                        <FormItem className="flex items-center gap-2 space-y-0">
+                                            <FormControl>
+                                                <Checkbox
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                />
+                                            </FormControl>
+                                            <FormLabel className="cursor-pointer">
+                                                Remember Me
+                                            </FormLabel>
                                         </FormItem>
                                     )}
                                 />

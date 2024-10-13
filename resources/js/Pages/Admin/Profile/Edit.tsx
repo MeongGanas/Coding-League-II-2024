@@ -71,7 +71,6 @@ export default function Edit({ auth: { user } }: PageProps) {
             },
             error: (err) => {
                 setIsSubmitted(false)
-                console.log(err)
                 return err?.response.data.message || "Something went wrong"
             }
         });
@@ -97,7 +96,11 @@ export default function Edit({ auth: { user } }: PageProps) {
                     <form onSubmit={submit} className="space-y-5">
                         <div className="bg-white rounded-md p-6 space-y-3 border">
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-                                <div className="bg-neutral-300 rounded-md w-full h-72"></div>
+                                {user.image ? (
+                                    <img src={`/storage/${user.image}`} className="rounded-md" alt="user_image" />
+                                ) : (
+                                    <div className="bg-neutral-300 rounded-md w-full h-72"></div>
+                                )}
                                 <FormField
                                     control={form.control}
                                     name="image"

@@ -26,7 +26,7 @@ export default function Index({ auth: { user } }: PageProps) {
                     <div className="grid grid-cols-1 space-y-5 lg:space-y-0 lg:grid-cols-2 xl:grid-cols-3 items-center lg:gap-10">
                         <div className="w-full">
                             {user.image ? (
-                                <img src={`/storage/${user.image}`} alt="user_image" />
+                                <img src={`/storage/${user.image}`} className="rounded-md" alt="user_image" />
                             ) : (
                                 <div className="bg-neutral-300 w-full h-72 rounded-md"></div>
                             )}

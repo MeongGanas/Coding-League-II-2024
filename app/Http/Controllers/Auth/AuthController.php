@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -71,6 +72,9 @@ class AuthController extends Controller
         ]);
 
         if ($request->has('image')) {
+            if ($user->image) {
+                Storage::delete($user->image);
+            }
             $v['image'] = $request->file('image')->store('user_image', 'public');
         }
 

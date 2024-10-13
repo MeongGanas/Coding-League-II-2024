@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SektorController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -25,18 +26,7 @@ Route::middleware(['auth', 'checkAdmin'])->group(function () {
         return Inertia::render('Admin/Proyek/Detail');
     })->name('detailProyek');
 
-    Route::get("/admin/sektor", function () {
-        return Inertia::render('Admin/Sektor/Index');
-    })->name('adminSektor');
-    Route::get("/admin/sektor/{id}/detail", function () {
-        return Inertia::render('Admin/Sektor/Detail');
-    })->name('detailSektor');
-    Route::get("/admin/sektor/create", function () {
-        return Inertia::render('Admin/Sektor/Create');
-    })->name('addSektor');
-    Route::get("/admin/sektor/{id}/edit", function () {
-        return Inertia::render('Admin/Sektor/Edit');
-    })->name('editSektor');
+    Route::resource('/admin/sektor', SektorController::class);
 
     Route::get("/admin/kegiatan", function () {
         return Inertia::render('Admin/Kegiatan/Index');

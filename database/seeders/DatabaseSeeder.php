@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Sektor;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,11 +16,19 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::create([
-            'name' => 'SMK Telkom Makassar',
-            'email' => 'admin@example.com',
-            'role' => 'admin',
-            'password' => bcrypt('123123')
-        ]);
+        // User::create([
+        //     'name' => 'SMK Telkom Makassar',
+        //     'email' => 'admin@example.com',
+        //     'role' => 'admin',
+        //     'password' => bcrypt('123123')
+        // ]);
+
+        // User::create([
+        //     'name' => 'Farrel',
+        //     'email' => 'farreluken@gmail.com',
+        //     'password' => bcrypt('123123')
+        // ]);
+
+        Sektor::factory(15)->create();
     }
 }

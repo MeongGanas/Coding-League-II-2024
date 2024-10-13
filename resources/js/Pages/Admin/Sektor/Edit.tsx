@@ -17,36 +17,62 @@ import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { CloudUpload, Send } from "lucide-react";
 import { Textarea } from "@/Components/ui/textarea";
-import { PageProps } from "@/types";
+import { PageProps, Sektor } from "@/types";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const sektorSchema = z.object({
-    nama: z.string(),
+    name: z.string(),
     deskripsi: z.string(),
-    foto_thumbnail: z
-        .instanceof(FileList)
-        .refine((file) => file?.length == 1, "File is required."),
+    image: z
+        .instanceof(FileList).optional(),
 });
 
 type SektorSchema = z.infer<typeof sektorSchema>;
 
-export default function Create({ auth: { user } }: PageProps) {
-    const [preview, setPreview] = useState<string | null>(null);
+export default function Edit({ auth: { user }, sektor }: PageProps<{ sektor: Sektor }>) {
+    console.log(sektor)
+    const [preview, setPreview] = useState<string | null>(`/storage/${sektor.image}`);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const form = useForm<SektorSchema>({
         resolver: zodResolver(sektorSchema),
         defaultValues: {
-            nama: "",
-            deskripsi: "",
+            name: sektor.name,
+            deskripsi: sektor.deskripsi,
         },
     });
 
     const { handleSubmit, control } = form;
 
-    const fileRef = form.register("foto_thumbnail");
+    const fileRef = form.register("image");
 
     const submit = handleSubmit((values) => {
-        console.log(values);
+        setIsSubmitted(true);
+
+        const formData = new FormData();
+        formData.append('_method', 'PATCH');
+        formData.append('name', values.name)
+        formData.append('deskripsi', values.deskripsi);
+
+        if (values.image && values.image?.length > 0) {
+            formData.append('image', values.image[0]);
+        }
+
+        const promise = axios.post(`/admin/sektor/${sektor.id}`, formData);
+
+        toast.promise(promise, {
+            loading: "Loading...",
+            success: () => {
+                setIsSubmitted(false);
+                window.location.replace('/admin/sektor')
+                return "Update Sektor Success!"
+            },
+            error: (err) => {
+                setIsSubmitted(false)
+                return err?.response.data.message || "Something went wrong"
+            }
+        });
     });
 
     const handlePreview = (e: SyntheticEvent) => {
@@ -73,7 +99,7 @@ export default function Create({ auth: { user } }: PageProps) {
                         <div className="bg-white rounded-md p-6 space-y-5 border">
                             <FormField
                                 control={form.control}
-                                name="foto_thumbnail"
+                                name="image"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="font-bold text-base">
@@ -114,7 +140,7 @@ export default function Create({ auth: { user } }: PageProps) {
                                                     id="dropzone-file"
                                                     type="file"
                                                     accept="image/png, image/jpg"
-                                                    className="hidden"
+                                                    className="h-0 opacity-0"
                                                     onChange={(e) =>
                                                         handlePreview(e)
                                                     }
@@ -127,7 +153,7 @@ export default function Create({ auth: { user } }: PageProps) {
                             />
                             <FormField
                                 control={control}
-                                name="nama"
+                                name="name"
                                 render={({ field }) => (
                                     <FormItem className="grid gap-2">
                                         <FormLabel className="font-bold text-base">

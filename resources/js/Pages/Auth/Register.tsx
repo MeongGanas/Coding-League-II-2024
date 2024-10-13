@@ -94,14 +94,14 @@ export default function Register() {
                             </p>
                         </div>
                         <Button variant={"outline"} asChild>
-                            <span className="flex gap-1">
+                            <Link href="/login" className="flex gap-1">
                                 <span className="text-[#344054]">
                                     Sudah punya akun?
                                 </span>
-                                <Link href="/login" className="text-primary">
+                                <span className="text-primary">
                                     Klik di sini
-                                </Link>
-                            </span>
+                                </span>
+                            </Link>
                         </Button>
                     </div>
                     <div className="border-t xl:col-span-2 lg:border-t-0 lg:border-l px-5 sm:px-10 py-10 lg:py-14">

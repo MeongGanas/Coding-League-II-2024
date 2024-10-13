@@ -2,55 +2,29 @@ import DataTableMitra from "@/Components/admin/dashboard/proyek/TabelProyekMitra
 import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Badge } from "@/Components/ui/badge";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
-import { PageProps } from "@/types";
+import { PageProps, Sektor } from "@/types";
 import { Head } from "@inertiajs/react";
 
-export default function Detail({ auth: { user } }: PageProps) {
-    const isTerbit = false;
-
+export default function Detail({ auth: { user }, sektor }: PageProps<{ sektor: Sektor }>) {
     return (
         <LayoutAdmin user={user}>
             <Head title="Detail Sektor" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">
-                    <BreadcrumbLinks basePath="/admin" />
+                    <BreadcrumbLinks basePath="/admin" pagePath="Detail" />
                 </div>
                 <h1 className="text-3xl font-bold">Detail Sektor</h1>
                 <div className="bg-white rounded-md p-6 space-y-4 border">
                     <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
-                        Social
+                        {sektor.name}
                     </Badge>
                     <div className="w-full">
-                        <div className="overflow-x-auto flex gap-4 scroll-hidden">
-                            <div className="min-w-96 h-60 rounded-md bg-neutral-300"></div>
-                            <div className="min-w-96 h-60 rounded-md bg-neutral-300"></div>
-                            <div className="min-w-96 h-60 rounded-md bg-neutral-300"></div>
-                            <div className="min-w-96 h-60 rounded-md bg-neutral-300"></div>
-                        </div>
+                        <img src={`/storage/${sektor.image}`} width={500} alt={`Sektor ${sektor.name}`} className="rounded-md mx-auto" />
                     </div>
                     <div className="space-y-2">
                         <h1 className="text-2xl font-bold">Deskripsi Sektor</h1>
                         <div className="space-y-4">
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur,
-                                adipisicing elit. Non error ab cum sapiente
-                                beatae nam, magnam quod distinctio rem assumenda
-                                consectetur quidem? Ducimus dolorum quo repellat
-                                delectus sed consequuntur dicta esse dolorem
-                                consectetur eum mollitia, accusantium neque
-                                natus quisquam suscipit, molestiae harum. Facere
-                                tenetur ullam aperiam suscipit minus quia fugiat
-                                quisquam doloribus repellendus quas in
-                                molestiae, nemo earum distinctio. Perferendis
-                                excepturi neque est dolorem nam delectus
-                                distinctio corrupti nemo voluptas quam
-                                repudiandae provident, repellendus laborum,
-                                asperiores quos maiores libero. Blanditiis iste
-                                impedit sequi hic eius molestias facere
-                                repellendus ad est iure, voluptate nostrum
-                                cumque aspernatur praesentium explicabo omnis
-                                sunt veniam?
-                            </p>
+                            <p>{sektor.deskripsi}</p>
                         </div>
                     </div>
                     <div className="border-t pt-5">

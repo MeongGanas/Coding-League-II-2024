@@ -29,29 +29,29 @@ export default function AdminSheet() {
                     <NavLink
                         nama="Dashboard"
                         href="/admin/dashboard"
-                        active="Dashboard"
+                        active="dashboard"
                     />
                     <NavLink
                         nama="Kegiatan"
                         href="/admin/kegiatan"
-                        active="Kegiatan"
+                        active="kegiatan"
                     />
                     <NavLink
                         nama="Proyek"
                         href="/admin/proyek"
-                        active="Proyek"
+                        active="proyek"
                     />
                     <NavLink
                         nama="Sektor"
                         href="/admin/sektor"
-                        active="Sektor"
+                        active="sektor"
                     />
                     <NavLink
                         nama="Laporan"
                         href="/admin/laporan"
-                        active="Laporan"
+                        active="laporan"
                     />
-                    <NavLink nama="Mitra" href="/admin/mitra" active="Mitra" />
+                    <NavLink nama="Mitra" href="/admin/mitra" active="mitra" />
                 </nav>
             </SheetContent>
         </Sheet>

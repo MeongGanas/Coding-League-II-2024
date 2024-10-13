@@ -32,29 +32,28 @@ export default function NavbarAdmin({ user }: { user: UserType }) {
                     <NavLink
                         nama="Kegiatan"
                         href="/admin/kegiatan"
-                        active="Kegiatan"
+                        active="kegiatan"
                     />
                     <NavLink
                         nama="Proyek"
                         href="/admin/proyek"
-                        active="Proyek"
+                        active="proyek"
                     />
                     <NavLink
                         nama="Sektor"
                         href="/admin/sektor"
-                        active="Sektor"
+                        active="sektor"
                     />
                     <NavLink
                         nama="Laporan"
                         href="/admin/laporan"
-                        active="Laporan"
+                        active="laporan"
                     />
-                    <NavLink nama="Mitra" href="/admin/mitra" active="Mitra" />
+                    <NavLink nama="Mitra" href="/admin/mitra" active="mitra" />
                 </nav>
                 <div className="flex items-center">
                     <div className="flex items-center md:gap-2">
                         <div className="flex items-center gap-3">
-
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <div className="flex items-center gap-2">
@@ -67,7 +66,9 @@ export default function NavbarAdmin({ user }: { user: UserType }) {
                                             </p>
                                         </div>
                                         <Avatar>
-                                            <AvatarImage src={`/storage/${user.image}`} alt="@shadcn" />
+                                            {user.image && (
+                                                <AvatarImage src={`/storage/${user.image}`} alt="user_image" />
+                                            )}
                                             <AvatarFallback><User className="w-5 h-5" /></AvatarFallback>
                                         </Avatar>
                                     </div>
