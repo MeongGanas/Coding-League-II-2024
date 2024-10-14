@@ -4,13 +4,11 @@ import DataTableMitra from "@/Components/admin/dashboard/proyek/TabelProyekMitra
 import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Badge } from "@/Components/ui/badge";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
-import { PageProps } from "@/types";
+import { PageProps, Proyek } from "@/types";
 import { Head } from "@inertiajs/react";
 import { BriefcaseBusiness } from "lucide-react";
 
-export default function Detail({ auth: { user } }: PageProps) {
-    const isTerbit = false;
-
+export default function Detail({ auth: { user }, proyek }: PageProps<{ proyek: Proyek }>) {
     return (
         <LayoutAdmin user={user}>
             <Head title="Detail Proyek" />
@@ -28,15 +26,12 @@ export default function Detail({ auth: { user } }: PageProps) {
                             <BriefcaseBusiness className="w-5 h-5" />
                         </div>
                         <h1 className="font-bold text-xl sm:text-2xl">
-                            Laporan pengadaan perkakas masak untuk desa
+                            {proyek.name}
                         </h1>
                     </div>
                     <div className="w-full">
                         <div className="overflow-x-auto flex gap-4 scroll-hidden">
-                            <div className="min-w-96 h-60 rounded-md bg-neutral-300"></div>
-                            <div className="min-w-96 h-60 rounded-md bg-neutral-300"></div>
-                            <div className="min-w-96 h-60 rounded-md bg-neutral-300"></div>
-                            <div className="min-w-96 h-60 rounded-md bg-neutral-300"></div>
+                            <img src={`/storage/${proyek.image}`} alt={proyek.name} />
                         </div>
                     </div>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -74,7 +69,7 @@ export default function Detail({ auth: { user } }: PageProps) {
                             </p>
                         </div>
                     </div>
-                    {isTerbit && (
+                    {proyek.status === "terbit" && (
                         <div className="border-t pt-5">
                             <h1 className="font-bold text-2xl mb-4">
                                 Mitra Yang Berpartisipasi

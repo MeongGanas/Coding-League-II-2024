@@ -41,13 +41,13 @@ import axios from "axios";
 const proyekSchema = z.object({
     name: z.string(),
     sektor_id: z.string(),
-    lokasi: z.string(),
+    kecamatan: z.string(),
     tgl_awal: z.date({
         required_error: "A date of birth is required.",
     }),
     tgl_akhir: z.date({
         required_error: "A date of birth is required.",
-    }),
+    }).optional(),
     deskripsi: z.string(),
     image: z
         .instanceof(FileList)
@@ -58,6 +58,7 @@ type ProyekSchema = z.infer<typeof proyekSchema>;
 
 export default function Create({ auth: { user }, sektors }: PageProps<{ sektors: Sektor[] }>) {
     const [preview, setPreview] = useState<string | null>(null);
+    const [status, setStatus] = useState("terbit");
     const [kecamatan, setKecamatan] = useState<Kecamatan[] | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -66,9 +67,8 @@ export default function Create({ auth: { user }, sektors }: PageProps<{ sektors:
         defaultValues: {
             name: "",
             sektor_id: "",
-            lokasi: "",
+            kecamatan: "",
             tgl_awal: new Date(),
-            tgl_akhir: new Date(),
             deskripsi: "",
         },
     });
@@ -84,9 +84,14 @@ export default function Create({ auth: { user }, sektors }: PageProps<{ sektors:
         formData.append('name', values.name)
         formData.append('sektor_id', values.sektor_id)
         formData.append('deskripsi', values.deskripsi)
-        formData.append('deskripsi', values.deskripsi)
-        formData.append('deskripsi', values.deskripsi)
+        formData.append('kecamatan', values.kecamatan)
+        formData.append('status', status)
+        formData.append('tgl_awal', values.tgl_awal.toISOString().slice(0, 19).replace('T', ' '))
         formData.append('image', values.image[0])
+
+        if (values.tgl_akhir) {
+            formData.append('tgl_akhir', values.tgl_akhir.toISOString().slice(0, 19).replace('T', ' '))
+        }
 
         const promise = axios.post('/admin/proyek', formData);
 
@@ -94,10 +99,11 @@ export default function Create({ auth: { user }, sektors }: PageProps<{ sektors:
             loading: "Loading...",
             success: () => {
                 setIsSubmitted(false)
-                window.location.replace('/admin/sektor')
-                return "Add Sektor Success"
+                window.location.replace('/admin/proyek')
+                return "Add Proyek Success"
             },
             error: (err) => {
+                console.log(err.response.data)
                 setIsSubmitted(false)
                 return err?.response.data.message || "Something went wrong"
             }
@@ -127,7 +133,7 @@ export default function Create({ auth: { user }, sektors }: PageProps<{ sektors:
             <Head title="Buat Proyek" />
             <div className="container px-5 py-10">
                 <div className="mb-10">
-                    <BreadcrumbLinks basePath="/admin" pagePath="Buat Proyek" />
+                    <BreadcrumbLinks basePath="/admin" pagePath="Buat Proyek Buat" />
                 </div>
                 <h1 className="font-bold text-2xl mb-5">Buat Proyek Baru</h1>
                 <Form {...form}>
@@ -195,7 +201,7 @@ export default function Create({ auth: { user }, sektors }: PageProps<{ sektors:
                             <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
                                 <FormField
                                     control={control}
-                                    name="lokasi"
+                                    name="kecamatan"
                                     render={({ field }) => (
                                         <FormItem className="grid gap-2">
                                             <FormLabel className="font-bold text-base">
@@ -231,7 +237,7 @@ export default function Create({ auth: { user }, sektors }: PageProps<{ sektors:
                                     )}
                                 />
                                 <FormField
-                                    control={form.control}
+                                    control={control}
                                     name="tgl_awal"
                                     render={({ field }) => (
                                         <FormItem className="flex flex-col gap-2">
@@ -259,7 +265,7 @@ export default function Create({ auth: { user }, sektors }: PageProps<{ sektors:
                                                                 )
                                                             ) : (
                                                                 <span>
-                                                                    Pick a date
+                                                                    dd/mm/yyyy
                                                                 </span>
                                                             )}
                                                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -292,7 +298,7 @@ export default function Create({ auth: { user }, sektors }: PageProps<{ sektors:
                                     )}
                                 />
                                 <FormField
-                                    control={form.control}
+                                    control={control}
                                     name="tgl_akhir"
                                     render={({ field }) => (
                                         <FormItem className="flex flex-col gap-2">
@@ -320,7 +326,7 @@ export default function Create({ auth: { user }, sektors }: PageProps<{ sektors:
                                                                 )
                                                             ) : (
                                                                 <span>
-                                                                    Pick a date
+                                                                    dd/mm/yyyy
                                                                 </span>
                                                             )}
                                                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -388,8 +394,8 @@ export default function Create({ auth: { user }, sektors }: PageProps<{ sektors:
                                                     {preview && (
                                                         <img
                                                             src={preview}
-                                                            alt=""
-                                                            className="w-60"
+                                                            alt="preview"
+                                                            className="w-60 mb-5"
                                                         />
                                                     )}
                                                     <div className="rounded-full border-4 bg-[#FFDDDC] border-[#FFF1F0] text-primary p-2">
@@ -429,6 +435,7 @@ export default function Create({ auth: { user }, sektors }: PageProps<{ sektors:
                                 type="submit"
                                 className="border bg-transparent text-neutral-600 gap-2 font-semibold"
                                 disabled={isSubmitted}
+                                onClick={() => { setStatus("draf") }}
                             >
                                 <Save className="w-5 h-5" />
                                 Simpan Sebagai Draft

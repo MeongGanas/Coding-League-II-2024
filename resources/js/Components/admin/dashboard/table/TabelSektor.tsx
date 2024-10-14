@@ -32,7 +32,7 @@ export default function DataTableSektor({ sektors }: { sektors: SektorsProps }) 
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {sektors.data ? sektors.data.map(sektor => (
+                        {sektors.data.length > 0 ? sektors.data.map(sektor => (
                             <TableRow className="odd:bg-[#FCFCFD] even:bg-white" key={sektor.id}>
                                 <TableCell className="text-base min-w-[200px]">{sektor.name}</TableCell>
                                 <TableCell className="text-base">

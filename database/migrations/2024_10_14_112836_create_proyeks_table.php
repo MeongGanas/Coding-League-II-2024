@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('image');
             $table->enum('status', ['terbit', 'draf']);
             $table->dateTime('tgl_awal');
-            $table->dateTime('tgl_akhir');
+            $table->dateTime('tgl_akhir')->nullable();
             $table->timestamps();
         });
     }

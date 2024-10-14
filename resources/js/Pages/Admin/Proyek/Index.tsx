@@ -5,11 +5,13 @@ import SelectAndDownload from "@/Components/admin/SelectAndDownload";
 import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Button } from "@/Components/ui/button";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
-import { PageProps } from "@/types";
+import { PageProps, ProyekProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
-export default function Index({ auth: { user } }: PageProps) {
+export default function Index({ auth: { user }, proyeks }: PageProps<{ proyeks: ProyekProps }>) {
+    console.log(proyeks)
+
     return (
         <LayoutAdmin user={user}>
             <Head title="Proyek" />
@@ -36,7 +38,7 @@ export default function Index({ auth: { user } }: PageProps) {
                 </div>
                 <SelectAndDownload tahun={true} sektor={true} />
                 <SearchForm />
-                <DataTableProyek />
+                <DataTableProyek proyeks={proyeks} />
             </div>
         </LayoutAdmin>
     );

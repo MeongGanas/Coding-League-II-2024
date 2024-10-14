@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Proyek;
-use App\Http\Requests\StoreProyekRequest;
-use App\Http\Requests\UpdateProyekRequest;
 use App\Models\Sektor;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,7 +14,23 @@ class ProyekController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Proyek/Index');
+        $query = Proyek::latest();
+
+        if (request("search")) {
+            $searchTerm = request("search");
+
+            $query->where('judul', 'like', '%' . $searchTerm . '%')
+                ->orWhere('lokasi', 'like', '%' . $searchTerm . '%')
+                ->orWhere('deskripsi', 'like', '%' . $searchTerm . '%');
+        }
+
+        $paginate = request("paginate") ?? 5;
+
+        $proyeks = $query->paginate($paginate);
+
+        return Inertia::render('Admin/Proyek/Index', [
+            'proyeks' => $proyeks
+        ]);
     }
 
     /**
@@ -36,13 +50,17 @@ class ProyekController extends Controller
     {
         $v = $request->validate([
             'name' => 'required|string|min:2',
-            'sektor_id' => 'required|string|exists:sektor,id',
+            'sektor_id' => 'required|string|exists:sektors,id',
             'deskripsi' => 'required|string|min:5',
             'kecamatan' => 'required|string',
+            'status' => 'required|string|in:terbit,draf',
             'image' => 'required|file',
             'tgl_awal' => 'required|string',
-            'tgl_akhir' => 'required|string',
         ]);
+
+        if ($request->tgl_akhir) {
+            $v['tgl_akhir'] = $request->tgl_akhir;
+        }
 
         $v['image'] = $request->file('image')->store('proyek_image', 'public');
 
@@ -56,7 +74,9 @@ class ProyekController extends Controller
      */
     public function show(Proyek $proyek)
     {
-        return Inertia::render('Admin/Proyek/Detail');
+        return Inertia::render('Admin/Proyek/Detail', [
+            'proyek' => $proyek
+        ]);
     }
 
     /**
