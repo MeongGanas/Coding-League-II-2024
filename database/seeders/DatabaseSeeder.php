@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Kegiatan;
 use App\Models\Laporan;
 use App\Models\Mitra;
 use App\Models\Proyek;
@@ -40,5 +41,6 @@ class DatabaseSeeder extends Seeder
         Proyek::factory(15)->create();
         Mitra::factory(15)->create();
         Laporan::factory(30)->create();
+        Kegiatan::factory(30)->create();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kegiatan;
 use App\Http\Requests\StoreKegiatanRequest;
 use App\Http\Requests\UpdateKegiatanRequest;
+use Inertia\Inertia;
 
 class KegiatanController extends Controller
 {
@@ -13,7 +14,25 @@ class KegiatanController extends Controller
      */
     public function index()
     {
-        //
+        $query = Kegiatan::latest();
+
+        if (request("search")) {
+            $searchTerm = request("search");
+
+            $query->where('name', 'like', '%' . $searchTerm . '%');
+        }
+
+        if (request("category")) {
+            $query->where('status', request("category"));
+        }
+
+        $paginate = request("paginate") ?? 5;
+
+        $items = $query->paginate($paginate);
+
+        return Inertia::render('Admin/Kegiatan/Index', [
+            'kegiatans' => $items
+        ]);
     }
 
     /**
@@ -37,7 +56,9 @@ class KegiatanController extends Controller
      */
     public function show(Kegiatan $kegiatan)
     {
-        //
+        return Inertia::render('Admin/Kegiatan/Detail', [
+            'kegiatan' => $kegiatan
+        ]);
     }
 
     /**

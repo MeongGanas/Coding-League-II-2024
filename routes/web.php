@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\MitraController;
 use App\Http\Controllers\ProyekController;
@@ -18,19 +19,20 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
     Route::resource("proyek", ProyekController::class);
     Route::resource('sektor', SektorController::class);
     Route::resource("mitra", MitraController::class);
+    Route::resource("kegiatan", KegiatanController::class);
 
-    Route::get("kegiatan", function () {
-        return Inertia::render('Admin/Kegiatan/Index');
-    })->name('adminKegiatan');
-    Route::get("kegiatan/{id}/detail", function () {
-        return Inertia::render('Admin/Kegiatan/Detail');
-    })->name('detailKegiatan');
-    Route::get("kegiatan/create", function () {
-        return Inertia::render('Admin/Kegiatan/Create');
-    })->name('addKegiatan');
-    Route::get("kegiatan/{id}/edit", function () {
-        return Inertia::render('Admin/Kegiatan/Edit');
-    })->name('editKegiatan');
+    // Route::get("kegiatan", function () {
+    //     return Inertia::render('Admin/Kegiatan/Index');
+    // })->name('adminKegiatan');
+    // Route::get("kegiatan/{id}/detail", function () {
+    //     return Inertia::render('Admin/Kegiatan/Detail');
+    // })->name('detailKegiatan');
+    // Route::get("kegiatan/create", function () {
+    //     return Inertia::render('Admin/Kegiatan/Create');
+    // })->name('addKegiatan');
+    // Route::get("kegiatan/{id}/edit", function () {
+    //     return Inertia::render('Admin/Kegiatan/Edit');
+    // })->name('editKegiatan');
 
     Route::get("profile", function () {
         return Inertia::render('Admin/Profile/Index');

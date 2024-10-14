@@ -29,7 +29,7 @@ const statusColor = {
     "Draf": "text-netral bg-netral-bg hover:bg-netral-bg",
 }
 
-export default function DataTableLaporan({ laporans }: { laporans: any }) {
+export default function DataTableLaporan({ laporans }: any) {
     console.log(laporans);
 
     return (

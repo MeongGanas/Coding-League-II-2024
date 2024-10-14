@@ -8,7 +8,8 @@ import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
-export default function Index({ auth: { user } }: PageProps) {
+export default function Index({ auth: { user }, kegiatans }: PageProps<{ kegiatans: any }>) {
+    console.log(kegiatans);
     return (
         <LayoutAdmin user={user}>
             <Head title="Kegiatan" />
@@ -29,12 +30,12 @@ export default function Index({ auth: { user } }: PageProps) {
                     </Button>
                 </div>
                 <div className="flex items-center gap-3">
-                    <CategoryButton category="semua" />
-                    <CategoryButton category="terbit" />
-                    <CategoryButton category="draf" />
+                    <CategoryButton allLink="/admin/kegiatan" category="semua" active="semua" />
+                    <CategoryButton allLink="/admin/kegiatan" category="terbit" active="terbit" />
+                    <CategoryButton allLink="/admin/kegiatan" category="draf" active="draf" />
                 </div>
                 <SearchForm />
-                <DataTableKegiatan />
+                <DataTableKegiatan kegiatans={kegiatans} />
             </div>
         </LayoutAdmin>
     );
