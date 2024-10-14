@@ -20,7 +20,7 @@ export default function Index({ auth: { user }, laporans }: PageProps<{ laporans
                     <CategoryButton allLink="/admin/laporan" category="semua" active="semua" />
                     <CategoryButton allLink="/admin/laporan" category="diterima" active="diterima" />
                     <CategoryButton allLink="/admin/laporan" category="revisi" active="revisi" />
-                    <CategoryButton allLink="/admin/laporan" category="ditolak" active="di" />
+                    <CategoryButton allLink="/admin/laporan" category="ditolak" active="ditolak" />
                 </div>
                 <SelectAndDownload tahun={true} kuartal={true} />
                 <SearchForm />
