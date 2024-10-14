@@ -12,7 +12,7 @@ This project is a Laravel 11 application integrated with Breeze for authenticati
 
 Before setting up the project, ensure you have the following installed on your machine:
 
--   PHP ^8.1
+-   PHP ^8.2
 -   Composer
 -   Node.js (with npm or yarn)
 -   MySQL (or any other database supported by Laravel)
@@ -23,13 +23,13 @@ Before setting up the project, ensure you have the following installed on your m
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/your-laravel-project.git
+git clone https://github.com/MeongGanas/Coding-League-II-2024.git
 ```
 
 Navigate into the project directory:
 
 ```bash
-cd your-laravel-project
+cd Coding-League-II-2024
 ```
 
 ### 2. Install PHP Dependencies
