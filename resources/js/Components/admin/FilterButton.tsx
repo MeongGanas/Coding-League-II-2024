@@ -13,7 +13,7 @@ export default function CategoryButton({ category, active, allLink }: { category
                     ? "bg-blue-900"
                     : "bg-transparent text-black"
                     } px-3 py-1 hover:bg-blue-900 hover:text-white text-base capitalize`}
-            >
+                    >
                 {category}
             </Badge>
         </Link>
