@@ -16,18 +16,22 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::create([
-            'name' => 'SMK Telkom Makassar',
-            'email' => 'admin@gmail.com',
-            'role' => 'admin',
-            'password' => bcrypt('123123')
-        ]);
+        try {
+            User::create([
+                'name' => 'SMK Telkom Makassar',
+                'email' => 'admin@gmail.com',
+                'role' => 'admin',
+                'password' => '123123'
+            ]);
 
-        User::create([
-            'name' => 'Farrel',
-            'email' => 'farreluken@gmail.com',
-            'password' => bcrypt('123123')
-        ]);
+            User::create([
+                'name' => 'Farrel',
+                'email' => 'farreluken@gmail.com',
+                'password' => '123123'
+            ]);
+        } catch (\Throwable $th) {
+            // do nothing
+        }
 
         Sektor::factory(15)->create();
     }

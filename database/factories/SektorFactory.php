@@ -19,7 +19,7 @@ class SektorFactory extends Factory
         return [
             'name' => fake()->word(),
             'deskripsi' => fake()->paragraph(),
-            'image' => fake()->word(),
+            'image' => 'example.jpg',
             'created_at' => now(),
             'updated_at' => now(),
         ];
