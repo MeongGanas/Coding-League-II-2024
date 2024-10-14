@@ -36,7 +36,6 @@ class MitraController extends Controller
             'name' => 'required|string|min:3',
             'perusahaan' => 'required|string|min:3',
             'deskripsi' => 'required|string|min:5',
-            'tgl_daftar' => 'required|string',
         ]);
 
         $v['image'] = $request->file('image')->store('mitra_image', 'public');
@@ -75,7 +74,6 @@ class MitraController extends Controller
             'name' => 'required|string|min:3',
             'perusahaan' => 'required|string|min:3',
             'deskripsi' => 'required|string|min:5',
-            'tgl_daftar' => 'required|string',
         ]);
 
         if ($request->file('image')) {

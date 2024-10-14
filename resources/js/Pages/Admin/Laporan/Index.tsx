@@ -17,14 +17,14 @@ export default function Index({ auth: { user }, laporans }: PageProps<{ laporans
                 </div>
                 <h1 className="text-3xl font-bold">Laporan Mitra</h1>
                 <div className="flex items-center gap-3">
-                    <CategoryButton category="semua" />
-                    <CategoryButton category="diterima" />
-                    <CategoryButton category="revisi" />
-                    <CategoryButton category="ditolak" />
+                    <CategoryButton allLink="/admin/laporan" category="semua" active="semua" />
+                    <CategoryButton allLink="/admin/laporan" category="diterima" active="diterima" />
+                    <CategoryButton allLink="/admin/laporan" category="revisi" active="revisi" />
+                    <CategoryButton allLink="/admin/laporan" category="ditolak" active="ditolak" />
                 </div>
                 <SelectAndDownload tahun={true} kuartal={true} />
                 <SearchForm />
-                <DataTableLaporan laporans={laporans}/>
+                <DataTableLaporan laporans={laporans} />
             </div>
         </LayoutAdmin>
     );

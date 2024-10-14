@@ -30,9 +30,9 @@ export default function Index({ auth: { user }, proyeks, sektors }: PageProps<{ 
                     </Button>
                 </div>
                 <div className="flex items-center gap-3">
-                    <CategoryButton category="semua" active="semua" />
-                    <CategoryButton category="terbit" active="terbit" />
-                    <CategoryButton category="draf" active="draf" />
+                    <CategoryButton category="semua" allLink="/admin/proyek" active="semua" />
+                    <CategoryButton category="terbit" allLink="/admin/proyek" active="terbit" />
+                    <CategoryButton category="draf" allLink="/admin/proyek" active="draf" />
                 </div>
                 <SelectAndDownload tahun={true} sektor={true} sektors={sektors} />
                 <SearchForm />

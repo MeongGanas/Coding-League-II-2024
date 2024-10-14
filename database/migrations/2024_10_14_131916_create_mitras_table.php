@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('perusahaan');
             $table->string('deskripsi');
-            $table->dateTime('tgl_daftar');
-            $table->enum('status', ['Aktif', 'Non-Aktif'])->default('Aktif');
+            $table->dateTime('tgl_daftar')->nullable();
+            $table->enum('status', ['Aktif', 'Non-Aktif'])->default('Non-Aktif');
             $table->timestamps();
         });
     }

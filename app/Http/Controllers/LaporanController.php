@@ -24,6 +24,10 @@ class LaporanController extends Controller
             $query->where('name', 'like', '%' . $searchTerm . '%');
         }
 
+        if (request("category")) {
+            $query->where('status', request("category"));
+        }
+
         $paginate = request("paginate") ?? 5;
 
         $items = $query->paginate($paginate);
