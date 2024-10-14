@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Laporan;
+use App\Models\Mitra;
 use App\Models\Proyek;
 use App\Models\Sektor;
 use App\Models\User;
@@ -36,5 +38,7 @@ class DatabaseSeeder extends Seeder
 
         Sektor::factory(15)->create();
         Proyek::factory(15)->create();
+        Laporan::factory(15)->create();
+        Mitra::factory(15)->create();
     }
 }
