@@ -6,53 +6,53 @@ use App\Http\Controllers\SektorController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::middleware(['auth', 'checkAdmin'])->group(function () {
-    Route::get("/admin/dashboard", function () {
+Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
+    Route::get("dashboard", function () {
         return Inertia::render('Admin/Dashboard');
     })->name('dashboardAdmin');
 
-    // Route::get("/admin/laporan", function () {
+    // Route::get("laporan", function () {
     //     return Inertia::render('Admin/Laporan/Index');
     // })->name('adminLaporan');
-    Route::get("/admin/laporan/{id}/detail", function () {
+    Route::get("laporan/{id}/detail", function () {
         return Inertia::render('Admin/Laporan/Detail');
     })->name('adminDetailLaporan');
 
-    Route::resource("/admin/laporan", LaporanController::class);
-    Route::get('/laporan/download-csv', [LaporanController::class, 'downloadCSV'])->name('laporans.downloadCSV');
-    Route::resource("/admin/proyek", ProyekController::class);
-    Route::resource('/admin/sektor', SektorController::class);
+    Route::resource("laporan", LaporanController::class);
+    Route::get('download/laporan/csv', [LaporanController::class, 'downloadCSV'])->name('laporans.downloadCSV');
+    Route::resource("proyek", ProyekController::class);
+    Route::resource('sektor', SektorController::class);
 
-    Route::get("/admin/kegiatan", function () {
+    Route::get("kegiatan", function () {
         return Inertia::render('Admin/Kegiatan/Index');
     })->name('adminKegiatan');
-    Route::get("/admin/kegiatan/{id}/detail", function () {
+    Route::get("kegiatan/{id}/detail", function () {
         return Inertia::render('Admin/Kegiatan/Detail');
     })->name('detailKegiatan');
-    Route::get("/admin/kegiatan/create", function () {
+    Route::get("kegiatan/create", function () {
         return Inertia::render('Admin/Kegiatan/Create');
     })->name('addKegiatan');
-    Route::get("/admin/kegiatan/{id}/edit", function () {
+    Route::get("kegiatan/{id}/edit", function () {
         return Inertia::render('Admin/Kegiatan/Edit');
     })->name('editKegiatan');
 
-    Route::get("/admin/mitra", function () {
+    Route::get("mitra", function () {
         return Inertia::render('Admin/Mitra/Index');
     })->name('adminMitra');
-    Route::get("/admin/mitra/{id}/detail", function () {
+    Route::get("mitra/{id}/detail", function () {
         return Inertia::render('Admin/Mitra/Detail');
     })->name('detailMitra');
-    Route::get("/admin/mitra/create", function () {
+    Route::get("mitra/create", function () {
         return Inertia::render('Admin/Mitra/Create');
     })->name('addMitra');
-    Route::get("/admin/mitra/{id}/edit", function () {
+    Route::get("mitra/{id}/edit", function () {
         return Inertia::render('Admin/Mitra/Edit');
     })->name('editMitra');
 
-    Route::get("/admin/profile", function () {
+    Route::get("profile", function () {
         return Inertia::render('Admin/Profile/Index');
     })->name('adminProfile');
-    Route::get("/admin/profile/{id}/edit", function () {
+    Route::get("profile/{id}/edit", function () {
         return Inertia::render('Admin/Profile/Edit');
     })->name('editProfile');
 });

@@ -4,7 +4,8 @@ import { Button } from "../ui/button";
 export default function DownloadButtons() {
     return (
         <>
-            <Button className="border bg-white text-success hover:bg-success-bg">
+            <Button className="border bg-white text-success hover:bg-success-bg"
+                onClick={() => window.open("/admin/download/laporan/csv")}>
                 <Download className="w-5 h-5 mr-2" />
                 Unduh .csv
             </Button>
