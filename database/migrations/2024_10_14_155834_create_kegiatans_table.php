@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('kegiatans', function (Blueprint $table) {
             $table->id();
+            $table->string('image');
+            $table->string('name');
+            $table->string('deskripsi');
+            $table->text('rincian');
+            $table->dateTime('tgl_terbit')->nullable();
+            $table->enum('status', ['Terbit', 'Draf'])->default('draf');
+            $table->json('tags')->nullable();
             $table->timestamps();
         });
     }

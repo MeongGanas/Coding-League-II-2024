@@ -21,7 +21,7 @@ return new class extends Migration
             $table->dateTime('realisasi_date');
             $table->text('rincian');
             $table->dateTime('tgl_kirim');
-            $table->enum('status', ['Diterima', 'Revisi', 'Draf'])->default('Draf');
+            $table->enum('status', ['Diterima', 'Revisi', 'Draf', 'Ditolak'])->default('Draf');
             $table->json('photos')->nullable();
             $table->timestamps();
         });
