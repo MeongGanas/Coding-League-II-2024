@@ -7,7 +7,7 @@ import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 
-export default function Index({ auth: { user } }: PageProps) {
+export default function Index({ auth: { user }, laporans }: PageProps<{ laporans: any }>) {
     return (
         <LayoutAdmin user={user}>
             <Head title="Laporan" />
@@ -24,7 +24,7 @@ export default function Index({ auth: { user } }: PageProps) {
                 </div>
                 <SelectAndDownload tahun={true} kuartal={true} />
                 <SearchForm />
-                <DataTableLaporan />
+                <DataTableLaporan laporans={laporans}/>
             </div>
         </LayoutAdmin>
     );

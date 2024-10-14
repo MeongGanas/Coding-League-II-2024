@@ -79,6 +79,7 @@ export interface Kecamatan {
     name: string;
 }
 
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>
 > = T & {

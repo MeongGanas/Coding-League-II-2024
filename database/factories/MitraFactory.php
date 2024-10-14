@@ -20,7 +20,6 @@ class MitraFactory extends Factory
         $name = $this->faker->word();
         $perusahaan = "PT. " . $name;
 
-
         return [
             'image' => 'example.jpg',
             'name' => $name,

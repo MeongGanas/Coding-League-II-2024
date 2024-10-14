@@ -13,6 +13,6 @@ class Laporan extends Model
 
     public function mitra()
     {
-        return $this->hasOne(Mitra::class);
+        return $this->belongsTo(Mitra::class);
     }
 }

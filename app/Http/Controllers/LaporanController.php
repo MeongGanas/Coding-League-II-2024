@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Laporan;
 use App\Http\Requests\StoreLaporanRequest;
 use App\Http\Requests\UpdateLaporanRequest;
+use Inertia\Inertia;
 
 class LaporanController extends Controller
 {
@@ -13,7 +14,21 @@ class LaporanController extends Controller
      */
     public function index()
     {
-        //
+        $query = Laporan::latest()->with('mitra');
+
+        if (request("search")) {
+            $searchTerm = request("search");
+
+            $query->where('name', 'like', '%' . $searchTerm . '%');
+        }
+
+        $paginate = request("paginate") ?? 5;
+
+        $items = $query->paginate($paginate);
+
+        return Inertia::render('Admin/Laporan/Index', [
+            'laporans' => $items
+        ]);
     }
 
     /**

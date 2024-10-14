@@ -60,6 +60,14 @@ export default {
                     DEFAULT: "hsl(var(--success))",
                     bg: "hsl(144, 83%, 96%)",
                 },
+                warning: {
+                    DEFAULT: "hsl(var(--warning))",
+                    bg: "hsl(45, 100%, 96%)",
+                },
+                netral: {
+                    DEFAULT: "hsl(var(--netral))",
+                    bg: "hsl(216, 24%, 96%)",
+                },
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",

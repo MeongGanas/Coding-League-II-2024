@@ -17,10 +17,21 @@ import {
 } from "@/Components/ui/table";
 import { Link } from "@inertiajs/react";
 import { Eye } from "lucide-react";
-import { TablePagination } from "./TabelPagination";
+import { TablePagination, TableSelectTotalPaginate } from "./TabelPagination";
 import { Button } from "@/Components/ui/button";
+import formatPrice from "@/lib/formatPrice";
+import { id } from 'date-fns/locale';
+import { format } from "date-fns";
 
-export default function DataTableLaporan() {
+const statusColor = {
+    "Diterima": "text-success bg-success-bg hover:bg-success-bg",
+    "Revisi": "text-warning bg-warning-bg hover:bg-warning-bg",
+    "Draf": "text-netral bg-netral-bg hover:bg-netral-bg",
+}
+
+export default function DataTableLaporan({ laporans }: { laporans: any }) {
+    console.log(laporans);
+
     return (
         <div className="w-full">
             <div className="bg-white rounded-md border">
@@ -54,26 +65,69 @@ export default function DataTableLaporan() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <TableRow className="odd:bg-[#FCFCFD] even:bg-white">
+                    {laporans.data.length > 0 ? laporans.data.map(laporan => (
+                        // created_at: "2024-10-14T13:34:42.000000Z"
+                        // ​​​
+                        // id: 32
+                        // ​​​
+                        // kecamatan: "Pontianak"
+                        // ​​​
+                        // mitra_id: 1
+                        // ​​​
+                        // name: "Nostrum sed nihil dolor in."
+                        // ​​​
+                        // realisasi: "876006815.99"
+                        // ​​​
+                        // realisasi_date: "2024-10-06 01:14:41"
+                        // ​​​
+                        // status: "Revisi"
+                        // ​​​
+                        // tgl_kirim: "2024-10-08 13:04:17"
+                        // ​​​
+                        // updated_at: "2024-10-14T13:34:42.000000Z"
+                        <TableRow className="odd:bg-[#FCFCFD] even:bg-white" key={laporan.id}>
                             <TableCell className="text-base min-w-[300px]">
-                                Riverina name team to play Rabbitohs in Albur
+                                {laporan.name}
                             </TableCell>
                             <TableCell className="text-base">
-                                Facebook
+                                {laporan.mitra.name}
                             </TableCell>
                             <TableCell className="text-base">
-                                Kec. Karangwareng
+                                {laporan.kecamatan}
                             </TableCell>
                             <TableCell className="text-base">
-                                Rp.###,###,###
+                                <span
+                                    onClick={(e) => {
+                                        e.currentTarget.innerText = formatPrice(laporan.realisasi);
+                                    }}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    Rp ###,###,###
+                                </span>
                             </TableCell>
                             <TableCell className="text-base">
-                                1 Juli 2024
+                                {
+                                    format(
+                                        new Date(laporan.realisasi_date),
+                                        "d MMMM yyyy",
+                                        { locale: id }
+                                    )
+                                }
                             </TableCell>
-                            <TableCell className="text-base">16 July</TableCell>
+                            <TableCell className="text-base">
+                                {
+                                    format(
+                                        new Date(laporan.tgl_kirim),
+                                        "d MMMM yyyy",
+                                        { locale: id }
+                                    )
+                                }
+                            </TableCell>
                             <TableCell>
-                                <Badge className="text-success bg-success-bg hover:bg-success-bg">
-                                    Diterima
+                                <Badge className={ statusColor[laporan.status] }>
+                                    {
+                                        laporan.status
+                                    }
                                 </Badge>
                             </TableCell>
                             <TableCell className="text-base">
@@ -88,14 +142,19 @@ export default function DataTableLaporan() {
                                 </Button>
                             </TableCell>
                         </TableRow>
+                    )) : (
+                        <TableRow className="odd:bg-[#FCFCFD] even:bg-white">
+                            <TableCell className="text-base text-center" colSpan={8}>Belum ada data laporan</TableCell>
+                        </TableRow>
+                    )}
                     </TableBody>
                 </Table>
                 {/* ikuti caraku yg di file TabelSektor */}
 
-                {/* <div className="p-4 border-t space-y-3 lg:space-y-0 lg:flex lg:justify-between">
-                    <TableSelectTotalPaginate />
-                    <TablePagination />
-                </div> */}
+                <div className="p-4 border-t space-y-3 lg:space-y-0 lg:flex lg:justify-between">
+                    <TableSelectTotalPaginate data={laporans} />
+                    <TablePagination data={laporans} />
+                </div>
             </div>
         </div>
     );
