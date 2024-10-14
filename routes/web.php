@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\MitraController;
 use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\SektorController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,7 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
     Route::get('download/laporan/pdf', [LaporanController::class, 'downloadPDF']);
     Route::resource("proyek", ProyekController::class);
     Route::resource('sektor', SektorController::class);
+    Route::resource("mitra", MitraController::class);
 
     Route::get("kegiatan", function () {
         return Inertia::render('Admin/Kegiatan/Index');
@@ -29,19 +31,6 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
     Route::get("kegiatan/{id}/edit", function () {
         return Inertia::render('Admin/Kegiatan/Edit');
     })->name('editKegiatan');
-
-    Route::get("mitra", function () {
-        return Inertia::render('Admin/Mitra/Index');
-    })->name('adminMitra');
-    Route::get("mitra/{id}/detail", function () {
-        return Inertia::render('Admin/Mitra/Detail');
-    })->name('detailMitra');
-    Route::get("mitra/create", function () {
-        return Inertia::render('Admin/Mitra/Create');
-    })->name('addMitra');
-    Route::get("mitra/{id}/edit", function () {
-        return Inertia::render('Admin/Mitra/Edit');
-    })->name('editMitra');
 
     Route::get("profile", function () {
         return Inertia::render('Admin/Profile/Index');

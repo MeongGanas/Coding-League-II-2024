@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Mitra;
 use App\Http\Requests\StoreMitraRequest;
 use App\Http\Requests\UpdateMitraRequest;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class MitraController extends Controller
 {
@@ -13,7 +15,7 @@ class MitraController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Admin/Mitra/Index');
     }
 
     /**
@@ -21,15 +23,27 @@ class MitraController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Mitra/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMitraRequest $request)
+    public function store(Request $request)
     {
-        //
+        $v = $request->validate([
+            'image' => 'required|file',
+            'name' => 'required|string|min:3',
+            'perusahaan' => 'required|string|min:3',
+            'deskripsi' => 'required|string|min:5',
+            'tgl_daftar' => 'required|string',
+        ]);
+
+        $v['image'] = $request->file('image')->store('mitra_image', 'public');
+
+        Mitra::create($v);
+
+        return redirect()->intended(route('mitra.index'));
     }
 
     /**
@@ -37,7 +51,9 @@ class MitraController extends Controller
      */
     public function show(Mitra $mitra)
     {
-        //
+        return Inertia::render('Admin/Mitra/Detail', [
+            'mitra' => $mitra
+        ]);
     }
 
     /**
@@ -45,15 +61,30 @@ class MitraController extends Controller
      */
     public function edit(Mitra $mitra)
     {
-        //
+        return Inertia::render('Admin/Mitra/Edit', [
+            'mitra' => $mitra
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMitraRequest $request, Mitra $mitra)
+    public function update(Request $request, Mitra $mitra)
     {
-        //
+        $v = $request->validate([
+            'name' => 'required|string|min:3',
+            'perusahaan' => 'required|string|min:3',
+            'deskripsi' => 'required|string|min:5',
+            'tgl_daftar' => 'required|string',
+        ]);
+
+        if ($request->file('image')) {
+            $v['image'] = $request->file('image')->store('mitra_image', 'public');
+        }
+
+        $mitra->update($v);
+
+        return redirect()->intended(route('mitra.index'));
     }
 
     /**
