@@ -11,13 +11,6 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
         return Inertia::render('Admin/Dashboard');
     })->name('dashboardAdmin');
 
-    // Route::get("laporan", function () {
-    //     return Inertia::render('Admin/Laporan/Index');
-    // })->name('adminLaporan');
-    Route::get("laporan/{id}/detail", function () {
-        return Inertia::render('Admin/Laporan/Detail');
-    })->name('adminDetailLaporan');
-
     Route::resource("laporan", LaporanController::class);
     Route::get('download/laporan/csv', [LaporanController::class, 'downloadCSV']);
     Route::get('download/laporan/pdf', [LaporanController::class, 'downloadPDF']);
