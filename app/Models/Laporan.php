@@ -15,4 +15,8 @@ class Laporan extends Model
     {
         return $this->belongsTo(Mitra::class);
     }
+
+    protected $casts = [
+        'photos' => 'array'
+    ];
 }

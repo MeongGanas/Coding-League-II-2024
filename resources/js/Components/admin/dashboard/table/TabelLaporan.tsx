@@ -66,25 +66,6 @@ export default function DataTableLaporan({ laporans }: { laporans: any }) {
                     </TableHeader>
                     <TableBody>
                     {laporans.data.length > 0 ? laporans.data.map(laporan => (
-                        // created_at: "2024-10-14T13:34:42.000000Z"
-                        // ​​​
-                        // id: 32
-                        // ​​​
-                        // kecamatan: "Pontianak"
-                        // ​​​
-                        // mitra_id: 1
-                        // ​​​
-                        // name: "Nostrum sed nihil dolor in."
-                        // ​​​
-                        // realisasi: "876006815.99"
-                        // ​​​
-                        // realisasi_date: "2024-10-06 01:14:41"
-                        // ​​​
-                        // status: "Revisi"
-                        // ​​​
-                        // tgl_kirim: "2024-10-08 13:04:17"
-                        // ​​​
-                        // updated_at: "2024-10-14T13:34:42.000000Z"
                         <TableRow className="odd:bg-[#FCFCFD] even:bg-white" key={laporan.id}>
                             <TableCell className="text-base min-w-[300px]">
                                 {laporan.name}
@@ -93,7 +74,7 @@ export default function DataTableLaporan({ laporans }: { laporans: any }) {
                                 {laporan.mitra.name}
                             </TableCell>
                             <TableCell className="text-base">
-                                {laporan.kecamatan}
+                                {laporan.lokasi}
                             </TableCell>
                             <TableCell className="text-base">
                                 <span
@@ -136,7 +117,7 @@ export default function DataTableLaporan({ laporans }: { laporans: any }) {
                                     variant={"ghost"}
                                     className="px-2"
                                 >
-                                    <Link href={"/admin/laporan/1/detail"}>
+                                    <Link href={`/admin/laporan/${laporan.id}`}>
                                         <Eye />
                                     </Link>
                                 </Button>

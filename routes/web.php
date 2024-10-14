@@ -19,6 +19,7 @@ Route::middleware(['auth', 'checkAdmin'])->group(function () {
     })->name('adminDetailLaporan');
 
     Route::resource("/admin/laporan", LaporanController::class);
+    Route::get('/laporan/download-csv', [LaporanController::class, 'downloadCSV'])->name('laporans.downloadCSV');
     Route::resource("/admin/proyek", ProyekController::class);
     Route::resource('/admin/sektor', SektorController::class);
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Laporan;
 use App\Http\Requests\StoreLaporanRequest;
 use App\Http\Requests\UpdateLaporanRequest;
+use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 
 class LaporanController extends Controller
@@ -52,7 +53,9 @@ class LaporanController extends Controller
      */
     public function show(Laporan $laporan)
     {
-        //
+        return Inertia::render('Admin/Laporan/Detail', [
+            'laporan' => $laporan->load('mitra')
+        ]);
     }
 
     /**
@@ -77,5 +80,44 @@ class LaporanController extends Controller
     public function destroy(Laporan $laporan)
     {
         //
+    }
+
+    public function downloadCSV()
+    {
+        $laporans = Laporan::all();
+
+        $csvData = [];
+        $csvData[] = ['ID', 'Name', 'Description', 'Realisasi', 'Realisasi Date']; // Add your column headers here
+
+        foreach ($laporans as $laporan) {
+            $csvData[] = [
+                $laporan->id,
+                $laporan->name,
+                $laporan->proyek_name,
+                $laporan->mitra_id,
+                $laporan->lokasi,
+                $laporan->realisasi,
+                $laporan->realisasi_date,
+                $laporan->rincian,
+                $laporan->tgl_kirim,
+                $laporan->status,
+            ];
+        }
+
+        $filename = 'laporans.csv';
+        $handle = fopen('php://output', 'w');
+        ob_start();
+
+        foreach ($csvData as $row) {
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
+        $content = ob_get_clean();
+
+        return Response::make($content, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename={$filename}",
+        ]);
     }
 }
