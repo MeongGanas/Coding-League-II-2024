@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sektor extends Model
+class Proyek extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
 
-    public function proyeks()
+    public function sektor()
     {
-        return $this->hasMany(Proyek::class);
+        return $this->belongsTo(Sektor::class);
     }
 }

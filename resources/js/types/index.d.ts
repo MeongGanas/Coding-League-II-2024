@@ -45,6 +45,12 @@ export interface PaginationProps {
     total: number;
 }
 
+export interface Kecamatan {
+    id: string;
+    regency_id: string;
+    name: string;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>
 > = T & {

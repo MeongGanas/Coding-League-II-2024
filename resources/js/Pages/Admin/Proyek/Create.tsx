@@ -9,7 +9,7 @@ import {
 } from "@/Components/ui/form";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { Head } from "@inertiajs/react";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,48 +34,74 @@ import { CalendarIcon, CloudUpload, Save, Send } from "lucide-react";
 import { Calendar } from "@/Components/ui/calendar";
 import { format } from "date-fns";
 import { Textarea } from "@/Components/ui/textarea";
-import { PageProps } from "@/types";
+import { Kecamatan, PageProps, Sektor } from "@/types";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const proyekSchema = z.object({
-    nama: z.string(),
-    sektor: z.string(),
+    name: z.string(),
+    sektor_id: z.string(),
     lokasi: z.string(),
-    tanggal_awal: z.date({
+    tgl_awal: z.date({
         required_error: "A date of birth is required.",
     }),
-    tanggal_akhir: z.date({
+    tgl_akhir: z.date({
         required_error: "A date of birth is required.",
     }),
     deskripsi: z.string(),
-    foto_proyek: z
+    image: z
         .instanceof(FileList)
         .refine((file) => file?.length == 1, "File is required."),
 });
 
 type ProyekSchema = z.infer<typeof proyekSchema>;
 
-export default function Create({ auth: { user } }: PageProps) {
+export default function Create({ auth: { user }, sektors }: PageProps<{ sektors: Sektor[] }>) {
     const [preview, setPreview] = useState<string | null>(null);
+    const [kecamatan, setKecamatan] = useState<Kecamatan[] | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const form = useForm<ProyekSchema>({
         resolver: zodResolver(proyekSchema),
         defaultValues: {
-            nama: "",
-            sektor: "",
+            name: "",
+            sektor_id: "",
             lokasi: "",
-            tanggal_awal: new Date(),
-            tanggal_akhir: new Date(),
+            tgl_awal: new Date(),
+            tgl_akhir: new Date(),
             deskripsi: "",
         },
     });
 
     const { handleSubmit, control } = form;
 
-    const fileRef = form.register("foto_proyek");
+    const fileRef = form.register("image");
 
     const submit = handleSubmit((values) => {
-        console.log(values);
+        setIsSubmitted(true)
+
+        const formData = new FormData()
+        formData.append('name', values.name)
+        formData.append('sektor_id', values.sektor_id)
+        formData.append('deskripsi', values.deskripsi)
+        formData.append('deskripsi', values.deskripsi)
+        formData.append('deskripsi', values.deskripsi)
+        formData.append('image', values.image[0])
+
+        const promise = axios.post('/admin/proyek', formData);
+
+        toast.promise(promise, {
+            loading: "Loading...",
+            success: () => {
+                setIsSubmitted(false)
+                window.location.replace('/admin/sektor')
+                return "Add Sektor Success"
+            },
+            error: (err) => {
+                setIsSubmitted(false)
+                return err?.response.data.message || "Something went wrong"
+            }
+        })
     });
 
     const handlePreview = (e: SyntheticEvent) => {
@@ -85,6 +111,16 @@ export default function Create({ auth: { user } }: PageProps) {
             setPreview(URL.createObjectURL(file));
         }
     };
+
+    useEffect(() => {
+        (
+            async () => {
+                fetch(`https://www.emsifa.com/api-wilayah-indonesia/api/districts/3209.json`)
+                    .then(response => response.json())
+                    .then(districts => setKecamatan(districts));
+            }
+        )()
+    }, [])
 
     return (
         <LayoutAdmin user={user}>
@@ -99,7 +135,7 @@ export default function Create({ auth: { user } }: PageProps) {
                         <div className="bg-white rounded-md p-6 space-y-5 border">
                             <FormField
                                 control={control}
-                                name="nama"
+                                name="name"
                                 render={({ field }) => (
                                     <FormItem className="grid gap-2">
                                         <FormLabel className="font-bold text-base">
@@ -121,7 +157,7 @@ export default function Create({ auth: { user } }: PageProps) {
                             />
                             <FormField
                                 control={control}
-                                name="sektor"
+                                name="sektor_id"
                                 render={({ field }) => (
                                     <FormItem className="grid gap-2">
                                         <FormLabel className="font-bold text-base">
@@ -144,15 +180,11 @@ export default function Create({ auth: { user } }: PageProps) {
                                                     <SelectLabel>
                                                         Sektor
                                                     </SelectLabel>
-                                                    <SelectItem value="men">
-                                                        Men
-                                                    </SelectItem>
-                                                    <SelectItem value="women">
-                                                        Women
-                                                    </SelectItem>
-                                                    <SelectItem value="kids">
-                                                        Kids
-                                                    </SelectItem>
+                                                    {sektors && sektors.map(sektor => (
+                                                        <SelectItem value={sektor.id.toString()} key={sektor.id}>
+                                                            {sektor.name}
+                                                        </SelectItem>
+                                                    ))}
                                                 </SelectGroup>
                                             </SelectContent>
                                         </Select>
@@ -186,15 +218,11 @@ export default function Create({ auth: { user } }: PageProps) {
                                                         <SelectLabel>
                                                             Kecamatan
                                                         </SelectLabel>
-                                                        <SelectItem value="men">
-                                                            Men
-                                                        </SelectItem>
-                                                        <SelectItem value="women">
-                                                            Women
-                                                        </SelectItem>
-                                                        <SelectItem value="kids">
-                                                            Kids
-                                                        </SelectItem>
+                                                        {kecamatan && kecamatan.map(camat => (
+                                                            <SelectItem value={camat.name} key={camat.id}>
+                                                                {camat.name}
+                                                            </SelectItem>
+                                                        ))}
                                                     </SelectGroup>
                                                 </SelectContent>
                                             </Select>
@@ -204,7 +232,7 @@ export default function Create({ auth: { user } }: PageProps) {
                                 />
                                 <FormField
                                     control={form.control}
-                                    name="tanggal_awal"
+                                    name="tgl_awal"
                                     render={({ field }) => (
                                         <FormItem className="flex flex-col gap-2">
                                             <FormLabel className="text-base font-bold">
@@ -265,7 +293,7 @@ export default function Create({ auth: { user } }: PageProps) {
                                 />
                                 <FormField
                                     control={form.control}
-                                    name="tanggal_akhir"
+                                    name="tgl_akhir"
                                     render={({ field }) => (
                                         <FormItem className="flex flex-col gap-2">
                                             <FormLabel className="text-base font-bold">
@@ -309,13 +337,6 @@ export default function Create({ auth: { user } }: PageProps) {
                                                         onSelect={
                                                             field.onChange
                                                         }
-                                                        disabled={(date) =>
-                                                            date > new Date() ||
-                                                            date <
-                                                            new Date(
-                                                                "1900-01-01"
-                                                            )
-                                                        }
                                                         initialFocus
                                                     />
                                                 </PopoverContent>
@@ -349,7 +370,7 @@ export default function Create({ auth: { user } }: PageProps) {
                             />
                             <FormField
                                 control={form.control}
-                                name="foto_proyek"
+                                name="image"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="font-bold text-base">
@@ -390,7 +411,7 @@ export default function Create({ auth: { user } }: PageProps) {
                                                     id="dropzone-file"
                                                     type="file"
                                                     accept="image/png, image/jpg"
-                                                    className="hidden"
+                                                    className="h-0 opacity-0"
                                                     onChange={(e) =>
                                                         handlePreview(e)
                                                     }

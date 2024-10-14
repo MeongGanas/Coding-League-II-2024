@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\SektorController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,15 +17,7 @@ Route::middleware(['auth', 'checkAdmin'])->group(function () {
         return Inertia::render('Admin/Laporan/Detail');
     })->name('adminDetailLaporan');
 
-    Route::get("/admin/proyek", function () {
-        return Inertia::render('Admin/Proyek/Index');
-    })->name('adminProyek');
-    Route::get("/admin/proyek/create", function () {
-        return Inertia::render('Admin/Proyek/Create');
-    })->name('addProyek');
-    Route::get("/admin/proyek/{id}/detail", function () {
-        return Inertia::render('Admin/Proyek/Detail');
-    })->name('detailProyek');
+    Route::resource("/admin/proyek", ProyekController::class);
 
     Route::resource('/admin/sektor', SektorController::class);
 

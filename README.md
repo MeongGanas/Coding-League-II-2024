@@ -84,7 +84,7 @@ php artisan key:generate
 Migrate the database using:
 
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
 
 ### 7. Build Frontend Assets
