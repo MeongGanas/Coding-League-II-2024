@@ -47,7 +47,7 @@ export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
                     </TableHeader>
                     <TableBody>
                         {proyeks.data.length > 0 ? proyeks.data.map(proyek => (
-                            <TableRow className="odd:bg-[#FCFCFD] even:bg-white">
+                            <TableRow className="odd:bg-[#FCFCFD] even:bg-white" key={proyek.id}>
                                 <TableCell className="text-base min-w-[300px]">
                                     {proyek.name}
                                 </TableCell>
@@ -56,10 +56,10 @@ export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
                                 </TableCell>
                                 <TableCell className="text-base">10</TableCell>
                                 <TableCell className="text-base">
-                                    {format(proyek.tgl_awal, 'dd MMMM Y', { locale: id })}
+                                    {format(proyek.tgl_awal, 'dd MMMM y', { locale: id })}
                                 </TableCell>
                                 <TableCell className="text-base">
-                                    {proyek.tgl_akhir ? format(proyek.tgl_akhir, 'dd MMMM Y', { locale: id }) : "-"}
+                                    {proyek.tgl_akhir ? format(proyek.tgl_akhir, 'dd MMMM y', { locale: id }) : "-"}
                                 </TableCell>
                                 <TableCell>
                                     {proyek.status === "terbit" ? (
