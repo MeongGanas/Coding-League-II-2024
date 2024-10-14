@@ -1,14 +1,19 @@
 import { Search } from "lucide-react";
 import { Input } from "../ui/input";
-import { SyntheticEvent, useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useRef, useState } from "react";
 
 export default function SearchForm() {
     const [searchValue, setSearchValue] = useState<string>("");
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const search = (e: SyntheticEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
 
-        setTimeout(() => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        timeoutRef.current = setTimeout(() => {
             const params = new URLSearchParams(window.location.search);
 
             if (value) {
@@ -24,7 +29,7 @@ export default function SearchForm() {
             window.location.replace(
                 `${window.location.pathname}?${params.toString()}`
             );
-        }, 300);
+        }, 500);
     };
 
     useEffect(() => {
