@@ -12,7 +12,7 @@ import {
 import { Button } from "@/Components/ui/button";
 import { Info, Send } from "lucide-react";
 
-export function DialogTerbit() {
+export function DialogTerbit({ terbitkan, isSubmitted }: { terbitkan: () => void, isSubmitted: boolean }) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -38,7 +38,7 @@ export function DialogTerbit() {
                 </AlertDialogHeader>
                 <AlertDialogFooter className="md:grid md:grid-cols-2">
                     <AlertDialogCancel>Batal</AlertDialogCancel>
-                    <AlertDialogAction className="hover:bg-red-700">
+                    <AlertDialogAction className="hover:bg-red-700" onClick={terbitkan}>
                         Terbitkan
                     </AlertDialogAction>
                 </AlertDialogFooter>

@@ -32,9 +32,9 @@ export default function Index({ auth: { user }, proyeks }: PageProps<{ proyeks: 
                     </Button>
                 </div>
                 <div className="flex items-center gap-3">
-                    <CategoryButton category="semua" />
-                    <CategoryButton category="terbit" />
-                    <CategoryButton category="draf" />
+                    <CategoryButton category="semua" active="semua" />
+                    <CategoryButton category="terbit" active="terbit" />
+                    <CategoryButton category="draf" active="draf" />
                 </div>
                 <SelectAndDownload tahun={true} sektor={true} />
                 <SearchForm />

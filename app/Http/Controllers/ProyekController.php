@@ -24,6 +24,10 @@ class ProyekController extends Controller
                 ->orWhere('deskripsi', 'like', '%' . $searchTerm . '%');
         }
 
+        if (request("category")) {
+            $query->where('status', request("category"));
+        }
+
         $paginate = request("paginate") ?? 5;
 
         $proyeks = $query->paginate($paginate);
@@ -80,26 +84,12 @@ class ProyekController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Proyek $proyek)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Proyek $proyek)
+    public function update(Proyek $proyek)
     {
-        //
-    }
+        $proyek->update(['status' => 'terbit']);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Proyek $proyek)
-    {
-        //
+        return redirect()->intended(route('proyek.index'));
     }
 }

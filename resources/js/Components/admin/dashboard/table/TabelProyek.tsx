@@ -1,13 +1,5 @@
 import { Badge } from "@/Components/ui/badge";
 import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/Components/ui/select";
-import {
     Table,
     TableBody,
     TableCell,
@@ -21,6 +13,7 @@ import { TablePagination, TableSelectTotalPaginate } from "./TabelPagination";
 import { Button } from "@/Components/ui/button";
 import { ProyekProps } from "@/types";
 import { format } from "date-fns";
+import { id } from 'date-fns/locale';
 
 export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
     return (
@@ -63,10 +56,10 @@ export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
                                 </TableCell>
                                 <TableCell className="text-base">10</TableCell>
                                 <TableCell className="text-base">
-                                    {format(proyek.tgl_awal, 'dd MMMM Y')}
+                                    {format(proyek.tgl_awal, 'dd MMMM Y', { locale: id })}
                                 </TableCell>
                                 <TableCell className="text-base">
-                                    {proyek.tgl_akhir ? format(proyek.tgl_akhir, 'dd MMMM Y') : "-"}
+                                    {proyek.tgl_akhir ? format(proyek.tgl_akhir, 'dd MMMM Y', { locale: id }) : "-"}
                                 </TableCell>
                                 <TableCell>
                                     {proyek.status === "terbit" ? (
