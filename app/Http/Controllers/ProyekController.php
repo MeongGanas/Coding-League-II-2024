@@ -33,7 +33,8 @@ class ProyekController extends Controller
         $proyeks = $query->paginate($paginate);
 
         return Inertia::render('Admin/Proyek/Index', [
-            'proyeks' => $proyeks
+            'proyeks' => $proyeks,
+            'sektors' => Sektor::latest()->get()
         ]);
     }
 

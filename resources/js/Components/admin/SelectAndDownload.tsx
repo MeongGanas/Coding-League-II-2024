@@ -8,26 +8,29 @@ import {
     SelectValue,
 } from "@/Components/ui/select";
 import DownloadButtons from "./DownloadButtons";
-import { useEffect, useMemo } from "react";
+import { Sektor } from "@/types";
 
 export default function SelectAndDownload({
     tahun,
     kuartal,
     sektor,
     mitra,
+    sektors
 }: {
     tahun?: boolean;
     kuartal?: boolean;
     sektor?: boolean;
     mitra?: boolean;
+    sektors?: Sektor[];
 }) {
+    let filter = "";
+
     return (
         <div
-            className={`grid grid-cols-2 md:grid-cols-4 ${
-                tahun && kuartal && sektor && mitra
-                    ? "xl:grid-cols-6"
-                    : "xl:grid-cols-4"
-            } gap-4 items-center`}
+            className={`grid grid-cols-2 md:grid-cols-4 ${tahun && kuartal && sektor && mitra
+                ? "xl:grid-cols-6"
+                : "xl:grid-cols-4"
+                } gap-4 items-center`}
         >
             {tahun && (
                 <Select>
@@ -71,7 +74,10 @@ export default function SelectAndDownload({
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectItem value="semua">Semua Sektor</SelectItem>
+                            <SelectItem value="semua" defaultChecked>Semua Sektor</SelectItem>
+                            {sektors && sektors.map(sektor => (
+                                <SelectItem value={sektor.id.toString()} key={sektor.id}>{sektor.name}</SelectItem>
+                            ))}
                         </SelectGroup>
                     </SelectContent>
                 </Select>
