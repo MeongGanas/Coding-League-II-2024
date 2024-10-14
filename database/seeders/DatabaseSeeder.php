@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Proyek;
 use App\Models\Sektor;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -34,5 +35,6 @@ class DatabaseSeeder extends Seeder
         }
 
         Sektor::factory(15)->create();
+        Proyek::factory(15)->create();
     }
 }
