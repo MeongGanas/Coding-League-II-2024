@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Laporan;
 use App\Http\Requests\StoreLaporanRequest;
 use App\Http\Requests\UpdateLaporanRequest;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 
@@ -119,5 +120,14 @@ class LaporanController extends Controller
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename={$filename}",
         ]);
+    }
+
+    public function downloadPDF()
+    {
+        $laporans = Laporan::all();
+
+        $pdf = FacadePdf::loadView('admin.laporans.pdf', compact('laporans'));
+
+        return $pdf->download('laporans.pdf');
     }
 }
