@@ -11,11 +11,11 @@ import {
     SelectValue,
 } from "@/Components/ui/select";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
-import { PageProps } from "@/types";
+import { MitrasProps, PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
-export default function Index({ auth: { user } }: PageProps) {
+export default function Index({ auth: { user }, mitras }: PageProps<{ mitras: MitrasProps }>) {
     return (
         <LayoutAdmin user={user}>
             <Head title="Mitra" />
@@ -51,7 +51,7 @@ export default function Index({ auth: { user } }: PageProps) {
                         </SelectContent>
                     </Select>
                 </div>
-                <DataTableMitra />
+                <DataTableMitra mitras={mitras} />
             </div>
         </LayoutAdmin>
     );

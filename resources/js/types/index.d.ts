@@ -79,6 +79,33 @@ export interface Kecamatan {
     name: string;
 }
 
+export interface Mitra {
+    id: number;
+    name: string | null;
+    perusahaan: string;
+    email: string;
+    no_telepon: string | null;
+    tgl_aktif: string | null;
+    alamat: string | null;
+    deskripsi: string | null;
+    image: string | null;
+}
+
+export interface MitrasProps {
+    current_page: number;
+    data: Mitra[];
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: { url: string | null; label: string; active: boolean }[];
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+}
 
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>

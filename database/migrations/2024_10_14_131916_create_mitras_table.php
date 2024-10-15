@@ -13,12 +13,15 @@ return new class extends Migration
     {
         Schema::create('mitras', function (Blueprint $table) {
             $table->id();
-            $table->string('image');
-            $table->string('name');
+            $table->string('image')->nullable();
+            $table->string('name')->nullable();
             $table->string('perusahaan');
-            $table->string('deskripsi');
+            $table->string('no_telepon')->nullable();
+            $table->string('alamat')->nullable();
+            $table->string('email');
+            $table->text('deskripsi')->nullable();
             $table->dateTime('tgl_daftar')->nullable();
-            $table->enum('status', ['Aktif', 'Non-Aktif'])->default('Non-Aktif');
+            $table->enum('status', ['Aktif', 'Non-Aktif', 'Pengajuan'])->default('Non-Aktif');
             $table->timestamps();
         });
     }

@@ -2,11 +2,29 @@
 
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\MasyarakatController;
 use App\Http\Controllers\MitraController;
 use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\SektorController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+
+Route::get('/', [MasyarakatController::class, 'home']);
+Route::get('/tentang', [MasyarakatController::class, 'about']);
+Route::get('/statistik', [MasyarakatController::class, 'statistik']);
+
+Route::get('/sektor', [MasyarakatController::class, 'sektor']);
+Route::get('/sektor/{sektor}/detail', [MasyarakatController::class, 'sektorDetail']);
+Route::get('/sektor/{sektor}/proyek', [MasyarakatController::class, 'sektorProyek']);
+
+Route::get('/laporan', [MasyarakatController::class, 'laporan']);
+Route::get('/laporan/{laporan}/detail', [MasyarakatController::class, 'laporanDetail']);
+
+Route::get('/kegiatan', [MasyarakatController::class, 'kegiatan']);
+Route::get('/kegiatan/{kegiatan}/detail', [MasyarakatController::class, 'kegiatanDetail']);
+
+Route::get('/mitra', [MasyarakatController::class, 'mitra']);
+Route::get('/mitra/{mitra}/detail', [MasyarakatController::class, 'mitraDetail']);
 
 Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
     Route::get("dashboard", function () {
@@ -20,19 +38,6 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
     Route::resource('sektor', SektorController::class);
     Route::resource("mitra", MitraController::class);
     Route::resource("kegiatan", KegiatanController::class);
-
-    // Route::get("kegiatan", function () {
-    //     return Inertia::render('Admin/Kegiatan/Index');
-    // })->name('adminKegiatan');
-    // Route::get("kegiatan/{id}/detail", function () {
-    //     return Inertia::render('Admin/Kegiatan/Detail');
-    // })->name('detailKegiatan');
-    // Route::get("kegiatan/create", function () {
-    //     return Inertia::render('Admin/Kegiatan/Create');
-    // })->name('addKegiatan');
-    // Route::get("kegiatan/{id}/edit", function () {
-    //     return Inertia::render('Admin/Kegiatan/Edit');
-    // })->name('editKegiatan');
 
     Route::get("profile", function () {
         return Inertia::render('Admin/Profile/Index');

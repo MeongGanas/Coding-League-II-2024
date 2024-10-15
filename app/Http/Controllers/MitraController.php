@@ -15,7 +15,23 @@ class MitraController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Admin/Mitra/Index');
+        $query = Mitra::latest();
+
+        if (request("search")) {
+            $searchTerm = request("search");
+
+            $query->where('name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('perusahaan', 'like', '%' . $searchTerm . '%')
+                ->orWhere('deskripsi', 'like', '%' . $searchTerm . '%');
+        }
+
+        $paginate = request("paginate") ?? 5;
+
+        $mitras = $query->paginate($paginate);
+
+        return Inertia::render('Admin/Mitra/Index', [
+            'mitras' => $mitras,
+        ]);
     }
 
     /**
@@ -32,13 +48,16 @@ class MitraController extends Controller
     public function store(Request $request)
     {
         $v = $request->validate([
-            'image' => 'required|file',
-            'name' => 'required|string|min:3',
+            'name' => 'string|min:3',
             'perusahaan' => 'required|string|min:3',
-            'deskripsi' => 'required|string|min:5',
+            'no_telepon' => 'string|min:3',
+            'email' => 'required|string|min:3',
+            'deskripsi' => 'string|min:5',
         ]);
 
-        $v['image'] = $request->file('image')->store('mitra_image', 'public');
+        if ($request->file('image')) {
+            $v['image'] = $request->file('image')->store('mitra_image', 'public');
+        }
 
         Mitra::create($v);
 
