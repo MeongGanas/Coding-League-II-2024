@@ -16,6 +16,7 @@ import { format } from "date-fns";
 import { id } from 'date-fns/locale';
 
 export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
+    console.log(proyeks)
     return (
         <div className="w-full">
             <div className="bg-white rounded-md border">
@@ -62,7 +63,7 @@ export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
                                     {proyek.tgl_akhir ? format(proyek.tgl_akhir, 'dd MMMM y', { locale: id }) : "-"}
                                 </TableCell>
                                 <TableCell>
-                                    {proyek.status === "terbit" ? (
+                                    {proyek.status === "Terbit" ? (
                                         <Badge className="text-success bg-success-bg hover:bg-success-bg">
                                             Terbit
                                         </Badge>

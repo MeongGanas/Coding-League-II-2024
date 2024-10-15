@@ -13,7 +13,7 @@ import {
 } from "@/Components/ui/select";
 
 export function TablePagination({ data }: { data: PaginationProps }) {
-    const [page, setPage] = useState<string>("");
+    const [page, setPage] = useState<string>(data.current_page.toString());
 
     const changePage = (value: string) => {
         const params = new URLSearchParams(window.location.search);
@@ -38,6 +38,7 @@ export function TablePagination({ data }: { data: PaginationProps }) {
 
     const next = () => {
         const currentPage = parseInt(page)
+        console.log(data.links.slice(1, -1))
         if (currentPage < data.links.slice(1, -1).length) {
             changePage((currentPage + 1).toString())
         }
