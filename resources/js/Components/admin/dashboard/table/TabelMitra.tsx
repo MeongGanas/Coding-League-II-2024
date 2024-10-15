@@ -54,7 +54,7 @@ export default function DataTableMitra({ mitras }: { mitras: MitrasProps }) {
                     </TableHeader>
                     <TableBody>
                         {mitras.data.length > 0 ? mitras.data.map(mitra => (
-                            <TableRow className="odd:bg-[#FCFCFD] even:bg-white">
+                            <TableRow className="odd:bg-[#FCFCFD] even:bg-white" key={mitra.id}>
                                 <TableCell className="text-base min-w-[300px]">
                                     {mitra.image ? (
                                         <img src={`/storage/${mitra.image}`} alt="image" />
