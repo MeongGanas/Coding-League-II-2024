@@ -12,7 +12,7 @@ import NavLink from "../all/NavLink";
 import Notifikasi from "./Notifikasi";
 import AdminSheet from "./AdminSheet";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
-import LogoutButton from "./dashboard/LogoutButton";
+import LogoutButton from "../all/LogoutButton";
 import { User as UserType } from "@/types";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
 

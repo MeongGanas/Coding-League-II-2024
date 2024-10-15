@@ -9,22 +9,22 @@ use App\Http\Controllers\SektorController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', [MasyarakatController::class, 'home']);
-Route::get('/tentang', [MasyarakatController::class, 'about']);
-Route::get('/statistik', [MasyarakatController::class, 'statistik']);
+Route::get('/', [MasyarakatController::class, 'home'])->name('beranda');
+Route::get('/tentang', [MasyarakatController::class, 'about'])->name('tentang');
+Route::get('/statistik', [MasyarakatController::class, 'statistik'])->name('statistik');
 
-Route::get('/sektor', [MasyarakatController::class, 'sektor']);
-Route::get('/sektor/{sektor}/detail', [MasyarakatController::class, 'sektorDetail']);
-Route::get('/sektor/{sektor}/proyek', [MasyarakatController::class, 'sektorProyek']);
+Route::get('/sektor', [MasyarakatController::class, 'sektor'])->name('sektor');
+Route::get('/sektor/{sektor}/detail', [MasyarakatController::class, 'sektorDetail'])->name('sektor.detail');
+Route::get('/sektor/{sektor}/proyek', [MasyarakatController::class, 'sektorProyek'])->name('sektor.proyek');
 
-Route::get('/laporan', [MasyarakatController::class, 'laporan']);
-Route::get('/laporan/{laporan}/detail', [MasyarakatController::class, 'laporanDetail']);
+Route::get('/laporan', [MasyarakatController::class, 'laporan'])->name('laporan');
+Route::get('/laporan/{laporan}/detail', [MasyarakatController::class, 'laporanDetail'])->name('laporan.detail');
 
-Route::get('/kegiatan', [MasyarakatController::class, 'kegiatan']);
-Route::get('/kegiatan/{kegiatan}/detail', [MasyarakatController::class, 'kegiatanDetail']);
+Route::get('/kegiatan', [MasyarakatController::class, 'kegiatan'])->name('kegiatan');
+Route::get('/kegiatan/{kegiatan}/detail', [MasyarakatController::class, 'kegiatanDetail'])->name('kegiatan.detail');
 
-Route::get('/mitra', [MasyarakatController::class, 'mitra']);
-Route::get('/mitra/{mitra}/detail', [MasyarakatController::class, 'mitraDetail']);
+Route::get('/mitra', [MasyarakatController::class, 'mitra'])->name('mitra');
+Route::get('/mitra/{mitra}/detail', [MasyarakatController::class, 'mitraDetail'])->name('mitra.detail');
 
 Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
     Route::get("dashboard", function () {

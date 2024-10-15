@@ -74,7 +74,7 @@ export default function Register() {
         <LayoutAuth>
             <Head title="Register" />
 
-            <div className="container">
+            <div className="container py-10">
                 <div className="bg-white grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 border rounded-md items-center">
                     <div className="px-5 sm:px-10 py-10 lg:py-14 space-y-5">
                         <Link
