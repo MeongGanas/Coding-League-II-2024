@@ -12,10 +12,31 @@ import {
 } from "@/Components/ui/select";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { MitrasProps, PageProps } from "@/types";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+
+
 
 export default function Index({ auth: { user }, mitras }: PageProps<{ mitras: MitrasProps }>) {
+
+    const params = new URLSearchParams(window.location.search);
+    const sortall = params.get("sortall") as string
+    const [selectedValue, setSelectedValue] = useState(sortall || "");
+
+    const handleFilterChange = (value: string) => {
+        setSelectedValue(value);
+        if (value === "terbaru") {
+            params.set("sortall", "terbaru");
+        } else if (value === "terlama") {
+            params.set("sortall", "terlama");
+        }
+
+        window.location.replace(
+            `${window.location.pathname}?${params.toString()}`
+        )
+    }
+
     return (
         <LayoutAdmin user={user}>
             <Head title="Mitra" />
@@ -39,7 +60,7 @@ export default function Index({ auth: { user }, mitras }: PageProps<{ mitras: Mi
                     <div className="col-span-4">
                         <SearchForm />
                     </div>
-                    <Select>
+                    <Select onValueChange={handleFilterChange} value={selectedValue}>
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="Filter" />
                         </SelectTrigger>

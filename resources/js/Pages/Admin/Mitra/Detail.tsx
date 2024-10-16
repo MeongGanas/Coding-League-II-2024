@@ -1,4 +1,4 @@
-import { DialogNonaktifkan } from "@/Components/admin/dashboard/mitra/DialogAction";
+import { DialogToggleStatus } from "@/Components/admin/dashboard/mitra/DialogAction";
 import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
@@ -19,7 +19,6 @@ const statusText = {
 };
 
 export default function Detail({ auth: { user }, mitra }: PageProps<{ mitra: any }>) {
-    const isTerverifikasi = true;
     return (
         <LayoutAdmin user={user}>
             <Head title="Detail Mitra" />
@@ -42,7 +41,11 @@ export default function Detail({ auth: { user }, mitra }: PageProps<{ mitra: any
                                 Ubah Profil
                             </Link>
                         </Button>
-                        {isTerverifikasi && <DialogNonaktifkan />}
+                        {
+                            (mitra.status === 'Aktif' || mitra.status === 'Non-Aktif') && (
+                                <DialogToggleStatus data={mitra.id} status={mitra.status}/>
+                            )
+                        }
                     </div>
                 </div>
                 <div className="bg-white border rounded-md py-10 px-6 space-y-5">

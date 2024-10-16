@@ -15,7 +15,14 @@ class MitraController extends Controller
      */
     public function index()
     {
-        $query = Mitra::latest();
+
+        $query = Mitra::query();
+
+        if (request("sortall") == "terlama") {
+            $query->oldest();
+        } else {
+            $query->latest();
+        }
 
         if (request("search")) {
             $searchTerm = request("search");
@@ -110,5 +117,14 @@ class MitraController extends Controller
     public function destroy(Mitra $mitra)
     {
         //
+    }
+
+    public function toggleStatus(Mitra $mitra)
+    {
+        $status = $mitra->status == 'Aktif' ? 'Non-Aktif' : 'Aktif';
+
+        $mitra->update(['status' => $status]);
+
+        return redirect()->intended(route('mitra.show', $mitra->id));
     }
 }

@@ -37,6 +37,7 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
     Route::resource("proyek", ProyekController::class);
     Route::resource('sektor', SektorController::class);
     Route::resource("mitra", MitraController::class);
+    Route::post("mitra/{mitra}/toggle", [MitraController::class, 'toggleStatus']);
     Route::resource("kegiatan", KegiatanController::class);
 
     Route::get("profile", function () {
