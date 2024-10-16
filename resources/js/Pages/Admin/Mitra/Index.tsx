@@ -22,7 +22,7 @@ export default function Index({ auth: { user }, mitras }: PageProps<{ mitras: Mi
 
     const params = new URLSearchParams(window.location.search);
     const sortall = params.get("sortall") as string
-    const [selectedValue, setSelectedValue] = useState(sortall || "");
+    const [selectedValue, setSelectedValue] = useState(sortall || "terbaru");
 
     const handleFilterChange = (value: string) => {
         setSelectedValue(value);
@@ -60,9 +60,9 @@ export default function Index({ auth: { user }, mitras }: PageProps<{ mitras: Mi
                     <div className="col-span-4">
                         <SearchForm />
                     </div>
-                    <Select onValueChange={handleFilterChange} value={selectedValue}>
+                    <Select  onValueChange={handleFilterChange} value={selectedValue}>
                         <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Filter" />
+                            <SelectValue placeholder="Sortir" />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectGroup>
