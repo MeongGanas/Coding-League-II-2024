@@ -24,6 +24,8 @@ class MitraFactory extends Factory
             'image' => 'example.jpg',
             'name' => $name,
             'email' => $this->faker->email(),
+            'no_telepon' => $this->faker->phoneNumber(),
+            'alamat' => $this->faker->address(),
             'perusahaan' => $perusahaan,
             'deskripsi' => $this->faker->paragraph(),
             'tgl_daftar' => $this->faker->dateTimeBetween('-1 years', 'now'),

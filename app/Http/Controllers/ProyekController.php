@@ -19,8 +19,8 @@ class ProyekController extends Controller
         if (request("search")) {
             $searchTerm = request("search");
 
-            $query->where('judul', 'like', '%' . $searchTerm . '%')
-                ->orWhere('lokasi', 'like', '%' . $searchTerm . '%')
+            $query->where('name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('kecamatan', 'like', '%' . $searchTerm . '%')
                 ->orWhere('deskripsi', 'like', '%' . $searchTerm . '%');
         }
 

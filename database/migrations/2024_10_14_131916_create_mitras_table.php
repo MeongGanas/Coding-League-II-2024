@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('email');
             $table->text('deskripsi')->nullable();
             $table->dateTime('tgl_daftar')->nullable();
-            $table->enum('status', ['Aktif', 'Non-Aktif', 'Pengajuan'])->default('Non-Aktif');
+            $table->enum('status', ['Aktif', 'Non-Aktif', 'Pengajuan'])->default('Pengajuan');
             $table->timestamps();
         });
     }

@@ -7,15 +7,25 @@ import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Mail, MapPin, Pencil, Phone } from "lucide-react";
 
-export default function Detail({ auth: { user } }: PageProps) {
-    const isTerverifikasi = true;
+const statusClass = {
+    'Aktif': "bg-success-bg text-success",
+    'Non-Aktif': "bg-success-bg text-success",
+    'Pengajuan': "bg-warning-bg text-warning",
+};
+const statusText = {
+    'Aktif': "Terverifikasi",
+    'Non-Aktif': "Terverifikasi",
+    'Pengajuan': "Pengajuan",
+};
 
+export default function Detail({ auth: { user }, mitra }: PageProps<{ mitra: any }>) {
+    const isTerverifikasi = true;
     return (
         <LayoutAdmin user={user}>
             <Head title="Detail Mitra" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">
-                    <BreadcrumbLinks basePath="/admin" />
+                    <BreadcrumbLinks basePath="/admin" pagePath="Detail" />
                 </div>
                 <div className="flex justify-between">
                     <h1 className="text-3xl font-bold">Profil Mitra</h1>
@@ -38,20 +48,20 @@ export default function Detail({ auth: { user } }: PageProps) {
                 <div className="bg-white border rounded-md py-10 px-6 space-y-5">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div className="w-full md:pr-10">
-                            <div className="w-full h-72 bg-neutral-300 rounded-md"></div>
+                            <img src={`/storage/${mitra.image}`} alt="mitra" className="w-full h-72 object-cover rounded-md" />
                         </div>
                         <div className="w-full md-w-1/2 space-y-4">
                             <div className="space-y-2">
                                 <div className="flex gap-4 items-center">
                                     <h1 className="font-bold text-2xl">
-                                        Nama Mitra
+                                        {mitra.name}
                                     </h1>
-                                    <Badge className="text-success bg-success-bg hover:bg-success-bg">
-                                        Terverifikasi
+                                    <Badge className={statusClass[mitra.status]}>
+                                        {statusText[mitra.status]}
                                     </Badge>
                                 </div>
                                 <p className="font-semibold">
-                                    PT Mitra Sejahtera Bersama
+                                    {mitra.perusahaan}
                                 </p>
                             </div>
                             <ul className="space-y-3">
@@ -59,33 +69,23 @@ export default function Detail({ auth: { user } }: PageProps) {
                                     <div className="p-2 border-4 text-primary bg-[#FFDDDC] rounded-full border-primary-bg">
                                         <Mail className="w-5 h-5" />
                                     </div>
-                                    <span>info@gmail.com</span>
+                                    <span>{mitra.email}</span>
                                 </li>
                                 <li className="flex items-center gap-2">
                                     <div className="p-2 border-4 text-primary bg-[#FFDDDC] rounded-full border-primary-bg">
                                         <Phone className="w-5 h-5" />
                                     </div>
-                                    <span>0821 #### ###</span>
+                                    <span>{mitra.no_telepon ?? '-'}</span>
                                 </li>
                                 <li className="flex items-center gap-2">
                                     <div className="p-2 border-4 text-primary bg-[#FFDDDC] rounded-full border-primary-bg">
                                         <MapPin className="w-5 h-5" />
                                     </div>
-                                    <span>Jl. Lorem ipsum dolor sit amet</span>
+                                    <span>{mitra.alamat ?? '-'}</span>
                                 </li>
                             </ul>
                             <p>
-                                Maksud pemerintah kabupaten dalam Corporate
-                                Social Responsibility (CSR) adalah untuk
-                                menciptakan sinergi yang kuat antara pemerintah,
-                                perusahaan, dan masyarakat. Tujuan utama dari
-                                upaya ini adalah untuk mendorong pembangunan
-                                berkelanjutan di wilayah kabupaten. Dengan
-                                melibatkan perusahaan dalam program CSR,
-                                diharapkan dapat tercipta solusi komprehensif
-                                bagi berbagai permasalahan sosial dan
-                                lingkungan, sehingga kesejahteraan masyarakat
-                                dapat meningkat secara signifikan.
+                                {mitra.deskripsi}
                             </p>
                         </div>
                     </div>

@@ -68,6 +68,10 @@ export default {
                     DEFAULT: "hsl(var(--netral))",
                     bg: "hsl(216, 24%, 96%)",
                 },
+                error: {
+                    DEFAULT: "hsl(var(--error))",
+                    bg: "hsl(5, 86%, 97%)",
+                },
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",

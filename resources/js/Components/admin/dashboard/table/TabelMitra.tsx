@@ -17,10 +17,17 @@ import {
 } from "@/Components/ui/table";
 import { Link } from "@inertiajs/react";
 import { Eye, Pencil } from "lucide-react";
-import { TablePagination } from "./TabelPagination";
+import { TablePagination, TableSelectTotalPaginate } from "./TabelPagination";
 import { Button } from "@/Components/ui/button";
 import { MitrasProps } from "@/types";
 import { format } from "date-fns";
+
+const status = {
+    'Aktif': "bg-success-bg text-success",
+    'Non-Aktif': "bg-error-bg text-error",
+    'Pengajuan': "bg-warning-bg text-warning",
+}
+
 
 export default function DataTableMitra({ mitras }: { mitras: MitrasProps }) {
     return (
@@ -75,8 +82,8 @@ export default function DataTableMitra({ mitras }: { mitras: MitrasProps }) {
                                     {mitra.tgl_aktif ? format(mitra.tgl_aktif, 'dd MMMM y') : "-"}
                                 </TableCell>
                                 <TableCell>
-                                    <Badge className="text-success bg-success-bg hover:bg-success-bg">
-                                        Aktif
+                                    <Badge className={status[mitra.status] + ' text-nowrap'}>
+                                        {mitra.status}
                                     </Badge>
                                 </TableCell>
                                 <TableCell>
@@ -85,7 +92,7 @@ export default function DataTableMitra({ mitras }: { mitras: MitrasProps }) {
                                         variant={"ghost"}
                                         className="px-2"
                                     >
-                                        <Link href={"/admin/mitra/1/detail"}>
+                                        <Link href={`/admin/mitra/${mitra.id}`}>
                                             <Eye />
                                         </Link>
                                     </Button>
@@ -100,10 +107,10 @@ export default function DataTableMitra({ mitras }: { mitras: MitrasProps }) {
                 </Table>
                 {/* ikuti caraku yg di file TabelSektor */}
 
-                {/* <div className="p-4 border-t space-y-3 lg:space-y-0 lg:flex lg:justify-between">
-                    <TableSelectTotalPaginate />
-                    <TablePagination />
-                </div> */}
+                <div className="p-4 border-t space-y-3 lg:space-y-0 lg:flex lg:justify-between">
+                    <TableSelectTotalPaginate data={mitras} />
+                    <TablePagination data={mitras}/>
+                </div>
             </div>
         </div>
     );
