@@ -12,7 +12,7 @@ export default function LayoutAdmin({ children, user }: { children: ReactNode, u
                 {children}
             </main>
 
-            <Footer logged={true} />
+            <Footer logged={user ? true : false} />
         </div>
     );
 }

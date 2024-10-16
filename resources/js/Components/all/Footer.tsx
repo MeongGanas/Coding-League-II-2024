@@ -28,7 +28,7 @@ export default function Footer({ logged }: { logged: boolean }) {
                         className="bg-transparent"
                         asChild
                     >
-                        <Link href="/mitra/register">Masuk sebagai mitra</Link>
+                        <Link href="/register">Masuk sebagai mitra</Link>
                     </Button>
                 )}
             </div>

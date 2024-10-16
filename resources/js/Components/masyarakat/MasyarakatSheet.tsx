@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { Link } from "@inertiajs/react";
 import NavLink from "../all/NavLink";
 
-export default function AdminSheet() {
+export default function MasyarakatSheet() {
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -27,31 +27,36 @@ export default function AdminSheet() {
                         />
                     </Link>
                     <NavLink
-                        nama="Dashboard"
-                        href="/admin/dashboard"
-                        active="dashboard"
+                        nama="Beranda"
+                        href="/"
+                        active="beranda"
+                    />
+                    <NavLink
+                        nama="Tentang"
+                        href="/tentang"
+                        active="tentang"
                     />
                     <NavLink
                         nama="Kegiatan"
-                        href="/admin/kegiatan"
+                        href="/kegiatan"
                         active="kegiatan"
                     />
                     <NavLink
-                        nama="Proyek"
-                        href="/admin/proyek"
-                        active="proyek"
+                        nama="Statistik"
+                        href="/statistik"
+                        active="statistik"
                     />
                     <NavLink
                         nama="Sektor"
-                        href="/admin/sektor"
+                        href="/sektor"
                         active="sektor"
                     />
                     <NavLink
                         nama="Laporan"
-                        href="/admin/laporan"
+                        href="/laporan"
                         active="laporan"
                     />
-                    <NavLink nama="Mitra" href="/admin/mitra" active="mitra" />
+                    <NavLink nama="Mitra" href="/mitra" active="mitra" />
                 </nav>
             </SheetContent>
         </Sheet>

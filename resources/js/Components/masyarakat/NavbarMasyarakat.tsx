@@ -13,6 +13,7 @@ import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 import { User as UserType } from "@/types";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
 import LogoutButton from "../all/LogoutButton";
+import MasyarakatSheet from "./MasyarakatSheet";
 
 export default function NavbarMasyarakat({ user }: { user: UserType }) {
     return (
@@ -105,7 +106,7 @@ export default function NavbarMasyarakat({ user }: { user: UserType }) {
                             )}
                         </div>
                     </div>
-                    {/* <AdminSheet /> */}
+                    <MasyarakatSheet />
                 </div>
             </div>
         </header>
