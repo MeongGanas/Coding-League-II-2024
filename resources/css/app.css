@@ -85,3 +85,7 @@
     width: 0;
     display: none;
 }
+
+.tablerow>.sortable:hover {
+    @apply bg-gray-200
+}

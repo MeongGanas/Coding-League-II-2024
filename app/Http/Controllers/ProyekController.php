@@ -17,6 +17,19 @@ class ProyekController extends Controller
     {
         $query = Proyek::latest();
 
+        $possibleYear = Proyek::selectRaw('YEAR(tgl_awal) as year')
+            ->distinct()
+            ->get()
+            ->pluck('year');
+
+        if (request("tahun")) {
+            $query->whereYear('tgl_awal', request("tahun"));
+        }
+
+        if (request("sektor")) {
+            $query->where('sektor_id', request("sektor"));
+        }
+
         if (request("search")) {
             $searchTerm = request("search");
 
@@ -35,7 +48,8 @@ class ProyekController extends Controller
 
         return Inertia::render('Admin/Proyek/Index', [
             'proyeks' => $proyeks,
-            'sektors' => Sektor::latest()->get()
+            'sektors' => Sektor::latest()->get(),
+            'possibleYear' => $possibleYear
         ]);
     }
 

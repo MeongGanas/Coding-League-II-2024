@@ -16,7 +16,7 @@ import {
     TableRow,
 } from "@/Components/ui/table";
 import { Link } from "@inertiajs/react";
-import { Eye } from "lucide-react";
+import { ArrowBigDown, ArrowDown, Eye } from "lucide-react";
 import { TablePagination, TableSelectTotalPaginate } from "./TabelPagination";
 import { Button } from "@/Components/ui/button";
 import formatPrice from "@/lib/formatPrice";
@@ -24,7 +24,7 @@ import { id } from 'date-fns/locale';
 import { format } from "date-fns";
 import { LaporanProps } from "@/types";
 
-const statusColor = {
+const statusColor: { [key: string]: string } = {
     "Diterima": "text-success bg-success-bg hover:bg-success-bg",
     "Revisi": "text-warning bg-warning-bg hover:bg-warning-bg",
     "Draf": "text-netral bg-netral-bg hover:bg-netral-bg",
@@ -36,9 +36,9 @@ export default function DataTableLaporan({ laporans }: { laporans: LaporanProps 
             <div className="bg-white rounded-md border">
                 <Table className="overflow-x-auto">
                     <TableHeader>
-                        <TableRow>
-                            <TableHead className="min-w-[300px] uppercase font-bold text-black">
-                                Judul Laporan
+                        <TableRow className="tablerow">
+                            <TableHead className="sortable min-w-[300px] uppercase font-bold text-black">
+                                Judul Laporan <ArrowDown className="w-4 h-4 ml-1 rounded-md inline"  />
                             </TableHead>
                             <TableHead className="uppercase font-bold text-black">
                                 Mitra

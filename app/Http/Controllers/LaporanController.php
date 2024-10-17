@@ -24,16 +24,14 @@ class LaporanController extends Controller
             ->pluck('year');
 
         if (request("tahun")) {
-            $tahun = request("tahun");
-            if (request("kuartal")) {
-                $kuartal = request("kuartal");
+            $query->whereYear('realisasi_date', request("tahun"));
+        }
 
-                $query->whereYear('realisasi_date', $tahun)
-                    ->whereMonth('realisasi_date', '>=', ($kuartal - 1) * 3 + 1)
-                    ->whereMonth('realisasi_date', '<=', $kuartal * 3);
-            } else {
-                $query->whereYear('realisasi_date', $tahun);
-            }
+        if (request("kuartal")) {
+            $kuartal = request("kuartal");
+
+            $query->whereMonth('realisasi_date', '>=', ($kuartal - 1) * 3 + 1)
+                ->whereMonth('realisasi_date', '<=', $kuartal * 3);
         }
 
         if (request("search")) {
@@ -108,7 +106,20 @@ class LaporanController extends Controller
 
     public function downloadCSV()
     {
-        $laporans = Laporan::all();
+        $query = Laporan::query();
+
+        if (request("tahun")) {
+            $query->whereYear('realisasi_date', request("tahun"));
+        }
+
+        if (request("kuartal")) {
+            $kuartal = request("kuartal");
+
+            $query->whereMonth('realisasi_date', '>=', ($kuartal - 1) * 3 + 1)
+                ->whereMonth('realisasi_date', '<=', $kuartal * 3);
+        }
+
+        $laporans = $query->get();
 
         $csvData[] = [
             'ID',
@@ -157,7 +168,20 @@ class LaporanController extends Controller
 
     public function downloadPDF()
     {
-        $laporans = Laporan::all();
+        $query = Laporan::query();
+
+        if (request("tahun")) {
+            $query->whereYear('realisasi_date', request("tahun"));
+        }
+
+        if (request("kuartal")) {
+            $kuartal = request("kuartal");
+
+            $query->whereMonth('realisasi_date', '>=', ($kuartal - 1) * 3 + 1)
+                ->whereMonth('realisasi_date', '<=', $kuartal * 3);
+        }
+
+        $laporans = $query->get();
 
         $pdf = Pdf::loadView('pdfs.laporans', compact('laporans'));
 
