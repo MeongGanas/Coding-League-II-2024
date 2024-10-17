@@ -17,6 +17,8 @@ class Laporan extends Model
     }
 
     protected $casts = [
-        'photos' => 'array'
+        'photos' => 'array',
+        'realisasi_date' => 'datetime',
+        'tgl_kirim' => 'datetime',
     ];
 }

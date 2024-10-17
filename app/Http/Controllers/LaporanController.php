@@ -18,6 +18,24 @@ class LaporanController extends Controller
     {
         $query = Laporan::latest()->with('mitra');
 
+        $possibleYear = Laporan::selectRaw('YEAR(realisasi_date) as year')
+            ->distinct()
+            ->get()
+            ->pluck('year');
+
+        if (request("tahun")) {
+            $tahun = request("tahun");
+            if (request("kuartal")) {
+                $kuartal = request("kuartal");
+
+                $query->whereYear('realisasi_date', $tahun)
+                    ->whereMonth('realisasi_date', '>=', ($kuartal - 1) * 3 + 1)
+                    ->whereMonth('realisasi_date', '<=', $kuartal * 3);
+            } else {
+                $query->whereYear('realisasi_date', $tahun);
+            }
+        }
+
         if (request("search")) {
             $searchTerm = request("search");
 
@@ -33,7 +51,8 @@ class LaporanController extends Controller
         $items = $query->paginate($paginate);
 
         return Inertia::render('Admin/Laporan/Index', [
-            'laporans' => $items
+            'laporans' => $items,
+            'possibleYear' => $possibleYear
         ]);
     }
 

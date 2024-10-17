@@ -18,7 +18,7 @@ class LaporanFactory extends Factory
     public function definition(): array
     {
 
-        $pastYear = $this->faker->dateTimeBetween('-1 years', 'now');
+        $pastYear = $this->faker->dateTimeBetween('-6 years', 'now');
 
         return [
             'name' => $this->faker->text(50),
