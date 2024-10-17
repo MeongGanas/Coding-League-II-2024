@@ -25,9 +25,8 @@ export default function Index({ auth: { user }, mitras }: PageProps<{ mitras: Mi
     const [selectedValue, setSelectedValue] = useState(sortall || "terbaru");
 
     const handleFilterChange = (value: string) => {
-        setSelectedValue(value);
         if (value === "terbaru") {
-            params.set("sortall", "terbaru");
+            params.delete("sortall");
         } else if (value === "terlama") {
             params.set("sortall", "terlama");
         }

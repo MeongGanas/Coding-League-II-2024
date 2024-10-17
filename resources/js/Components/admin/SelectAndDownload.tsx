@@ -1,3 +1,7 @@
+// TODO: ini tahun gabisa di set cuk
+// CEK CLAUDE, kekna sudahka tanya tdi
+// PENGINGAT JI INI
+
 import { Button } from "@/Components/ui/button";
 import {
     Select,
@@ -9,9 +13,11 @@ import {
 } from "@/Components/ui/select";
 import DownloadButtons from "./DownloadButtons";
 import { Sektor } from "@/types";
+import { useEffect, useState } from "react";
 
 export default function SelectAndDownload({
     tahun,
+    tahunOptions,
     kuartal,
     sektor,
     mitra,
@@ -20,12 +26,32 @@ export default function SelectAndDownload({
 
 }: {
     tahun?: boolean;
+    tahunOptions?: string[];
     kuartal?: boolean;
     sektor?: boolean;
     mitra?: boolean;
     sektors?: Sektor[];
     menu: string;
 }) {
+    const params = new URLSearchParams(window.location.search);
+    let paramChanged = 0
+
+    const handleParamSet = (param: string, value: string) => {
+        paramChanged = 1
+        if (value) {
+            params.set(param, value);
+        } else {
+            params.delete(param);
+        }
+    }
+    const commitParams = () => {
+        if (paramChanged === 0) {
+            return;
+        }
+        window.location.replace(
+            `${window.location.pathname}?${params.toString()}`
+        );
+    }
 
     return (
         <div
@@ -35,19 +61,30 @@ export default function SelectAndDownload({
                 } gap-4 items-center`}
         >
             {tahun && (
-                <Select>
+                <Select
+                onValueChange={(value) => handleParamSet("tahun", value)}
+                >
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder="Pilih Tahun" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectItem value="2024">2024</SelectItem>
+                            {tahunOptions && tahunOptions.map(tahun => (
+                                <SelectItem value={tahun} key={tahun}>{tahun}</SelectItem>
+                            ))}
                         </SelectGroup>
                     </SelectContent>
                 </Select>
             )}
             {kuartal && (
-                <Select>
+                <Select
+                onValueChange={
+                    (value) => handleParamSet("kuartal", value)
+                }
+                defaultValue={
+                    params.get("kuartal") || ""
+                }
+                >
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder="Pilih Kuartal" />
                     </SelectTrigger>
@@ -98,6 +135,7 @@ export default function SelectAndDownload({
             )}
             <div className="col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <Button
+                    onClick={commitParams}
                     className="bg-primary border-primary hover:bg-red-700"
                     type="submit"
                 >
