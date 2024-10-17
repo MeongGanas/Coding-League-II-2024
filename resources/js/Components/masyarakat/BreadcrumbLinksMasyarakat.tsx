@@ -20,7 +20,7 @@ export default function BreadcrumLinksMasyarakat({
     textWhite?: boolean;
 }) {
     const currentPath = window.location.pathname.split("/").slice(1);
-    const pathLoop = currentPath.slice(1, -1);
+    const pathLoop = currentPath.slice(0, -1);
 
     let builtPath = basePath;
 
@@ -41,17 +41,14 @@ export default function BreadcrumLinksMasyarakat({
 
                     return (
                         <React.Fragment key={i}>
-                            {i < currentPath.length - 1 && (
+                            {i < pathLoop.length && (
                                 <span className="text-[#E66445]">/</span>
                             )}
                             <BreadcrumbItem>
                                 <BreadcrumbLink asChild>
                                     <Link
                                         href={builtPath}
-                                        className={`capitalize ${textWhite
-                                            ? "text-white hover:text-primary-bg"
-                                            : ""
-                                            }`}
+                                        className={`text-[#E66445] capitalize hover:text-red-200 text-base`}
                                     >
                                         {path}
                                     </Link>
