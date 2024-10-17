@@ -1,12 +1,14 @@
 import { Link } from "@inertiajs/react";
 import { Button } from "../../ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/Components/ui/carousel";
+import { Divide } from "lucide-react";
+import { useState } from "react";
 
 export default function WelcomeSection() {
     return (
         <div className="relative">
             <div className="py-10">
-                <div className="w-1/2 bg-primary-darker absolute h-full top-0"></div>
+                <div className="w-[40%] bg-primary-darker absolute h-full top-0"></div>
                 <div className="container">
                     <div className="bg-[url('/images/masyarakat/welcome.png')] bg-cover bg-no-repeat bg-center w-full h-screen xl:h-[600px] relative">
                         <div className="h-full w-full bg-black/60 absolute top-0 left-0 flex flex-col justify-center gap-5 px-5 md:px-10">
@@ -28,8 +30,15 @@ export default function WelcomeSection() {
 }
 
 function NewsCarousel() {
+
+    const [activeSlide, setActiveSlide] = useState(0);
+
+    const onSlideChange = (page: number) => {
+        setActiveSlide(page);
+    }
+
     return (
-        <Carousel className="bg-[#101828D9] py-10 px-12 xl:absolute text-white xl:w-[600px] xl:left-1/2 xl:-bottom-10">
+        <Carousel onSlideChange={onSlideChange} className="bg-[#101828D9] py-10 px-12 xl:absolute text-white xl:w-[600px] xl:left-1/2 xl:-bottom-10">
             <CarouselContent>
                 {Array.from({ length: 5 }).map((_, index) => (
                     <CarouselItem key={index}>
@@ -43,8 +52,16 @@ function NewsCarousel() {
                     </CarouselItem>
                 ))}
             </CarouselContent>
-            <CarouselPrevious className="text-white left-2 bg-transparent border-0 hover:bg-white/10 hover:text-white" />
-            <CarouselNext className="text-white right-2 bg-transparent border-0 hover:bg-white/10 hover:text-white" />
+            <div className="w-full h-[1px] bg-white mt-5" />
+            <div className="w-full flex gap-2">
+                {Array.from({ length: 5 }).map((_, index) => (
+                    <div key={index} className={`mt-5 h-[5px] bg-white carouselStateAnimation
+                        transition-all duration-300 ease-in-out rounded-lg
+                         ${activeSlide === index ? "w-10 bg-red-700" : "w-4"}`} />
+                ))}
+            </div>
+            {/* <CarouselPrevious className="text-white left-2 bg-transparent border-0 hover:bg-white/10 hover:text-white" /> */}
+            {/* <CarouselNext className="text-white right-2 bg-transparent border-0 hover:bg-white/10 hover:text-white" /> */}
         </Carousel>
     )
 }
