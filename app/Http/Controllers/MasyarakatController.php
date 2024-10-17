@@ -17,7 +17,7 @@ class MasyarakatController extends Controller
 
     public function about()
     {
-        return Inertia::render('Masyarakat/About');
+        return Inertia::render('Masyarakat/Tentang');
     }
 
     public function statistik()
