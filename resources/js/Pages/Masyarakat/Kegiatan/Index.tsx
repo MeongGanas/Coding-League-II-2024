@@ -4,9 +4,23 @@ import OtherWelcomeSection from "@/Components/masyarakat/OtherWelcomeSection";
 import { Button } from "@/Components/ui/button";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
 import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
-import { PageProps } from "@/types";
+import { Kegiatan, PageProps } from "@/types";
+import { useState } from "react";
 
-export default function Kegiatan({ auth: { user } }: PageProps) {
+export default function KegiatanPage({ auth: { user }, kegiatans }: PageProps<{ kegiatans: Kegiatan[] }>) {
+    const [currentMax, setCurrentMax] = useState(8)
+    const [kegiatanData, setKegiatanData] = useState(kegiatans.slice(0, currentMax));
+
+    const muatLebihBanyak = () => {
+        setKegiatanData(kegiatans.slice(0, currentMax + 8))
+        setCurrentMax(currentMax + 8)
+    }
+
+    const muatLebihSedikit = () => {
+        setKegiatanData(kegiatans.slice(0, currentMax - 8))
+        setCurrentMax(currentMax - 8)
+    }
+
     return (
         <LayoutMasyarakat user={user} title="Kegiatan">
             <OtherWelcomeSection title="Kegiatan" desc="Kegiatan terkini dari CSR Kabupaten Cirebon" />
@@ -32,19 +46,22 @@ export default function Kegiatan({ auth: { user } }: PageProps) {
                         </div>
                     </div>
 
-                    <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
-                        <KegiatanCard />
-                        <KegiatanCard />
-                        <KegiatanCard />
-                        <KegiatanCard />
-                        <KegiatanCard />
-                        <KegiatanCard />
-                        <KegiatanCard />
-                        <KegiatanCard />
-                    </div>
+                    {kegiatans ? (
+                        <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
+                            {kegiatanData.map((kegiatan) => (
+                                <KegiatanCard kegiatan={kegiatan} />
+                            ))}
+                        </div>
+                    ) : (
+                        <h1 className="text-center">Belum ada data proyek</h1>
+                    )}
 
                     <div className="flex justify-center">
-                        <Button variant={"outline"}>Muat lebih banyak</Button>
+                        {(currentMax === kegiatans.length || currentMax > kegiatans.length) && currentMax > 8 ? (
+                            <Button variant={"outline"} type="button" onClick={muatLebihSedikit} className="hover:bg-primary hover:border-primary hover:text-white">Muat lebih sedikit</Button>
+                        ) : (
+                            <Button variant={"outline"} type="button" onClick={muatLebihBanyak} className="hover:bg-primary hover:border-primary hover:text-white">Muat lebih banyak</Button>
+                        )}
                     </div>
                 </div>
             </div>

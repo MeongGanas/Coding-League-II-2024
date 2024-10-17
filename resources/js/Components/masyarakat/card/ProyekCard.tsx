@@ -7,7 +7,7 @@ import { MapPin } from "lucide-react";
 export default function ProyekCard({ proyek }: { proyek: Proyek }) {
     return (
         <Link href={`/program/${proyek.id}/proyek`} className="bg-white">
-            <img src="/storage/example.jpg" alt="" />
+            <img src={`/storage/${proyek.image}`} alt={proyek.name} />
             <div className="p-5 border space-y-4">
                 <h1 className="font-bold text-xl md:text-2xl">{proyek.name}</h1>
                 <div className="p-2 bg-[#F4F4F4]">

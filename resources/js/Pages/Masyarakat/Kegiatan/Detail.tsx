@@ -4,14 +4,16 @@ import OtherWelcomeSection from "@/Components/masyarakat/OtherWelcomeSection";
 import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
 import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
-import { PageProps } from "@/types";
+import { Kegiatan, PageProps } from "@/types";
 import { Link } from "@inertiajs/react";
+import { format } from "date-fns";
 import { Facebook, Instagram, Link as LinkIcon, Twitter, TwitterIcon } from "lucide-react";
 
-export default function KegiatanDetail({ auth: { user } }: PageProps) {
+export default function KegiatanDetail({ auth: { user }, kegiatan, kegiatanLainnya }: PageProps<{ kegiatan: Kegiatan, kegiatanLainnya: Kegiatan[] }>) {
+    console.log(kegiatanLainnya)
     return (
         <LayoutMasyarakat user={user} title="Kegiatan Detail">
-            <OtherWelcomeSection title="Pemkab Cirebon Terima Bantuan PJU Tematik dari Bank BJB" desc="July 12, 2024" />
+            <OtherWelcomeSection title={kegiatan.name} desc={format(new Date(kegiatan.tgl_terbit), 'MMMM dd, y')} />
             <div className="container py-10 max-w-screen-sm mx-auto space-y-4">
                 <div className="space-y-4 border-b pb-10">
                     <Garis />
@@ -71,12 +73,12 @@ export default function KegiatanDetail({ auth: { user } }: PageProps) {
                     <h1 className="font-extrabold text-3xl lg:text-4xl">Kegiatan Lainnya</h1>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                    <KegiatanCard />
-                    <KegiatanCard />
-                    <KegiatanCard />
+                    {kegiatanLainnya && kegiatanLainnya.map((kegiatan) => (
+                        <KegiatanCard kegiatan={kegiatan} />
+                    ))}
                 </div>
                 <div className="flex justify-center">
-                    <Button variant={"outline"} asChild className="hover:bg-primary hover:border-primary hover:text-white"><Link href="/laporan">Lihat semua kegiatan</Link></Button>
+                    <Button variant={"outline"} asChild className="hover:bg-primary hover:border-primary hover:text-white"><Link href="/kegiatan">Lihat semua kegiatan</Link></Button>
                 </div>
             </div>
         </LayoutMasyarakat>

@@ -34,7 +34,7 @@ class MasyarakatController extends Controller
     {
         return Inertia::render('Masyarakat/Sektor/Index', [
             'sektors' => Sektor::with('proyeks')->latest()->get(),
-            'proyeks' => Proyek::with('sektor')->latest()->get(),
+            'proyeks' => Proyek::where('status', 'Terbit')->with('sektor')->latest()->get(),
         ]);
     }
     public function sektorDetail(Sektor $sektor)
@@ -67,12 +67,15 @@ class MasyarakatController extends Controller
 
     public function kegiatan()
     {
-        return Inertia::render('Masyarakat/Kegiatan/Index');
+        return Inertia::render('Masyarakat/Kegiatan/Index', [
+            'kegiatans' => Kegiatan::where('status', 'Terbit')->latest()->get()
+        ]);
     }
     public function kegiatanDetail(Kegiatan $kegiatan)
     {
         return Inertia::render('Masyarakat/Kegiatan/Detail', [
-            'kegiatan' => $kegiatan
+            'kegiatan' => $kegiatan,
+            'kegiatanLainnya' => Kegiatan::where('id', '!=', $kegiatan->id)->latest()->take(3)->get()
         ]);
     }
 

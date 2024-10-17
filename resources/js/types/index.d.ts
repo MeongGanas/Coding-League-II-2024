@@ -136,6 +136,34 @@ export interface LaporanProps {
     total: number;
 }
 
+export interface Kegiatan {
+    id: number;
+    name: string;
+    rincian: number;
+    kecamatan: string;
+    tgl_terbit: string;
+    deskripsi: string;
+    image: string;
+    status: string;
+    tags: string[];
+}
+
+export interface KegiatanProps {
+    current_page: number;
+    data: Kegiatan[];
+    first_page_url: string;
+    from: number;
+    last_page: number;
+    last_page_url: string;
+    links: { url: string | null; label: string; active: boolean }[];
+    next_page_url: string | null;
+    path: string;
+    per_page: number;
+    prev_page_url: string | null;
+    to: number;
+    total: number;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>
 > = T & {
