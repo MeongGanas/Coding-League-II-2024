@@ -15,6 +15,7 @@ export default function Dashboard({ auth: { user } }: PageProps) {
 
             <div className="container py-10 px-5">
                 <SelectAndDownload
+                    menu="dashboard"
                     tahun={true}
                     kuartal={true}
                     sektor={true}

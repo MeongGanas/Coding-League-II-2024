@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Laporan;
 use App\Http\Requests\StoreLaporanRequest;
 use App\Http\Requests\UpdateLaporanRequest;
-use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Response;
 use Inertia\Inertia;
 
@@ -91,8 +91,18 @@ class LaporanController extends Controller
     {
         $laporans = Laporan::all();
 
-        $csvData = [];
-        $csvData[] = ['ID', 'Name', 'Description', 'Realisasi', 'Realisasi Date']; // Add your column headers here
+        $csvData[] = [
+            'ID',
+            'Name',
+            'Proyek Name',
+            'Mitra ID',
+            'Lokasi',
+            'Realisasi',
+            'Realisasi Date',
+            'Rincian',
+            'Tgl Kirim',
+            'Status',
+        ];
 
         foreach ($laporans as $laporan) {
             $csvData[] = [
@@ -130,8 +140,8 @@ class LaporanController extends Controller
     {
         $laporans = Laporan::all();
 
-        $pdf = FacadePdf::loadView('admin.laporans.pdf', compact('laporans'));
+        $pdf = Pdf::loadView('pdfs.laporans', compact('laporans'));
 
-        return $pdf->download('laporans.pdf');
+        return $pdf->download(date('Y-m-d') . '-laporan.pdf');
     }
 }

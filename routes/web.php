@@ -30,10 +30,14 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
     Route::get("dashboard", function () {
         return Inertia::render('Admin/Dashboard');
     })->name('dashboardAdmin');
+    Route::prefix('download')->group(function () {
+        Route::get('laporan/csv', [LaporanController::class, 'downloadCSV']);
+        Route::get('laporan/pdf', [LaporanController::class, 'downloadPDF']);
+        Route::get('proyek/csv', [ProyekController::class, 'downloadCSV']);
+        Route::get('proyek/pdf', [ProyekController::class, 'downloadPDF']);
+    });
 
     Route::resource("laporan", LaporanController::class);
-    Route::get('download/laporan/csv', [LaporanController::class, 'downloadCSV']);
-    Route::get('download/laporan/pdf', [LaporanController::class, 'downloadPDF']);
     Route::resource("proyek", ProyekController::class);
     Route::resource('sektor', SektorController::class);
     Route::resource("mitra", MitraController::class);

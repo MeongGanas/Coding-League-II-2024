@@ -31,8 +31,6 @@ const statusColor = {
 }
 
 export default function DataTableLaporan({ laporans }: { laporans: LaporanProps }) {
-    console.log(laporans);
-
     return (
         <div className="w-full">
             <div className="bg-white rounded-md border">

@@ -2,6 +2,7 @@ import { Download } from "lucide-react";
 import { Button } from "../ui/button";
 
 export default function DownloadButtons({ menu }: { menu: string }) {
+    console.log(menu)
     return (
         <>
             <Button className="border bg-white text-success hover:bg-success-bg"
