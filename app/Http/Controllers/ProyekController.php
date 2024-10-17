@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Proyek;
 use App\Models\Sektor;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -92,5 +93,47 @@ class ProyekController extends Controller
         $proyek->update(['status' => 'terbit']);
 
         return redirect()->intended(route('proyek.index'));
+    }
+
+    public function downloadCSV()
+    {
+        $proyeks = Proyek::all();
+
+        $filename = date('Y-m-d') . '-proyek.csv';
+
+        $handle = fopen($filename, 'w+');
+
+        fputcsv($handle, ['ID', 'Sektor ID', 'Name', 'Kecamatan', 'Deskripsi', 'Image', 'Status', 'Tanggal Awal', 'Tanggal Akhir']);
+
+        foreach ($proyeks as $proyek) {
+            fputcsv($handle, [
+                $proyek->id,
+                $proyek->sektor_id,
+                $proyek->name,
+                $proyek->kecamatan,
+                $proyek->deskripsi,
+                $proyek->image,
+                $proyek->status,
+                $proyek->tgl_awal,
+                $proyek->tgl_akhir
+            ]);
+        }
+
+        fclose($handle);
+
+        $headers = [
+            'Content-Type' => 'text/csv'
+        ];
+
+        return response()->download($filename, 'proyek.csv', $headers);
+    }
+
+    public function downloadPDF()
+    {
+        $proyeks = Proyek::all();
+
+        $pdf = Pdf::loadView('pdfs.proyeks', compact('proyeks'));
+
+        return $pdf->download(date('Y-m-d') . '-proyek.pdf');
     }
 }

@@ -17,15 +17,15 @@ export default function SelectAndDownload({
     mitra,
     sektors,
     menu
+
 }: {
     tahun?: boolean;
     kuartal?: boolean;
     sektor?: boolean;
     mitra?: boolean;
     sektors?: Sektor[];
-    menu: string
+    menu: string;
 }) {
-    let filter = "";
 
     return (
         <div

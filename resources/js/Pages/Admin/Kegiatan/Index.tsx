@@ -9,7 +9,6 @@ import { Head, Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
 export default function Index({ auth: { user }, kegiatans }: PageProps<{ kegiatans: any }>) {
-    console.log(kegiatans);
     return (
         <LayoutAdmin user={user}>
             <Head title="Kegiatan" />

@@ -22,7 +22,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
-        .card h2 {
+        .card h3 {
             margin-top: 0;
             color: #333;
         }
@@ -40,10 +40,11 @@
 </head>
 
 <body>
-    <h1>Laporans</h1>
+    <h1>Laporan</h1>
+    <p>{{ date('Y-m-d H:i:s') }}</p>
     @foreach($laporans as $laporan)
     <div class="card">
-        <h2>{{ $laporan->name }}</h2>
+        <h3>{{ $laporan->name }}</h3>
         <p><span class="label">ID:</span> {{ $laporan->id }}</p>
         <p><span class="label">Rincian:</span> {{ $laporan->rincian }}</p>
         <p><span class="label">Mitra:</span> {{ $laporan->mitra->perusahaan }}</p>

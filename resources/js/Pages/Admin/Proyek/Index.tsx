@@ -34,7 +34,7 @@ export default function Index({ auth: { user }, proyeks, sektors }: PageProps<{ 
                     <CategoryButton category="terbit" allLink="/admin/proyek" active="terbit" />
                     <CategoryButton category="draf" allLink="/admin/proyek" active="draf" />
                 </div>
-                <SelectAndDownload tahun={true} sektor={true} sektors={sektors} />
+                <SelectAndDownload tahun={true} sektor={true} sektors={sektors} menu="proyek" />
                 <SearchForm />
                 <DataTableProyek proyeks={proyeks} />
             </div>

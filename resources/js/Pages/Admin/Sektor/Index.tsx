@@ -8,7 +8,6 @@ import { Head, Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
 export default function Index({ auth: { user }, sektors }: PageProps<{ sektors: SektorsProps }>) {
-    console.log(sektors)
     return (
         <LayoutAdmin user={user}>
             <Head title="Sektor" />

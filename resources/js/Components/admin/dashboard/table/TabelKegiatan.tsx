@@ -28,8 +28,6 @@ const statusColor = {
 }
 
 export default function DataTableKegiatan({kegiatans}: any) {
-
-    console.log(kegiatans);
     return (
         <div className="w-full">
             <div className="bg-white rounded-md border">
@@ -58,21 +56,6 @@ export default function DataTableKegiatan({kegiatans}: any) {
                     </TableHeader>
                     <TableBody>
                         {kegiatans.data.length > 0 ? kegiatans.data.map((kegiatan: any) => (
-// created_at: "2024-10-14T16:13:01.000000Z"
-// ​​​
-// deskripsi: "Ut ratione est accusantium labore. Ad tempore beatae et sunt ab incidunt dicta sed."
-// ​​​
-// id: 1
-// ​​​
-// image: "example.jpg"
-// ​​​
-// name: "Accusantium ut minima in possimus."
-// ​​​
-// rincian: "Id ex illum sed. Veniam pariatur inventore ratione natus non ut magnam. Autem hic fuga est ipsam qui."
-// ​​​
-// status: "Draf"
-// ​​​
-
                         <TableRow className="odd:bg-[#FCFCFD] even:bg-white" key={kegiatan.id}>
                         <TableCell className="text-base min-w-[300px]">
                             {
