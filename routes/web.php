@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', [MasyarakatController::class, 'home'])->name('beranda');
+
 Route::get('/tentang', [MasyarakatController::class, 'about'])->name('tentang');
+Route::get('/tentang/pengajuan', [MasyarakatController::class, 'pengajuan'])->name('tentang.pengajuan');
+
 Route::get('/statistik', [MasyarakatController::class, 'statistik'])->name('statistik');
 
 Route::get('/sektor', [MasyarakatController::class, 'sektor'])->name('sektor');

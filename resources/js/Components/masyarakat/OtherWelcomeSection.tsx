@@ -1,6 +1,6 @@
 import BreadcrumLinksMasyarakat from "./BreadcrumbLinksMasyarakat";
 
-export default function OtherWelcomeSection() {
+export default function OtherWelcomeSection({ title, desc }: { title: string, desc: string }) {
     return (
         <div className="relative">
             <div className="py-10">
@@ -11,10 +11,10 @@ export default function OtherWelcomeSection() {
                             <div className="text-white space-y-2 w-full">
                                 <BreadcrumLinksMasyarakat basePath="/" />
                                 <h1 className="font-bold text-5xl md:text-5xl lg:text-6xl capitalize">
-                                    tentang
+                                    {title}
                                 </h1>
                                 <p className="text-base sm:text-lg lg:text-xl text-light">
-                                    Tentang CSR Kabupaten Cirebon
+                                    {desc}
                                 </p>
                             </div>
                         </div>

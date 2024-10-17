@@ -10,8 +10,8 @@ import PanduanSection from "@/Components/masyarakat/tentang/PanduanSection";
 
 export default function Home({ auth: { user } }: PageProps) {
     return (
-        <LayoutMasyarakat user={user} title="Home">
-            <OtherWelcomeSection />
+        <LayoutMasyarakat user={user} title="Tentang">
+            <OtherWelcomeSection title="Tentang" desc="Tentang CSR Kabupaten Cirebon" />
             <WhatSection />
             <TujuanSection />
             <ManfaatSection />
