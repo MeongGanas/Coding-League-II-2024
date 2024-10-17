@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kegiatan;
 use App\Models\Laporan;
 use App\Models\Mitra;
+use App\Models\Proyek;
 use App\Models\Sektor;
 use Inertia\Inertia;
 
@@ -31,18 +32,25 @@ class MasyarakatController extends Controller
 
     public function sektor()
     {
-        return Inertia::render('Masyarakat/Sektor/Index');
+        return Inertia::render('Masyarakat/Sektor/Index', [
+            'sektors' => Sektor::with('proyeks')->latest()->get(),
+            'proyeks' => Proyek::with('sektor')->latest()->get(),
+        ]);
     }
     public function sektorDetail(Sektor $sektor)
     {
+        $sektor->load('proyeks');
+
         return Inertia::render('Masyarakat/Sektor/Detail', [
             'sektor' => $sektor
         ]);
     }
-    public function sektorProyek(Sektor $sektor)
+    public function sektorProyek(Proyek $proyek)
     {
+        $proyek->load('sektor');
+
         return Inertia::render('Masyarakat/Sektor/Proyek', [
-            'sektor' => $sektor
+            'proyek' => $proyek
         ]);
     }
 

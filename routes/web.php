@@ -18,7 +18,7 @@ Route::get('/statistik', [MasyarakatController::class, 'statistik'])->name('stat
 
 Route::get('/sektor', [MasyarakatController::class, 'sektor'])->name('sektor');
 Route::get('/sektor/{sektor}/detail', [MasyarakatController::class, 'sektorDetail'])->name('sektor.detail');
-Route::get('/sektor/{sektor}/proyek', [MasyarakatController::class, 'sektorProyek'])->name('sektor.proyek');
+Route::get('/program/{proyek}/proyek', [MasyarakatController::class, 'sektorProyek'])->name('sektor.proyek');
 
 Route::get('/laporan', [MasyarakatController::class, 'laporan'])->name('laporan');
 Route::get('/laporan/{laporan}/detail', [MasyarakatController::class, 'laporanDetail'])->name('laporan.detail');

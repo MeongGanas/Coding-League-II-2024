@@ -12,6 +12,7 @@ export interface Sektor {
     name: string;
     deskripsi: string;
     image: string;
+    proyeks?: Proyek[];
 }
 
 export interface SektorsProps {
@@ -37,9 +38,10 @@ export interface Proyek {
     kecamatan: string;
     tgl_awal: string;
     tgl_akhir: string | null;
-    deksripsi: string;
+    deskripsi: string;
     image: string;
     status: string;
+    sektor: Sektor;
 }
 
 export interface ProyekProps {
