@@ -13,11 +13,9 @@ import React from "react";
 export default function BreadcrumLinksMasyarakat({
     basePath,
     pagePath,
-    textWhite,
 }: {
     basePath: string;
     pagePath?: string;
-    textWhite?: boolean;
 }) {
     const currentPath = window.location.pathname.split("/").slice(1);
     const pathLoop = currentPath.slice(0, -1);
