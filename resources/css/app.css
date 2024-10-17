@@ -86,6 +86,11 @@
     display: none;
 }
 
+.tablerow>.sortable {
+    @apply bg-white transition-colors duration-300 ease-in-out;
+}
+
 .tablerow>.sortable:hover {
-    @apply bg-gray-200
+    @apply bg-gray-200 cursor-pointer;
+    /* anim */
 }

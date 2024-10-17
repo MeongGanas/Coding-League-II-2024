@@ -44,6 +44,21 @@ class LaporanController extends Controller
             $query->where('status', request("category"));
         }
 
+        // if it works, don't touch it
+        if (request("sort")) {
+            $sort = request("sort");
+            $order = request("isAscending") === "true" ? 'asc' : 'desc';
+            if (request("with")) {
+                $relationTable = $sort . 's';
+                $relationColumn = request("with");
+                $query->join($relationTable, 'laporans.' . $sort . '_id', '=', $relationTable . '.id')
+                    ->orderBy($relationTable . '.' . $relationColumn, $order)
+                    ->select('laporans.*');
+            } else {
+                $query->orderBy($sort, $order);
+            }
+        }
+
         $paginate = request("paginate") ?? 5;
 
         $items = $query->paginate($paginate);
