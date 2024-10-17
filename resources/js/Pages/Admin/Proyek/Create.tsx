@@ -43,11 +43,9 @@ const proyekSchema = z.object({
     sektor_id: z.string(),
     kecamatan: z.string(),
     tgl_awal: z.date({
-        required_error: "A date of birth is required.",
+        required_error: "Tanggal awal is required.",
     }),
-    tgl_akhir: z.date({
-        required_error: "A date of birth is required.",
-    }).optional(),
+    tgl_akhir: z.date().optional(),
     deskripsi: z.string(),
     image: z
         .instanceof(FileList)
