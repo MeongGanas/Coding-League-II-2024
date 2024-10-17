@@ -15,13 +15,15 @@ export default function SelectAndDownload({
     kuartal,
     sektor,
     mitra,
-    sektors
+    sektors,
+    menu
 }: {
     tahun?: boolean;
     kuartal?: boolean;
     sektor?: boolean;
     mitra?: boolean;
     sektors?: Sektor[];
+    menu: string
 }) {
     let filter = "";
 
@@ -101,7 +103,7 @@ export default function SelectAndDownload({
                 >
                     Terapkan Filter
                 </Button>
-                <DownloadButtons />
+                <DownloadButtons menu={menu} />
             </div>
         </div>
     );

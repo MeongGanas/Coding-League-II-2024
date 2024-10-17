@@ -4,10 +4,10 @@ import SearchForm from "@/Components/admin/Search";
 import SelectAndDownload from "@/Components/admin/SelectAndDownload";
 import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
-import { PageProps } from "@/types";
+import { LaporanProps, PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 
-export default function Index({ auth: { user }, laporans }: PageProps<{ laporans: any }>) {
+export default function Index({ auth: { user }, laporans }: PageProps<{ laporans: LaporanProps }>) {
     return (
         <LayoutAdmin user={user}>
             <Head title="Laporan" />
@@ -22,7 +22,7 @@ export default function Index({ auth: { user }, laporans }: PageProps<{ laporans
                     <CategoryButton allLink="/admin/laporan" category="revisi" active="revisi" />
                     <CategoryButton allLink="/admin/laporan" category="ditolak" active="ditolak" />
                 </div>
-                <SelectAndDownload tahun={true} kuartal={true} />
+                <SelectAndDownload tahun={true} kuartal={true} menu="laporan" />
                 <SearchForm />
                 <DataTableLaporan laporans={laporans} />
             </div>
