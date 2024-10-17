@@ -13,7 +13,12 @@ class MasyarakatController extends Controller
 {
     public function home()
     {
-        return Inertia::render('Masyarakat/Home');
+        return Inertia::render('Masyarakat/Home', [
+            'kegiatans' => Kegiatan::where('status', 'Terbit')->latest()->take(4)->get(),
+            // 'proyeks' => Proyek::where('status', 'Terbit')->latest()->take(4)->get(),
+            // 'mitras' => Mitra::latest()->take(4)->get(),
+            'laporans' => Laporan::where('status', 'Diterima')->latest()->take(4)->get(),
+        ]);
     }
 
     public function about()

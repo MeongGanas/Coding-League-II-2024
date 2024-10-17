@@ -40,7 +40,7 @@ export default function ContactSection() {
                     </ul>
                 </div>
                 <div className="w-full flex justify-end">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15838.923362284768!2d107.54403470006717!3d-7.040885375920516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68ec69b223b3cb%3A0x8ec9c9cc90a1c5ce!2sJl.%20Raya%20Soreang%20-%20Banjaran%2C%20Kabupaten%20Bandung%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1729074575081!5m2!1sid!2sid" className="w-full rounded-md h-[400px] border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15838.923362284768!2d107.54403470006717!3d-7.040885375920516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e68ec69b223b3cb%3A0x8ec9c9cc90a1c5ce!2sJl.%20Raya%20Soreang%20-%20Banjaran%2C%20Kabupaten%20Bandung%2C%20Jawa%20Barat!5e0!3m2!1sid!2sid!4v1729074575081!5m2!1sid!2sid" className="w-full rounded-2xl h-[400px] border-0 " loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
         </div>

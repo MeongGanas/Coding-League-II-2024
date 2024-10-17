@@ -1,8 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/Components/ui/avatar";
+import { Laporan } from "@/types";
 import { Link } from "@inertiajs/react";
 import { User } from "lucide-react";
 
-export default function LaporanCard() {
+export default function LaporanCard({laporan}: {laporan: any[]}) {
     return (
         <Link href="/">
             <div className="relative">

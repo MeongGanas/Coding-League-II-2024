@@ -3,7 +3,7 @@ import Garis from "../Garis";
 import { Link } from "@inertiajs/react";
 import LaporanCard from "../card/LaporanCard";
 
-export default function LaporanSection() {
+export default function LaporanSection({laporans}: {laporans: any[]}) {
     return (
         <div className="relative">
             <img src="/images/masyarakat/hiasan_3.png" width={150} alt="hiasan" className="absolute left-0 top-0" />
@@ -13,10 +13,9 @@ export default function LaporanSection() {
                     <h1 className="font-extrabold text-3xl lg:text-4xl">Laporan Program <span className="block">Terbaru</span></h1>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                    <LaporanCard />
-                    <LaporanCard />
-                    <LaporanCard />
-                    <LaporanCard />
+                    {laporans.map((laporan, index) => (
+                        <LaporanCard key={index} laporan={laporan} />
+                    ))}
                 </div>
                 <div className="flex justify-center">
                     <Button variant={"outline"} asChild className="hover:bg-primary hover:border-primary hover:text-white"><Link href="/laporan">Lihat semua laporan program</Link></Button>
