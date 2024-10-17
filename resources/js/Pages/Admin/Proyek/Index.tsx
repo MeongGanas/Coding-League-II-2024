@@ -9,7 +9,7 @@ import { PageProps, ProyekProps, Sektor } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
-export default function Index({ auth: { user }, proyeks, sektors }: PageProps<{ proyeks: ProyekProps, sektors: Sektor[] }>) {
+export default function Index({ auth: { user }, proyeks, sektors, possibleYear }: PageProps<{ proyeks: ProyekProps, sektors: Sektor[], possibleYear: any }>) {
     return (
         <LayoutAdmin user={user}>
             <Head title="Proyek" />
@@ -34,7 +34,7 @@ export default function Index({ auth: { user }, proyeks, sektors }: PageProps<{ 
                     <CategoryButton category="terbit" allLink="/admin/proyek" active="terbit" />
                     <CategoryButton category="draf" allLink="/admin/proyek" active="draf" />
                 </div>
-                <SelectAndDownload tahun={true} sektor={true} sektors={sektors} menu="proyek" />
+                <SelectAndDownload tahun={true} sektor={true} sektors={sektors} tahunOptions={possibleYear} menu="proyek" />
                 <SearchForm />
                 <DataTableProyek proyeks={proyeks} />
             </div>

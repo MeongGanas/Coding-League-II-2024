@@ -34,26 +34,29 @@ export default function SelectAndDownload({
     menu: string;
 }) {
     const params = new URLSearchParams(window.location.search);
-    let paramChanged = false
+    let changedParams: string[] = [];
 
     const handleParamSet = (param: string, value: string) => {
-        paramChanged = true
         if (value) {
             params.set(param, value);
+            if (!changedParams.includes(param)) {
+                changedParams.push(param);
+            }
         } else {
             params.delete(param);
+            changedParams = changedParams.filter((p) => p !== param);
         }
     }
 
     const commitParams = () => {
-        if (!paramChanged) {
+        if (changedParams.length === 0) {
             window.location.replace(window.location.pathname);
             return;
         }
-
-        window.location.replace(
-            `${window.location.pathname}?${params.toString()}`
+        const newParams = new URLSearchParams(
+            changedParams.map(param => [param, params.get(param) as string])
         );
+        window.location.replace(`${window.location.pathname}?${newParams.toString()}`);
     }
 
     return (
@@ -85,9 +88,6 @@ export default function SelectAndDownload({
                 onValueChange={
                     (value) => handleParamSet("kuartal", value)
                 }
-                defaultValue={
-                    params.get("kuartal") || ""
-                }
                 >
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder="Pilih Kuartal" />
@@ -111,7 +111,9 @@ export default function SelectAndDownload({
                 </Select>
             )}
             {sektor && (
-                <Select>
+                <Select onValueChange={
+                    (value) => handleParamSet("kuartal", value)
+                }>
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder="Pilih Sektor" />
                     </SelectTrigger>
