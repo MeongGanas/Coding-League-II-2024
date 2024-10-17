@@ -59,7 +59,7 @@ export default function Index({ auth: { user }, mitras }: PageProps<{ mitras: Mi
                     <div className="col-span-4">
                         <SearchForm />
                     </div>
-                    <Select  onValueChange={handleFilterChange} value={selectedValue}>
+                    <Select onValueChange={handleFilterChange} value={selectedValue}>
                         <SelectTrigger className="w-full">
                             <SelectValue placeholder="Sortir" />
                         </SelectTrigger>

@@ -13,7 +13,7 @@ import {
 } from "@/Components/ui/select";
 import DownloadButtons from "./DownloadButtons";
 import { Sektor } from "@/types";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function SelectAndDownload({
     tahun,
@@ -34,20 +34,23 @@ export default function SelectAndDownload({
     menu: string;
 }) {
     const params = new URLSearchParams(window.location.search);
-    let paramChanged = 0
+    let paramChanged = false
 
     const handleParamSet = (param: string, value: string) => {
-        paramChanged = 1
+        paramChanged = true
         if (value) {
             params.set(param, value);
         } else {
             params.delete(param);
         }
     }
+
     const commitParams = () => {
-        if (paramChanged === 0) {
+        if (!paramChanged) {
+            window.location.replace(window.location.pathname);
             return;
         }
+
         window.location.replace(
             `${window.location.pathname}?${params.toString()}`
         );
@@ -62,16 +65,17 @@ export default function SelectAndDownload({
         >
             {tahun && (
                 <Select
-                onValueChange={(value) => handleParamSet("tahun", value)}
-                >
+                    onValueChange={(value) => handleParamSet("tahun", value)}>
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder="Pilih Tahun" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            {tahunOptions && tahunOptions.map(tahun => (
-                                <SelectItem value={tahun} key={tahun}>{tahun}</SelectItem>
-                            ))}
+                            {
+                                tahunOptions && tahunOptions.map(tahun => (
+                                    <SelectItem value={tahun} key={tahun}>{tahun}</SelectItem>
+                                ))
+                            }
                         </SelectGroup>
                     </SelectContent>
                 </Select>
