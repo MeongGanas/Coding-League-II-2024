@@ -10,12 +10,10 @@ export default function LaporanSection() {
                 <Garis />
                 <h1 className="font-extrabold text-3xl lg:text-4xl">Laporan Program <span className="block">Terbaru</span></h1>
             </div>
-            <div className="flex justify-center">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-screen-lg">
-                    <LaporanCard />
-                    <LaporanCard />
-                    <LaporanCard />
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <LaporanCard />
+                <LaporanCard />
+                <LaporanCard />
             </div>
             <div className="flex justify-center">
                 <Button variant={"outline"} asChild className="hover:bg-primary hover:border-primary hover:text-white"><Link href="/laporan">Lihat semua laporan program</Link></Button>

@@ -4,7 +4,7 @@ import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
 import { PageProps } from "@/types";
 import RealisasiProyekPublik from "@/Components/masyarakat/statistik/RealisasiProyekPublik";
 
-export default function Home({ auth: { user } }: PageProps) {
+export default function Statistik({ auth: { user } }: PageProps) {
     return (
         <LayoutMasyarakat user={user} title="Statistik">
             <OtherWelcomeSection title="Statistik" desc="Program CSR yang sudah berjalan di kabupaten cirebon" />

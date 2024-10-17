@@ -11,7 +11,7 @@ export default function WelcomeSection() {
                 <div className="w-[40%] bg-primary-darker absolute h-full top-0"></div>
                 <div className="container">
                     <div className="bg-[url('/images/masyarakat/welcome.png')] bg-cover bg-no-repeat bg-center w-full h-screen xl:h-[600px] relative">
-                        <div className="h-full w-full bg-black/60 absolute top-0 left-0 flex flex-col justify-center gap-5 px-5 md:px-10 pt-10">
+                        <div className="h-full w-full bg-black/70 absolute top-0 left-0 flex flex-col justify-center gap-5 px-5 md:px-10 pt-10">
                             <div className="text-white space-y-2 w-full md:w-[500px]">
                                 <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl capitalize">
                                     Selamat datang <span className="block">di portal CSR</span> Kab. Cirebon

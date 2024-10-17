@@ -2,7 +2,7 @@ import { Link } from "@inertiajs/react";
 
 export default function KegiatanCard() {
     return (
-        <Link href="/">
+        <Link href="/kegiatan/1/detail">
             <div className="relative">
                 <div className="absolute py-3 px-5 top-5 left-5 bg-primary text-white">
                     <h4 className="uppercase">27 Mar, 2024</h4>
