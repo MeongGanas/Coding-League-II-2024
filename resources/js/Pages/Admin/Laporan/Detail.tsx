@@ -1,3 +1,6 @@
+// TODO, aktifkan fitur tolak, terima, dan revisi (kalau revisi, akan jadi draf lagi setelah diedit oleh mitra)
+// LAST LEFT HERE
+
 import DetailCard from "@/Components/admin/dashboard/DetailCard";
 import {
     DialogRevisi,
@@ -14,6 +17,12 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { BriefcaseBusiness } from "lucide-react";
 
+const status: { [key: string]: string }= {
+    'Diterima': "bg-success-bg text-success hover:bg-success-bg",
+    'Revisi': "bg-warning-bg text-warning hover:bg-warning-bg",
+    'Ditolak': "bg-error-bg text-error hover:bg-error-bg",
+}
+
 export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan: Laporan }>) {
     return (
         <LayoutAdmin user={user}>
@@ -24,6 +33,11 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                 </div>
                 <h1 className="text-3xl font-bold">Detail Laporan</h1>
                 <div className="bg-white rounded-md p-6 space-y-4 border">
+                    {['Diterima', 'Revisi', 'Ditolak'].includes(laporan.status) &&
+                        <Badge className={status[laporan.status]}>
+                            {laporan.status}
+                        </Badge>
+                    }
                     <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
                         Social
                     </Badge>
@@ -76,13 +90,16 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                         </div>
                     </div>
                 </div>
-                <div className="bg-white rounded-md p-6 border">
-                    <div className="block sm:flex space-y-3 sm:space-y-0 sm:w-fit sm:mx-auto gap-5">
-                        <DialogTolak />
-                        <DialogRevisi />
-                        <DialogTerima />
+                {
+                    !['Ditolak', 'Diterima', 'Revisi'].includes(laporan.status) &&
+                    <div className="bg-white rounded-md p-6 border">
+                        <div className="block sm:flex space-y-3 sm:space-y-0 sm:w-fit sm:mx-auto gap-5">
+                            <DialogTolak />
+                            <DialogRevisi />
+                            <DialogTerima />
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </LayoutAdmin>
     );

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\MasyarakatController;
@@ -30,9 +31,7 @@ Route::get('/mitra', [MasyarakatController::class, 'mitra'])->name('mitra');
 Route::get('/mitra/{mitra}/detail', [MasyarakatController::class, 'mitraDetail'])->name('mitra.detail');
 
 Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
-    Route::get("dashboard", function () {
-        return Inertia::render('Admin/Dashboard');
-    })->name('dashboardAdmin');
+    Route::get("dashboard", [DashboardController::class, 'index'])->name('dashboardAdmin');
     Route::prefix('download')->group(function () {
         Route::get('laporan/csv', [LaporanController::class, 'downloadCSV']);
         Route::get('laporan/pdf', [LaporanController::class, 'downloadPDF']);

@@ -29,6 +29,7 @@ const statusColor: { [key: string]: string } = {
     "Diterima": "text-success bg-success-bg hover:bg-success-bg",
     "Revisi": "text-warning bg-warning-bg hover:bg-warning-bg",
     "Draf": "text-netral bg-netral-bg hover:bg-netral-bg",
+    "Ditolak": "text-error bg-error-bg hover:bg-error-bg",
 }
 
 const tableHeader = [
