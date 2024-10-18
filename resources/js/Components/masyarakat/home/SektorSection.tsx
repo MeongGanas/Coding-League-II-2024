@@ -3,11 +3,11 @@ import Garis from "../Garis";
 import { Button } from "@/Components/ui/button";
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
+import { Sektor } from "@/types";
 
 export default function SektorSection(
-    {sektors}: {sektors: any[]}
+    { sektors }: { sektors: Sektor[] }
 ) {
-    console.log(sektors)
     const [active, setActive] = useState('Sosial')
 
     return (
@@ -41,9 +41,8 @@ export default function SektorSection(
                     <div className="space-y-6">
                         <div className="relative">
                             <div className="w-[300px] h-60 bg-primary-darker"></div>
-                            <img src={`/storage/${
-                                sektors.find(sektor => sektor.name === active)?.image || "sektor_image/example.jpg"
-                            }`} width={300} className="absolute top-0 left-10" alt="gambar" />
+                            <img src={`/storage/${sektors.find(sektor => sektor.name === active)?.image || "sektor_image/example.jpg"
+                                }`} width={300} className="absolute top-0 left-10" alt="gambar" />
                         </div>
                         <p>{
                             sektors.find(sektor => sektor.name === active)?.deskripsi

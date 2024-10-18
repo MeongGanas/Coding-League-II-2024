@@ -1,6 +1,7 @@
+import { Mitra } from "@/types";
 import Garis from "../Garis";
 
-export default function MitraSection({mitras}: {mitras: any[]}) {
+export default function MitraSection({ mitras }: { mitras: Mitra[] }) {
     const totalImages = 10;
     const defaultImage = "/images/masyarakat/default_mitra.png";
 
@@ -14,12 +15,12 @@ export default function MitraSection({mitras}: {mitras: any[]}) {
                     {
                         mitras.map((mitra, index) => (
                             <div key={index} className="w-full object-cover center border-item-mitra">
-                                <img src={`/storage/${mitra.image}`} alt={mitra.nama} />
+                                <img src={`/storage/${mitra.image}`} alt={mitra.name ?? "mitra image"} />
                             </div>
                         ))
                     }
                     {
-                        Array.from({length: totalImages - mitras.length}, (_, index) => (
+                        Array.from({ length: totalImages - mitras.length }, (_, index) => (
                             <div key={index} className="w-full object-cover center border-item-mitra">
                                 <img src={defaultImage} alt="default" />
                             </div>

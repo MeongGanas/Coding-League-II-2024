@@ -2,8 +2,9 @@ import { Button } from "@/Components/ui/button";
 import Garis from "../Garis";
 import { Link } from "@inertiajs/react";
 import LaporanCard from "../card/LaporanCard";
+import { Laporan } from "@/types";
 
-export default function LaporanSection({laporans}: {laporans: any[]}) {
+export default function LaporanSection({ laporans }: { laporans: Laporan[] }) {
     return (
         <div className="relative">
             <img src="/images/masyarakat/hiasan_3.png" width={150} alt="hiasan" className="absolute left-0 top-0" />

@@ -20,7 +20,6 @@ class MasyarakatController extends Controller
             'dana_realisasi' => Laporan::sum('realisasi')
         ];
 
-
         return Inertia::render('Masyarakat/Home', [
             'kegiatans' => Kegiatan::where('status', 'Terbit')->latest()->take(4)->get(),
             'mitras' => Mitra::where('status', 'Aktif')->orderBy('tgl_daftar', 'desc')->take(10)->select('name', 'image', 'tgl_daftar')->get(),
@@ -43,7 +42,16 @@ class MasyarakatController extends Controller
 
     public function statistik()
     {
-        return Inertia::render('Masyarakat/Statistik');
+        $statistik = [
+            'total_proyek' => Proyek::count(),
+            'proyek_terealisasi' => Laporan::count(),
+            'mitra_bergabung' => Mitra::count(),
+            'dana_realisasi' => Laporan::sum('realisasi')
+        ];
+
+        return Inertia::render('Masyarakat/Statistik', [
+            'statistik' => $statistik
+        ]);
     }
 
     public function sektor()

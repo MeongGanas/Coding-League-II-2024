@@ -170,6 +170,13 @@ export interface KegiatanProps {
     total: number;
 }
 
+export interface Statistik {
+    total_proyek: number;
+    proyek_terealisasi: number;
+    mitra_bergabung: number;
+    dana_realisasi: number;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>
 > = T & {
