@@ -23,6 +23,12 @@ class SektorController extends Controller
                 ->orWhere('deskripsi', 'like', '%' . $searchTerm . '%');
         }
 
+        if (request("sort")) {
+            $sort = request("sort");
+            $order = request("order") ?? 'asc';
+            $query->orderBy($sort, $order);
+        }
+
         $paginate = request("paginate") ?? 5;
 
         $sektors = $query->paginate($paginate);

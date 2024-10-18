@@ -50,8 +50,12 @@ export default function SelectAndDownload({
 
     const commitParams = () => {
         if (changedParams.length === 0) {
-            window.location.replace(window.location.pathname);
-            return;
+            params.delete("tahun");
+            params.delete("kuartal");
+            params.delete("sektor");
+            params.delete("mitra");
+        } else {
+            params.delete("page");
         }
         const newParams = new URLSearchParams(
             changedParams.map(param => [param, params.get(param) as string])
@@ -112,14 +116,14 @@ export default function SelectAndDownload({
             )}
             {sektor && (
                 <Select onValueChange={
-                    (value) => handleParamSet("kuartal", value)
+                    (value) => handleParamSet("sektor", value)
                 }>
                     <SelectTrigger className="w-full">
                         <SelectValue placeholder="Pilih Sektor" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectItem value="semua" defaultChecked>Semua Sektor</SelectItem>
+                            {/* <SelectItem value="semua" defaultChecked>Semua Sektor</SelectItem> */}
                             {sektors && sektors.map(sektor => (
                                 <SelectItem value={sektor.id.toString()} key={sektor.id}>{sektor.name}</SelectItem>
                             ))}

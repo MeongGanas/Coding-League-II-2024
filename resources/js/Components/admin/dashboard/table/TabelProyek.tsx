@@ -1,3 +1,5 @@
+// TODO: jumlah mitra
+
 import { Badge } from "@/Components/ui/badge";
 import {
     Table,
@@ -8,21 +10,57 @@ import {
     TableRow,
 } from "@/Components/ui/table";
 import { Link } from "@inertiajs/react";
-import { Eye } from "lucide-react";
+import { ArrowDown, ArrowUp, Eye } from "lucide-react";
 import { TablePagination, TableSelectTotalPaginate } from "./TabelPagination";
 import { Button } from "@/Components/ui/button";
 import { ProyekProps } from "@/types";
 import { format } from "date-fns";
 import { id } from 'date-fns/locale';
 
+const tableHeader = [
+    {title: "Judul", sortable: true, sortKey: "name", className: "min-w-[300px]"},
+    {title: "Lokasi", sortable: true, sortKey: "kecamatan"},
+    {title: "Jumlah Mitra", sortable: true, sortKey: "mitra"},
+    {title: "tgl mulai", sortable: true, sortKey: "tgl_awal"},
+    {title: "Tgl Diterbitkan", sortable: true, sortKey: "tgl_akhir"},
+    {title: "Status", sortable: true, sortKey: "status"},
+    {title: "Aksi", className: "text-center"},
+]
+
 export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
+
+    const params = new URLSearchParams(window.location.search);
+    const currentSort = params.get("sort");
+    const order = params.get("order");
+
+    const handleSort = (sort?: string) => {
+        if (!sort) return;
+
+        if (currentSort === sort && order === "asc") {
+            params.delete("sort");
+            params.delete("order");
+            params.delete("page");
+            params.delete("with");
+        } else if (currentSort === sort && order === "desc") {
+            params.set("order", "asc" );
+        } else {
+            params.set("sort", sort);
+            params.set("order", "desc");
+            params.delete("page");
+        }
+
+        window.location.replace(
+            `${window.location.pathname}?${params.toString()}`
+        );
+    }
+
     return (
         <div className="w-full">
             <div className="bg-white rounded-md border">
                 <Table className="overflow-x-auto">
                     <TableHeader>
-                        <TableRow>
-                            <TableHead className="min-w-[300px] uppercase font-bold text-black">
+                        <TableRow className="tablerow">
+                            {/* <TableHead className="min-w-[300px] uppercase font-bold text-black">
                                 Judul
                             </TableHead>
                             <TableHead className="uppercase font-bold text-black">
@@ -42,7 +80,31 @@ export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
                             </TableHead>
                             <TableHead className="uppercase font-bold text-black">
                                 Aksi
-                            </TableHead>
+                            </TableHead> */}
+
+                            {
+                               tableHeader && tableHeader.map(header => (
+                                    <TableHead
+                                    key={header.title}
+                                     onClick={
+                                        () => {
+                                            if (header.sortable) {
+                                                handleSort(header.sortKey);
+                                            }
+                                        }
+                                    } className={`sortable uppercase font-bold text-black text-nowrap ${currentSort === header.sortKey ? '!bg-gray-200' : ''} ${header.className || ''}`}>
+                                        {header.title} {
+                                            header.sortable ?
+                                                currentSort === header.sortKey
+                                                ? order === "asc"
+                                                    ? <ArrowUp className="w-4 h-4 inline-block" />
+                                                    : <ArrowDown className="w-4 h-4 inline-block" />
+                                                : <ArrowDown className="w-4 h-4 inline-block" />
+                                            : null
+                                        }
+                                    </TableHead>
+                                ))
+                            }
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -54,7 +116,9 @@ export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
                                 <TableCell className="text-base">
                                     {proyek.kecamatan}
                                 </TableCell>
-                                <TableCell className="text-base">10</TableCell>
+                                <TableCell className="text-base">
+                                    10
+                                </TableCell>
                                 <TableCell className="text-base">
                                     {format(proyek.tgl_awal, 'dd MMMM y', { locale: id })}
                                 </TableCell>
