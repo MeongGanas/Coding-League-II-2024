@@ -91,6 +91,7 @@ export interface Mitra {
     alamat: string | null;
     deskripsi: string | null;
     image: string | null;
+    laporan?: Laporan[];
 }
 
 export interface MitrasProps {

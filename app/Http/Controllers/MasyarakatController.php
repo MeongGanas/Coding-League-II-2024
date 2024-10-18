@@ -97,16 +97,39 @@ class MasyarakatController extends Controller
     {
         return Inertia::render('Masyarakat/Kegiatan/Detail', [
             'kegiatan' => $kegiatan,
-            'kegiatanLainnya' => Kegiatan::where('id', '!=', $kegiatan->id)->latest()->take(3)->get()
+            'kegiatanLainnya' => Kegiatan::where('id', '!=', $kegiatan->id)->where('status', 'Terbit')->latest()->take(3)->get()
         ]);
     }
 
     public function mitra()
     {
-        return Inertia::render('Masyarakat/Mitra/Index');
+        $query = Mitra::withCount(['laporan as terbit_count' => function ($query) {
+            $query->where('status', 'Diterima');
+        }])->where('status', 'Aktif');
+
+        if (request("sortall") == "tersedikit") {
+            $query->orderBy('terbit_count', 'asc');
+        } else {
+            $query->orderBy('terbit_count', 'desc');
+        }
+
+        if (request("search")) {
+            $searchTerm = request("search");
+
+            $query->where('name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('perusahaan', 'like', '%' . $searchTerm . '%');
+        }
+
+        return Inertia::render('Masyarakat/Mitra/Index', [
+            'mitras' => $query->get()
+        ]);
     }
     public function mitraDetail(Mitra $mitra)
     {
+        $mitra->load(['laporan' => function ($query) {
+            $query->where('status', 'Terbit');
+        }]);
+
         return Inertia::render('Masyarakat/Mitra/Detail', [
             'mitra' => $mitra
         ]);

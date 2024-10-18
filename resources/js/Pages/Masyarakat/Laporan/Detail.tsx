@@ -22,7 +22,9 @@ export default function Detail({ auth: { user }, laporan, laporanLainnya }: Page
                 <img src="/images/masyarakat/hiasan.png" width={150} alt="hiasan" className="absolute -rotate-180 -z-10 left-0 bottom-0" />
                 <div className="container py-20 px-5 space-y-5">
                     <Garis />
-                    <img src={`/storage/${laporan.mitra.image}`} className="w-full max-w-screen-sm mx-auto" alt={laporan.name} />
+                    <div className="bg-[#F9FAFB]">
+                        <img src={`/storage/${laporan.mitra.image}`} className="w-full max-w-screen-sm mx-auto" alt={laporan.name} />
+                    </div>
                     <h2 className="font-extrabold text-2xl lg:text-3xl">Galeri</h2>
                     <div className="flex w-full overflow-auto gap-5 scroll-hidden">
                         {laporan.photos.map((photo, i) => (
