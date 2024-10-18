@@ -15,6 +15,7 @@ import {
     ChartTooltipContent,
 } from "@/Components/ui/chart";
 import formatPrice from "@/lib/formatPrice";
+import { RealisasiSektor } from "@/types";
 
 const chartData = [
     { sektor: "sosial", total: 100000, fill: "#28A0F6" },
@@ -68,7 +69,7 @@ const chartConfig = {
     },
 } satisfies ChartConfig;
 
-export function PersentaseTotalCSR() {
+export function PersentaseTotalCSR({ realisasi_per_sektor }: { realisasi_per_sektor: RealisasiSektor[] }) {
     const chartData = [
         { sektor: "sosial", visitors: 275, fill: "#28A0F6" },
         { sektor: "lingkungan", visitors: 200, fill: "#4E5BA6" },
@@ -137,25 +138,24 @@ export function PersentaseTotalCSR() {
                             content={<ChartTooltipContent hideLabel />}
                         />
                         <Pie
-                            data={chartData}
-                            dataKey="visitors"
+                            data={realisasi_per_sektor}
+                            dataKey="total_laporan"
                             nameKey="sektor"
                         />
                     </PieChart>
                 </ChartContainer>
                 <ul className="w-full space-y-3">
-                    {chartData.map((data, i) => (
+                    {realisasi_per_sektor.map((data, i) => (
                         <li className="flex items-center gap-2" key={i}>
                             <div
                                 className={`w-3 h-3 rounded-full`}
                                 style={{
-                                    backgroundColor: `hsl(var(--chart-${
-                                        i + 1
-                                    }))`,
+                                    backgroundColor: `var(--chart-${i + 1
+                                        })`,
                                 }}
                             ></div>
                             <h1>
-                                {data.sektor}: {data.visitors}
+                                {data.sektor}: {data.total_laporan}
                             </h1>
                         </li>
                     ))}

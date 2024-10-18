@@ -27,13 +27,13 @@
         --border: 0 0% 89.8%;
         --input: 0 0% 89.8%;
         --ring: 0 0% 3.9%;
-        --chart-1: 205, 92%, 56%;
-        --chart-2: 232, 36%, 48%;
-        --chart-3: 252, 92%, 66%;
-        --chart-4: 318, 83%, 60%;
-        --chart-5: 0, 69%, 42%;
-        --chart-6: 15, 95%, 53%;
-        --chart-7: 46, 96%, 53%;
+        --chart-1: #28a0f6;
+        --chart-2: #4e5ba6;
+        --chart-3: #7a5af8;
+        --chart-4: #ee46bc;
+        --chart-5: #b42121;
+        --chart-6: #f95016;
+        --chart-7: #fac515;
         --chart-8: 94, 75%, 44%;
         --chart-9: 150, 78%, 39%;
         --radius: 0.5rem;
@@ -86,11 +86,11 @@
     display: none;
 }
 
-.tablerow>.sortable {
+.tablerow > .sortable {
     @apply bg-white transition-colors duration-300 ease-in-out;
 }
 
-.tablerow>.sortable:hover {
+.tablerow > .sortable:hover {
     @apply bg-gray-200 cursor-pointer;
 }
 
@@ -104,7 +104,7 @@
     border: 1px solid #e3e5ef;
 }
 
-.border-item-mitra:nth-child(5n+1) {
+.border-item-mitra:nth-child(5n + 1) {
     border-left: none;
 }
 
@@ -112,16 +112,16 @@
     border-right: none;
 }
 
-.border-item-mitra:nth-child(-n+5) {
+.border-item-mitra:nth-child(-n + 5) {
     border-top: none;
 }
 
-.border-item-mitra:nth-last-child(-n+5) {
+.border-item-mitra:nth-last-child(-n + 5) {
     border-bottom: none;
 }
 
 /* for sambutan */
 .sambutan-image {
     /* solid shadow, 100px to left, but has 100px more height */
-    box-shadow: -100px 0 0 0 #F2F4F7, -100px -70px 0 0 #F2F4F7;
+    box-shadow: -100px 0 0 0 #f2f4f7, -100px -70px 0 0 #f2f4f7;
 }

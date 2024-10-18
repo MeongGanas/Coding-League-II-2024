@@ -179,6 +179,13 @@ export interface Statistik {
     dana_realisasi: number;
 }
 
+export interface RealisasiSektor {
+    sektor: string;
+    total_realisasi: number;
+    total_laporan: number;
+    fill: string;
+}
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>
 > = T & {
