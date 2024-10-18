@@ -15,13 +15,7 @@ class ProyekController extends Controller
      */
     public function index()
     {
-        $query = Proyek::latest();
-
-
-
-        if (request("sektor")) {
-            $query->where('sektor_id', request("sektor"));
-        }
+        $query = Proyek::with('sektor')->latest();
 
         if (request("search")) {
             $searchTerm = request("search");
@@ -29,6 +23,10 @@ class ProyekController extends Controller
             $query->where('name', 'like', '%' . $searchTerm . '%')
                 ->orWhere('kecamatan', 'like', '%' . $searchTerm . '%')
                 ->orWhere('deskripsi', 'like', '%' . $searchTerm . '%');
+        }
+
+        if (request("sektor")) {
+            $query->where('sektor_id', request("sektor"));
         }
 
         if (request("category")) {
@@ -92,6 +90,10 @@ class ProyekController extends Controller
             $v['tgl_akhir'] = $request->tgl_akhir;
         }
 
+        if ($request->status == 'terbit') {
+            $v['tgl_terbit'] = now();
+        }
+
         $v['image'] = $request->file('image')->store('proyek_image', 'public');
 
         Proyek::create($v);
@@ -105,7 +107,7 @@ class ProyekController extends Controller
     public function show(Proyek $proyek)
     {
         return Inertia::render('Admin/Proyek/Detail', [
-            'proyek' => $proyek
+            'proyek' => $proyek->load('sektor')
         ]);
     }
 
@@ -114,17 +116,26 @@ class ProyekController extends Controller
      */
     public function update(Proyek $proyek)
     {
-        $proyek->update(['status' => 'terbit']);
+        $proyek->update(['status' => 'terbit', 'tgl_terbit' => now()]);
 
         return redirect()->intended(route('proyek.index'));
     }
 
     public function downloadCSV()
     {
-        $proyeks = Proyek::all();
+        $query = Proyek::query();
+
+        if (request("sektor")) {
+            $query->where('sektor_id', request("sektor"));
+        }
+
+        if (request("category")) {
+            $query->where('status', request("category"));
+        }
+
+        $proyeks = $query->get();
 
         $filename = date('Y-m-d') . '-proyek.csv';
-
         $handle = fopen($filename, 'w+');
 
         fputcsv($handle, ['ID', 'Sektor ID', 'Name', 'Kecamatan', 'Deskripsi', 'Image', 'Status', 'Tanggal Awal', 'Tanggal Akhir']);
@@ -139,7 +150,8 @@ class ProyekController extends Controller
                 $proyek->image,
                 $proyek->status,
                 $proyek->tgl_awal,
-                $proyek->tgl_akhir
+                $proyek->tgl_akhir,
+                $proyek->tgl_terbit,
             ]);
         }
 
@@ -154,7 +166,17 @@ class ProyekController extends Controller
 
     public function downloadPDF()
     {
-        $proyeks = Proyek::all();
+        $query = Proyek::query();
+
+        if (request("sektor")) {
+            $query->where('sektor_id', request("sektor"));
+        }
+
+        if (request("category")) {
+            $query->where('status', request("category"));
+        }
+
+        $proyeks = $query->get();
 
         $pdf = Pdf::loadView('pdfs.proyeks', compact('proyeks'));
 

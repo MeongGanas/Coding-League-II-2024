@@ -7,12 +7,12 @@ import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Mail, MapPin, Pencil, Phone } from "lucide-react";
 
-const statusClass = {
+const statusClass: { [key: string]: string } = {
     'Aktif': "bg-success-bg text-success",
     'Non-Aktif': "bg-success-bg text-success",
     'Pengajuan': "bg-warning-bg text-warning",
 };
-const statusText = {
+const statusText: { [key: string]: string } = {
     'Aktif': "Terverifikasi",
     'Non-Aktif': "Terverifikasi",
     'Pengajuan': "Pengajuan",

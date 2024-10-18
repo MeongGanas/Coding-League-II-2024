@@ -52,6 +52,9 @@
         <p><span class="label">Status:</span> {{ $proyek->status }}</p>
         <p><span class="label">Tanggal Awal:</span> {{ $proyek->tgl_awal }}</p>
         <p><span class="label">Tanggal Akhir:</span> {{ $proyek->tgl_akhir }}</p>
+        @if($proyek->status == 'Terbit')
+        <p><span class="label">Tanggal Terbit:</span> {{ $proyek->tgl_terbit }}</p>
+        @endif
     </div>
     @endforeach
 </body>

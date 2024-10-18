@@ -294,7 +294,7 @@ export default function Create({ auth: { user } }: PageProps) {
 
                         <div className="bg-white p-4 rounded-md border flex justify-end items-center gap-4">
                             <Button variant={"outline"} disabled={isSubmitted}>
-                                <Link href="/admin/mitra/1/detail">
+                                <Link href="/admin/mitra">
                                     Kembali
                                 </Link>
                             </Button>

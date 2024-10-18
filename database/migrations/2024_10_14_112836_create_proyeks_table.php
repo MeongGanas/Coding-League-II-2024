@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('kecamatan');
             $table->text('deskripsi');
             $table->string('image');
-            $table->enum('status', ['Terbit', 'Draf']);
+            $table->enum('status', ['Terbit', 'Draf'])->default('Draf');
             $table->dateTime('tgl_awal');
             $table->dateTime('tgl_akhir')->nullable();
+            $table->dateTime('tgl_terbit')->nullable();
             $table->timestamps();
         });
     }

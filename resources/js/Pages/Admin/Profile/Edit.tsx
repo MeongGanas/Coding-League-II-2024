@@ -207,9 +207,6 @@ export default function Edit({ auth: { user } }: PageProps) {
                                     <FormItem>
                                         <FormLabel className="font-bold text-base">
                                             Deskripsi{" "}
-                                            <span className="text-red-800">
-                                                *
-                                            </span>
                                         </FormLabel>
                                         <FormControl>
                                             <Textarea

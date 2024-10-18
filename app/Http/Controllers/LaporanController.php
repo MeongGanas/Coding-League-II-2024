@@ -91,7 +91,7 @@ class LaporanController extends Controller
     public function show(Laporan $laporan)
     {
         return Inertia::render('Admin/Laporan/Detail', [
-            'laporan' => $laporan->load('mitra')
+            'laporan' => $laporan->load('mitra')->load('sektor')
         ]);
     }
 
@@ -106,9 +106,17 @@ class LaporanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateLaporanRequest $request, Laporan $laporan)
+    public function update(Laporan $laporan)
     {
-        //
+        $status = request('status');
+
+        $laporan->update(['status' => $status]);
+
+        if (in_array($status, ['Diterima', 'Revisi'])) {
+            // alasan here
+        }
+
+        return redirect()->intended(route('laporan.index'));
     }
 
     /**

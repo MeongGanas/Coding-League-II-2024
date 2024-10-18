@@ -163,16 +163,22 @@ export default function DataTableLaporan({ laporans }: { laporans: LaporanProps 
                                 <TableCell className="text-base">
                                     {laporan.lokasi}
                                 </TableCell>
-                                <TableCell className="text-base">
+                                <TableCell className="text-base text-nowrap">
                                     <span
                                         onClick={(e) => {
-                                            e.currentTarget.innerText = formatPrice(laporan.realisasi);
+                                            e.currentTarget.textContent === "Rp ###,###,###"
+                                            ? e.currentTarget.textContent = formatPrice(laporan.realisasi)
+                                            : e.currentTarget.textContent = "Rp ###,###,###"
                                         }}
                                         style={{ cursor: 'pointer' }}
                                     >
                                         Rp ###,###,###
                                     </span>
                                 </TableCell>
+                                {/* uncomment this if we're not supposed to have censored money amount */}
+                                {/* <TableCell className="text-base text-nowrap">
+                                     {formatPrice(laporan.realisasi)}
+                                </TableCell> */}
                                 <TableCell className="text-base">
                                     {
                                         format(
