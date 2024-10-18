@@ -10,7 +10,6 @@ import { format } from "date-fns";
 import { Facebook, Instagram, Link as LinkIcon, Twitter, TwitterIcon } from "lucide-react";
 
 export default function KegiatanDetail({ auth: { user }, kegiatan, kegiatanLainnya }: PageProps<{ kegiatan: Kegiatan, kegiatanLainnya: Kegiatan[] }>) {
-    console.log(kegiatanLainnya)
     return (
         <LayoutMasyarakat user={user} title="Kegiatan Detail">
             <OtherWelcomeSection title={kegiatan.name} desc={format(new Date(kegiatan.tgl_terbit), 'MMMM dd, y')} />

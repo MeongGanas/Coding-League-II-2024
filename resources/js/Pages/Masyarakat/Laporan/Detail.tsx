@@ -11,7 +11,6 @@ import { Link } from "@inertiajs/react";
 import { format } from "date-fns";
 
 export default function Detail({ auth: { user }, laporan, laporanLainnya }: PageProps<{ laporan: Laporan, laporanLainnya: Laporan[] }>) {
-    console.log(laporan)
     return (
         <LayoutMasyarakat title="Detail Laporan" user={user}>
             <OtherWelcomeSection title={laporan.name} desc={`${laporan.mitra.perusahaan} - ${format(new Date(laporan.created_at), 'MMMM dd, y')}`} anotherDesc={<Badge className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/90 text-black">

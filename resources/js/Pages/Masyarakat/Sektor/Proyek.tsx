@@ -9,7 +9,6 @@ import { format } from "date-fns";
 import { Eye } from "lucide-react";
 
 export default function DetailSektorProyek({ auth: { user }, proyek }: PageProps<{ proyek: Proyek }>) {
-    console.log(proyek)
     return (
         <LayoutMasyarakat user={user} title="Sektor Proyek">
             <OtherWelcomeSection title={proyek.name} desc={`Mulai: ${format(new Date(proyek.tgl_awal), 'MMMM dd, y')} -  Tgl. Berakhir: ${proyek.tgl_akhir ? format(new Date(proyek.tgl_akhir), 'MMMM dd, y') : "-"}`} addBreadCrumb={proyek.sektor.name} addBreadCrumbID={proyek.sektor_id.toString()} anotherDesc={<p className="lg:text-lg text-light">

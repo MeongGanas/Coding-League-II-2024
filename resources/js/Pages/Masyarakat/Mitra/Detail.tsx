@@ -1,17 +1,12 @@
-import DetailCard from "@/Components/admin/dashboard/DetailCard";
 import LaporanCard from "@/Components/masyarakat/card/LaporanCard";
 import Garis from "@/Components/masyarakat/Garis";
 import OtherWelcomeSection from "@/Components/masyarakat/OtherWelcomeSection";
-import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
 import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
-import formatPrice from "@/lib/formatPrice";
-import { Laporan, Mitra, PageProps } from "@/types";
+import { Mitra, PageProps } from "@/types";
 import { Link } from "@inertiajs/react";
-import { format } from "date-fns";
 
 export default function Detail({ auth: { user }, mitra }: PageProps<{ mitra: Mitra }>) {
-    console.log(mitra)
     return (
         <LayoutMasyarakat title="Detail Laporan" user={user}>
             <OtherWelcomeSection title={`${mitra.name ?? ""} - ${mitra.perusahaan}`} desc={`${mitra.perusahaan} - ${mitra.email} - ${mitra.no_telepon}`} anotherDesc={<p className="lg:text-lg text-light">
