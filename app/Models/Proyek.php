@@ -15,4 +15,9 @@ class Proyek extends Model
     {
         return $this->belongsTo(Sektor::class);
     }
+
+    public function laporans()
+    {
+        return $this->hasMany(Laporan::class);
+    }
 }

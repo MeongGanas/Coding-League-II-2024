@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('proyek_name');
             $table->foreignId('mitra_id');
             $table->foreignId('sektor_id');
+            $table->foreignId('proyek_id');
             $table->string('lokasi');
             $table->decimal('realisasi', 18, 2);
             $table->dateTime('realisasi_date');

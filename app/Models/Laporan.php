@@ -26,6 +26,11 @@ class Laporan extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function proyek()
+    {
+        return $this->belongsTo(Proyek::class);
+    }
+
     protected $casts = [
         'photos' => 'array',
         'realisasi_date' => 'datetime',
