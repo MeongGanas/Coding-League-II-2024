@@ -132,8 +132,22 @@ class MasyarakatController extends Controller
 
     public function kegiatan()
     {
+        $query = Kegiatan::query()->where('status', 'Terbit');
+
+        if (request("sortall") == "terlama") {
+            $query->orderBy('tgl_terbit', 'asc');
+        } else {
+            $query->orderBy('tgl_terbit', 'desc');
+        }
+
+        if (request("search")) {
+            $searchTerm = request("search");
+
+            $query->where('name', 'like', '%' . $searchTerm . '%');
+        }
+
         return Inertia::render('Masyarakat/Kegiatan/Index', [
-            'kegiatans' => Kegiatan::where('status', 'Terbit')->latest()->get()
+            'kegiatans' => $query->get()
         ]);
     }
     public function kegiatanDetail(Kegiatan $kegiatan)

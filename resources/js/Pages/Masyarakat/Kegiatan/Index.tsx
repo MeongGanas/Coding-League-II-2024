@@ -11,6 +11,22 @@ export default function KegiatanPage({ auth: { user }, kegiatans }: PageProps<{ 
     const [currentMax, setCurrentMax] = useState(8)
     const [kegiatanData, setKegiatanData] = useState(kegiatans.slice(0, currentMax));
 
+    const params = new URLSearchParams(window.location.search);
+    const sortall = params.get("sortall") as string
+    const [selectedValue, setSelectedValue] = useState(sortall || "terbaru");
+
+    const handleFilterChange = (value: string) => {
+        if (value === "terbaru") {
+            params.delete("sortall");
+        } else if (value === "terlama") {
+            params.set("sortall", "terlama");
+        }
+
+        window.location.replace(
+            `${window.location.pathname}?${params.toString()}`
+        )
+    }
+
     const muatLebihBanyak = () => {
         setKegiatanData(kegiatans.slice(0, currentMax + 8))
         setCurrentMax(currentMax + 8)
@@ -30,9 +46,9 @@ export default function KegiatanPage({ auth: { user }, kegiatans }: PageProps<{ 
                     <div
                         className={`grid grid-cols-2 md:grid-cols-4 gap-4`}
                     >
-                        <Select>
+                        <Select onValueChange={handleFilterChange} value={selectedValue}>
                             <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Filter Berdasarkan" />
+                                <SelectValue placeholder="Sortir" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>

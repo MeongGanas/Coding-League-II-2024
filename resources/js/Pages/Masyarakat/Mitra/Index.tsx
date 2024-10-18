@@ -42,8 +42,8 @@ export default function MitraPage({ auth: { user }, mitras }: PageProps<{ mitras
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectItem value="terbanyak">Terbanyak</SelectItem>
-                                    <SelectItem value="tersedikit">Tersedikit</SelectItem>
+                                    <SelectItem value="terbanyak">Laporan Terbanyak</SelectItem>
+                                    <SelectItem value="tersedikit">Laporan Tersedikit</SelectItem>
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
