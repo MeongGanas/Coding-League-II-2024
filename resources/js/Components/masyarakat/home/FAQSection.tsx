@@ -4,31 +4,31 @@ import { useState } from "react";
 
 export default function FAQSection() {
     const [active, setActive] = useState('what')
-    const [content, setContent] = useState('CSR atau Corporate Social Responsibility adalah komitmen perusahaan untuk berkontribusi dalam pembangunan berkelanjutan dengan cara memberikan dampak positif bagi masyarakat dan lingkungan sekitar. Di Kabupaten Cirebon, CSR dapat diwujudkan melalui berbagai program seperti pendidikan, kesehatan, lingkungan, dan pemberdayaan masyarakat.')
 
-    const what = () => {
-        setActive('what')
-        setContent('CSR atau Corporate Social Responsibility adalah komitmen perusahaan untuk berkontribusi dalam pembangunan berkelanjutan dengan cara memberikan dampak positif bagi masyarakat dan lingkungan sekitar. Di Kabupaten Cirebon, CSR dapat diwujudkan melalui berbagai program seperti pendidikan, kesehatan, lingkungan, dan pemberdayaan masyarakat.')
-    }
-
-    const why = () => {
-        setActive('why')
-        setContent('Mengapa CSR penting di Kabupaten Cirebon?')
-    }
-
-    const how = () => {
-        setActive('how')
-        setContent('Bagaimana cara perusahaan di Kabupaten Cirebon menjalankan program CSR?')
-    }
-
-    const contoh = () => {
-        setActive('contoh')
-        setContent('Apa saja contoh program CSR di Kabupaten Cirebon?')
-    }
-
-    const mendukung = () => {
-        setActive('mendukung')
-        setContent('Bagaimana pemerintah Kabupaten Cirebon mendukung program CSR?')
+    const faqs: { [key: string]: {
+        question: string,
+        answer: string
+    } } = {
+        what: {
+            question: 'Apa itu CSR?',
+            answer: 'CSR atau Corporate Social Responsibility adalah komitmen perusahaan untuk berkontribusi dalam pembangunan berkelanjutan dengan cara memberikan dampak positif bagi masyarakat dan lingkungan sekitar. Di Kabupaten Cirebon, CSR dapat diwujudkan melalui berbagai program seperti pendidikan, kesehatan, lingkungan, dan pemberdayaan masyarakat.'
+        },
+        why: {
+            question: 'Mengapa CSR penting di Kabupaten Cirebon?',
+            answer: 'CSR penting di Kabupaten Cirebon karena...'
+        },
+        how: {
+            question: 'Bagaimana cara perusahaan di Kabupaten Cirebon menjalankan program CSR?',
+            answer: 'Perusahaan di Kabupaten Cirebon menjalankan program CSR dengan...'
+        },
+        contoh: {
+            question: 'Apa saja contoh program CSR di Kabupaten Cirebon?',
+            answer: 'Contoh program CSR di Kabupaten Cirebon adalah...'
+        },
+        mendukung: {
+            question: 'Bagaimana pemerintah Kabupaten Cirebon mendukung program CSR?',
+            answer: 'Pemerintah Kabupaten Cirebon mendukung program CSR dengan...'
+        },
     }
 
     return (
@@ -43,7 +43,7 @@ export default function FAQSection() {
                 <div className="grid lg:grid-cols-2 space-y-10 lg:space-y-0">
                     <div className="pl-5">
                         <ul className="w-full">
-                            <li className={`w-full max-w-[400px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl lg:text- ${active === "what" ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`} onClick={what}>
+                            {/* <li className={`w-full max-w-[400px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl lg:text- ${active === "what" ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`} onClick={what}>
                                 Apa itu CSR? <ChevronRight className="w-5 h-5" />
                             </li>
                             <li className={`w-full max-w-[400px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl lg:text- ${active === "why" ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`} onClick={why}>
@@ -57,11 +57,20 @@ export default function FAQSection() {
                             </li>
                             <li className={`w-full max-w-[400px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl lg:text- ${active === "mendukung" ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`} onClick={mendukung}>
                                 Bagaimana pemerintah Kabupaten Cirebon mendukung program CSR? <ChevronRight className="w-5 h-5" />
-                            </li>
+                            </li> */}
+                            {
+                                Object.entries(faqs).map(([key, {question}], index) => (
+                                    <li key={index} className={`w-full max-w-[430px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl lg:text- ${active === key ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`} onClick={() => setActive(key)}>
+                                        {question} <ChevronRight className="w-5 h-5 ml-[20px] " />
+                                    </li>
+                                ))
+                            }
                         </ul>
                     </div>
                     <div className="space-y-5">
-                        <p>{content}</p>
+                        {
+                            faqs[active].answer
+                        }
                     </div>
                 </div>
             </div>

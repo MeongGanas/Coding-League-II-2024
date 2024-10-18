@@ -8,6 +8,7 @@ use App\Models\Mitra;
 use App\Models\Proyek;
 use App\Models\Sektor;
 use App\Models\User;
+use Database\Factories\UserFactory;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -37,15 +38,18 @@ class DatabaseSeeder extends Seeder
             // do nothing
         }
 
-        Sektor::factory(15)->create();
-        Proyek::factory(15)->create();
-        Mitra::factory(15)->create();
-        Laporan::factory(30)->create();
-        Kegiatan::factory(30)->create();
+        User::factory(10)->create();
 
         // realdata
         $this->call([
             MitraSeeder::class,
+            SektorSeeder::class,
         ]);
+
+        // Sektor::factory(15)->create();
+        Proyek::factory(15)->create();
+        // Mitra::factory(15)->create();
+        Laporan::factory(30)->create();
+        Kegiatan::factory(30)->create();
     }
 }

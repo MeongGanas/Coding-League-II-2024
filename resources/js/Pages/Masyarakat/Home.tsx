@@ -10,14 +10,16 @@ import WhatSection from "@/Components/masyarakat/home/WhatSection";
 import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
 import { Kegiatan, Laporan, Mitra, PageProps } from "@/types";
 
-export default function Home({ auth: { user }, kegiatans, laporans, mitras, statistik }: PageProps<{ kegiatans: Kegiatan[], laporans: Laporan[], mitras: any[], statistik: any[] }>) {
+export default function Home({ auth: { user }, kegiatans, laporans, mitras, statistik, sektors }: PageProps<{ kegiatans: Kegiatan[], laporans: Laporan[], mitras: any[], statistik: any[], sektors: any[] }>) {
+    console.log(kegiatans, laporans, mitras, statistik, sektors);
+
     return (
         <LayoutMasyarakat user={user} title="Home">
             <WelcomeSection />
             <MitraSection mitras={mitras} />
             <DataStatistikSection statistik={statistik} />
             <WhatSection />
-            <SektorSection />
+            <SektorSection sektors={sektors} />
             <SambutanSection />
             <KegiatanSection kegiatans={kegiatans} />
             <LaporanSection laporans={laporans} />

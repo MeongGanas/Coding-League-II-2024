@@ -47,7 +47,7 @@ class LaporanController extends Controller
         // if it works, don't touch it
         if (request("sort")) {
             $sort = request("sort");
-            $order = request("isAscending") === "true" ? 'asc' : 'desc';
+            $order = request("order") ?? 'asc';
             if (request("with")) {
                 $relationTable = $sort . 's';
                 $relationColumn = request("with");

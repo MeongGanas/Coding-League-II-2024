@@ -20,10 +20,12 @@ class MasyarakatController extends Controller
             'dana_realisasi' => Laporan::sum('realisasi')
         ];
 
+
         return Inertia::render('Masyarakat/Home', [
             'kegiatans' => Kegiatan::where('status', 'Terbit')->latest()->take(4)->get(),
             'mitras' => Mitra::where('status', 'Aktif')->orderBy('tgl_daftar', 'desc')->take(10)->select('name', 'image', 'tgl_daftar')->get(),
             'laporans' => Laporan::with('mitra')->where('status', 'Diterima')->orderBy('tgl_kirim')->take(4)->get(),
+            'sektors' => Sektor::latest()->take(6)->get(),
             'statistik' => $statistik
         ]);
     }

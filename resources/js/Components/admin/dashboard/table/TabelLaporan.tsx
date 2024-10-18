@@ -32,7 +32,7 @@ const statusColor: { [key: string]: string } = {
 }
 
 const tableHeader = [
-    {title: "Judul Laporan", sortable: true, sortKey: "name"},
+    {title: "Judul Laporan", sortable: true, sortKey: "name", className: "min-w-[300px]"},
     {title: "Mitra", sortable: true, sortKey: "mitra", isRelation: true, relationKey: "name"},
     {title: "Lokasi", sortable: true, sortKey: "lokasi"},
     {title: "Realisasi", sortable: true, sortKey: "realisasi"},
@@ -43,25 +43,23 @@ const tableHeader = [
 ]
 
 export default function DataTableLaporan({ laporans }: { laporans: LaporanProps }) {
-    console.log(laporans);
-
     const params = new URLSearchParams(window.location.search);
     const currentSort = params.get("sort");
-    const isAscending = params.get("isAscending");
+    const order = params.get("order");
 
     const handleSort = (sort?: string) => {
         if (!sort) return;
 
-        if (currentSort === sort && isAscending === "true") {
+        if (currentSort === sort && order === "asc") {
             params.delete("sort");
-            params.delete("isAscending");
+            params.delete("order");
             params.delete("page");
             params.delete("with");
-        } else if (currentSort === sort && isAscending === "false") {
-            params.set("isAscending", "true" );
+        } else if (currentSort === sort && order === "desc") {
+            params.set("order", "asc" );
         } else {
             params.set("sort", sort);
-            params.set("isAscending", "false");
+            params.set("order", "desc");
             params.delete("page");
             if (tableHeader.find(header => header.sortKey === sort)?.isRelation) {
                 params.set("with", tableHeader.find(header => header.sortKey === sort)?.relationKey as string);
@@ -137,11 +135,13 @@ export default function DataTableLaporan({ laporans }: { laporans: LaporanProps 
                                                 handleSort(header.sortKey);
                                             }
                                         }
-                                    } className={`sortable uppercase font-bold text-black text-nowrap ${currentSort === header.sortKey ? '!bg-gray-200' : ''}`}>
+                                    } className={`sortable uppercase font-bold text-black text-nowrap ${currentSort === header.sortKey ? '!bg-gray-200' : ''} ${header.className || ''}`}>
                                         {header.title} {
-                                            isAscending === "true"
-                                                ? <ArrowUp className="w-4 h-4 ml-1 rounded-md inline" />
-                                                : <ArrowDown className="w-4 h-4 ml-1 rounded-md inline" />
+                                            currentSort === header.sortKey
+                                            ? order === "asc"
+                                                ? <ArrowUp className="w-4 h-4 inline-block" />
+                                                : <ArrowDown className="w-4 h-4 inline-block" />
+                                            : <ArrowDown className="w-4 h-4 inline-block" />
                                         }
                                     </TableHead>
                                 ))

@@ -15,7 +15,6 @@ class MitraController extends Controller
      */
     public function index()
     {
-
         $query = Mitra::query();
 
         if (request("sortall") == "terlama") {
@@ -30,6 +29,12 @@ class MitraController extends Controller
             $query->where('name', 'like', '%' . $searchTerm . '%')
                 ->orWhere('perusahaan', 'like', '%' . $searchTerm . '%')
                 ->orWhere('deskripsi', 'like', '%' . $searchTerm . '%');
+        }
+
+        if (request("sort")) {
+            $sort = request("sort");
+            $order = request("order") ?? 'asc';
+            $query->orderBy($sort, $order);
         }
 
         $paginate = request("paginate") ?? 5;

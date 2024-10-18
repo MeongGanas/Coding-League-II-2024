@@ -16,7 +16,7 @@ import {
     TableRow,
 } from "@/Components/ui/table";
 import { Link } from "@inertiajs/react";
-import { Eye, Pencil } from "lucide-react";
+import { ArrowDown, ArrowUp, Eye, Pencil } from "lucide-react";
 import { TablePagination, TableSelectTotalPaginate } from "./TabelPagination";
 import { Button } from "@/Components/ui/button";
 import { MitrasProps } from "@/types";
@@ -28,14 +28,49 @@ const status = {
     'Pengajuan': "bg-warning-bg text-warning",
 }
 
+const tableHeader = [
+    // {title: "Judul Laporan", sortable: true, sortKey: "name", className: "min-w-[300px]"},
+    {title: "Foto", sortable: true, sortKey: "image", className: "min-w-[200px]"},
+    {title: "Nama", sortable: true, sortKey: "name"},
+    {title: "Nama PT", sortable: true, sortKey: "perusahaan", className: "min-w-[200px]"},
+    {title: "Deskripsi", sortable: true, sortKey: "deskripsi", className: "min-w-[200px]"},
+    {title: "Tgl terdaftar", sortable: true, sortKey: "tgl_aktif", className: "min-w-[200px]"},
+    {title: "Status", sortable: true, sortKey: "status"},
+    {title: "Aksi", sortable: false},
+]
 
-export default function DataTableMitra({ mitras }: { mitras: MitrasProps }) {
+export default function DataTableMitra({ mitras }: { mitras: any }) {
+
+    const params = new URLSearchParams(window.location.search);
+    const currentSort = params.get("sort");
+    const order = params.get("order");
+
+    const handleSort = (sort?: string) => {
+        if (!sort) return;
+
+        if (currentSort === sort && order === "asc") {
+            params.delete("sort");
+            params.delete("order");
+            params.delete("page");
+        } else if (currentSort === sort && order === "desc") {
+            params.set("order", "asc" );
+        } else {
+            params.set("sort", sort);
+            params.set("order", "desc");
+            params.delete("page");
+        }
+
+        window.location.replace(
+            `${window.location.pathname}?${params.toString()}`
+        );
+    }
+
     return (
         <div className="w-full">
             <div className="bg-white rounded-md border">
                 <Table className="overflow-x-auto">
                     <TableHeader>
-                        <TableRow>
+                        {/* <TableRow>
                             <TableHead className="min-w-[2z00px] uppercase font-bold text-black">
                                 Foto
                             </TableHead>
@@ -57,6 +92,29 @@ export default function DataTableMitra({ mitras }: { mitras: MitrasProps }) {
                             <TableHead className="uppercase font-bold text-black text-center">
                                 Aksi
                             </TableHead>
+                        </TableRow> */}
+                        <TableRow className="tablerow">
+                            {
+                               tableHeader && tableHeader.map(header => (
+                                    <TableHead
+                                    key={header.title}
+                                     onClick={
+                                        () => {
+                                            if (header.sortable) {
+                                                handleSort(header.sortKey);
+                                            }
+                                        }
+                                    } className={`sortable uppercase font-bold text-black text-nowrap ${currentSort === header.sortKey ? '!bg-gray-200' : ''} ${header.className || ''}`}>
+                                        {header.title} {
+                                            currentSort === header.sortKey
+                                                ? order === "asc"
+                                                    ? <ArrowUp className="w-4 h-4 inline-block" />
+                                                    : <ArrowDown className="w-4 h-4 inline-block" />
+                                                : <ArrowDown className="w-4 h-4 inline-block" />
+                                        }
+                                    </TableHead>
+                                ))
+                            }
                         </TableRow>
                     </TableHeader>
                     <TableBody>
