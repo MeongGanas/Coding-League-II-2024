@@ -17,14 +17,7 @@ class ProyekController extends Controller
     {
         $query = Proyek::latest();
 
-        $possibleYear = Proyek::selectRaw('YEAR(tgl_awal) as year')
-            ->distinct()
-            ->get()
-            ->pluck('year');
 
-        if (request("tahun")) {
-            $query->whereYear('tgl_awal', request("tahun"));
-        }
 
         if (request("sektor")) {
             $query->where('sektor_id', request("sektor"));
@@ -40,6 +33,23 @@ class ProyekController extends Controller
 
         if (request("category")) {
             $query->where('status', request("category"));
+        }
+
+        if (request("sort")) {
+            $sort = request("sort");
+            $order = request("order") ?? 'asc';
+            $query->orderBy($sort, $order);
+        }
+
+        $possibleYearQuery = clone $query;
+        $possibleYearQuery->getQuery()->orders = null;
+        $possibleYear = $possibleYearQuery->selectRaw('YEAR(tgl_awal) as year')
+            ->distinct()
+            ->get()
+            ->pluck('year');
+
+        if (request("tahun")) {
+            $query->whereYear('tgl_awal', request("tahun"));
         }
 
         $paginate = request("paginate") ?? 5;

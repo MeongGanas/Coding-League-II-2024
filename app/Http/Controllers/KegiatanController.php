@@ -26,6 +26,12 @@ class KegiatanController extends Controller
             $query->where('status', request("category"));
         }
 
+        if (request("sort")) {
+            $sort = request("sort");
+            $order = request("order") ?? 'asc';
+            $query->orderBy($sort, $order);
+        }
+
         $paginate = request("paginate") ?? 5;
 
         $items = $query->paginate($paginate);

@@ -8,27 +8,72 @@ import {
     TableRow,
 } from "@/Components/ui/table";
 import { Link } from "@inertiajs/react";
-import { Eye, Pencil } from "lucide-react";
+import { ArrowDown, ArrowUp, Eye, Pencil } from "lucide-react";
 import { TablePagination, TableSelectTotalPaginate } from "./TabelPagination";
 import { Button } from "@/Components/ui/button";
 import { SektorsProps } from "@/types";
 
+const tableHeader = [
+    {title: "Nama Sektor", sortable: true, sortKey: "name", className: "min-w-[200px]"},
+    {title: "Deskripsi Sektor", sortable: true, sortKey: "deskripsi"},
+    {title: "Aksi", className: "text-center"},
+]
 export default function DataTableSektor({ sektors }: { sektors: SektorsProps }) {
+
+    const params = new URLSearchParams(window.location.search);
+    const currentSort = params.get("sort");
+    const order = params.get("order");
+
+    const handleSort = (sort?: string) => {
+        if (!sort) return;
+
+        if (currentSort === sort && order === "asc") {
+            params.delete("sort");
+            params.delete("order");
+            params.delete("page");
+            params.delete("with");
+        } else if (currentSort === sort && order === "desc") {
+            params.set("order", "asc" );
+        } else {
+            params.set("sort", sort);
+            params.set("order", "desc");
+            params.delete("page");
+        }
+
+        window.location.replace(
+            `${window.location.pathname}?${params.toString()}`
+        );
+    }
+
     return (
         <div className="w-full">
             <div className="bg-white rounded-md border">
                 <Table className="overflow-x-auto">
                     <TableHeader>
-                        <TableRow>
-                            <TableHead className="uppercase font-bold text-black min-w-[200px]">
-                                Nama Sektor
-                            </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                Deskripsi Sektor
-                            </TableHead>
-                            <TableHead className="uppercase text-center font-bold text-black">
-                                Aksi
-                            </TableHead>
+                        <TableRow className="tablerow">
+                            {
+                               tableHeader && tableHeader.map(header => (
+                                    <TableHead
+                                    key={header.title}
+                                     onClick={
+                                        () => {
+                                            if (header.sortable) {
+                                                handleSort(header.sortKey);
+                                            }
+                                        }
+                                    } className={`${header.sortable ? 'sortable' : ''} uppercase font-bold text-black text-nowrap ${currentSort === header.sortKey ? '!bg-gray-200' : ''} ${header.className || ''}`}>
+                                        {header.title} {
+                                            header.sortable ?
+                                                currentSort === header.sortKey
+                                                ? order === "asc"
+                                                    ? <ArrowUp className="w-4 h-4 inline-block" />
+                                                    : <ArrowDown className="w-4 h-4 inline-block" />
+                                                : <ArrowDown className="w-4 h-4 inline-block" />
+                                            : null
+                                        }
+                                    </TableHead>
+                                ))
+                            }
                         </TableRow>
                     </TableHeader>
                     <TableBody>

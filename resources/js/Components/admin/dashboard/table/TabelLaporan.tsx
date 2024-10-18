@@ -29,6 +29,7 @@ const statusColor: { [key: string]: string } = {
     "Diterima": "text-success bg-success-bg hover:bg-success-bg",
     "Revisi": "text-warning bg-warning-bg hover:bg-warning-bg",
     "Draf": "text-netral bg-netral-bg hover:bg-netral-bg",
+    "Ditolak": "text-error bg-error-bg hover:bg-error-bg",
 }
 
 const tableHeader = [
@@ -39,7 +40,7 @@ const tableHeader = [
     {title: "Tgl Realisasi", sortable: true, sortKey: "realisasi_date"},
     {title: "Laporan Dikirim", sortable: true, sortKey: "tgl_kirim"},
     {title: "Status", sortable: true, sortKey: "status"},
-    {title: "Aksi", sortable: false}
+    {title: "Aksi", className: "text-center"},
 ]
 
 export default function DataTableLaporan({ laporans }: { laporans: LaporanProps }) {
@@ -137,11 +138,13 @@ export default function DataTableLaporan({ laporans }: { laporans: LaporanProps 
                                         }
                                     } className={`sortable uppercase font-bold text-black text-nowrap ${currentSort === header.sortKey ? '!bg-gray-200' : ''} ${header.className || ''}`}>
                                         {header.title} {
-                                            currentSort === header.sortKey
-                                            ? order === "asc"
-                                                ? <ArrowUp className="w-4 h-4 inline-block" />
+                                            header.sortable ?
+                                                currentSort === header.sortKey
+                                                ? order === "asc"
+                                                    ? <ArrowUp className="w-4 h-4 inline-block" />
+                                                    : <ArrowDown className="w-4 h-4 inline-block" />
                                                 : <ArrowDown className="w-4 h-4 inline-block" />
-                                            : <ArrowDown className="w-4 h-4 inline-block" />
+                                            : null
                                         }
                                     </TableHead>
                                 ))
