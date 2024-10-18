@@ -302,9 +302,6 @@ export default function Create({ auth: { user }, sektors }: PageProps<{ sektors:
                                         <FormItem className="flex flex-col gap-2">
                                             <FormLabel className="text-base font-bold">
                                                 Tanggal Akhir{" "}
-                                                <span className="text-red-800">
-                                                    *
-                                                </span>
                                             </FormLabel>
                                             <Popover>
                                                 <PopoverTrigger asChild>

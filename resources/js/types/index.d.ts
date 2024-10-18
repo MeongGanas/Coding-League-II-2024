@@ -35,9 +35,11 @@ export interface Proyek {
     id: number;
     name: string;
     sektor_id: number;
+    sektor: Sektor;
     kecamatan: string;
     tgl_awal: string;
     tgl_akhir: string | null;
+    tgl_terbit: string | null;
     deskripsi: string;
     image: string;
     status: string;

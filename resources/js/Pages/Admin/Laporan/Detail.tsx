@@ -13,9 +13,12 @@ import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import formatPrice from "@/lib/formatPrice";
 import { Laporan, PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
+import axios from "axios";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { BriefcaseBusiness } from "lucide-react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 const status: { [key: string]: string }= {
     'Diterima': "bg-success-bg text-success hover:bg-success-bg",
@@ -24,6 +27,32 @@ const status: { [key: string]: string }= {
 }
 
 export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan: Laporan }>) {
+
+    const [isSubmitted, setIsSubmitted] = useState(false)
+
+    const onSubmit = (status: string) => {
+        setIsSubmitted(true)
+
+        const promise = axios.post(`/admin/laporan/${laporan.id}?status=${status}`, {
+            _method: "PATCH"
+        });
+
+        toast.promise(promise, {
+            loading: "Loading...",
+            success: () => {
+                setIsSubmitted(false)
+                window.location.replace(`/admin/laporan/${laporan.id}`)
+                return "Terbitkan Proyek Success"
+            },
+            error: (err) => {
+                console.log(err.response.data)
+                setIsSubmitted(false)
+                return err?.response.data.message || "Something went wrong"
+            }
+        })
+
+    }
+
     return (
         <LayoutAdmin user={user}>
             <Head title="Detail Laporan" />
@@ -39,7 +68,7 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                         </Badge>
                     }
                     <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
-                        Social
+                        {laporan.sektor.name}
                     </Badge>
                     <div className="flex pb-5 mb-5 border-b gap-4">
                         <div className="rounded-full p-3 h-fit bg-primary-bg text-primary">
@@ -63,7 +92,12 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                         <div className="overflow-x-auto flex gap-4 scroll-hidden">
                             {
                                 laporan.photos.map((photo: string, index: number) => (
-                                    <img key={index} src={`/storage/${photo}`} className="min-w-96 h-60 rounded-md bg-neutral-300" />
+                                    <img key={index} src={`/storage/${photo}`} className="flex-basis-1/4 min-w-[23rem] h-60 rounded-md bg-neutral-300" />
+                                ))
+                            }
+                            {
+                                laporan.photos.map((photo: string, index: number) => (
+                                    <img key={index} src={`/storage/${photo}`} className="flex-basis-1/4 min-w-[23rem] h-60 rounded-md bg-neutral-300" />
                                 ))
                             }
                         </div>
@@ -94,9 +128,9 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                     !['Ditolak', 'Diterima', 'Revisi'].includes(laporan.status) &&
                     <div className="bg-white rounded-md p-6 border">
                         <div className="block sm:flex space-y-3 sm:space-y-0 sm:w-fit sm:mx-auto gap-5">
-                            <DialogTolak />
-                            <DialogRevisi />
-                            <DialogTerima />
+                            <DialogTolak onSubmit={onSubmit} />
+                            <DialogRevisi onSubmit={onSubmit} />
+                            <DialogTerima onSubmit={onSubmit} />
                         </div>
                     </div>
                 }

@@ -22,7 +22,8 @@ const tableHeader = [
     {title: "Lokasi", sortable: true, sortKey: "kecamatan"},
     {title: "Jumlah Mitra", sortable: true, sortKey: "mitra"},
     {title: "tgl mulai", sortable: true, sortKey: "tgl_awal"},
-    {title: "Tgl Diterbitkan", sortable: true, sortKey: "tgl_akhir"},
+    {title: "Tgl Akhir", sortable: true, sortKey: "tgl_akhir"},
+    {title: "Tgl Diterbitkan", sortable: true, sortKey: "tgl_terbit"},
     {title: "Status", sortable: true, sortKey: "status"},
     {title: "Aksi", className: "text-center"},
 ]
@@ -59,7 +60,6 @@ export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
             <div className="bg-white rounded-md border">
                 <Table className="overflow-x-auto">
                     <TableHeader>
-                        <TableRow className="tablerow">
                             {/* <TableHead className="min-w-[300px] uppercase font-bold text-black">
                                 Judul
                             </TableHead>
@@ -81,7 +81,7 @@ export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
                             <TableHead className="uppercase font-bold text-black">
                                 Aksi
                             </TableHead> */}
-
+                        <TableRow className="tablerow">
                             {
                                tableHeader && tableHeader.map(header => (
                                     <TableHead
@@ -117,13 +117,16 @@ export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
                                     {proyek.kecamatan}
                                 </TableCell>
                                 <TableCell className="text-base">
-                                    10
+                                    {proyek.status === "Terbit" ? 10 : "-"}
                                 </TableCell>
                                 <TableCell className="text-base">
                                     {format(proyek.tgl_awal, 'dd MMMM y', { locale: id })}
                                 </TableCell>
                                 <TableCell className="text-base">
                                     {proyek.tgl_akhir ? format(proyek.tgl_akhir, 'dd MMMM y', { locale: id }) : "-"}
+                                </TableCell>
+                                <TableCell className="text-base">
+                                    {proyek.tgl_terbit ? format(proyek.tgl_terbit, 'dd MMMM y', { locale: id }) : "-"}
                                 </TableCell>
                                 <TableCell>
                                     {proyek.status === "Terbit" ? (

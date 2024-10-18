@@ -14,7 +14,7 @@ import { Label } from "@/Components/ui/label";
 import { Textarea } from "@/Components/ui/textarea";
 import { Check, Info, Pencil, X } from "lucide-react";
 
-export function DialogTolak() {
+export function DialogTolak({onSubmit}: {onSubmit: (status: string) => void}) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -56,7 +56,9 @@ export function DialogTolak() {
                 </AlertDialogHeader>
                 <AlertDialogFooter className="md:grid md:grid-cols-2">
                     <AlertDialogCancel>Batal</AlertDialogCancel>
-                    <AlertDialogAction className="hover:bg-red-700">
+                    <AlertDialogAction className="hover:bg-red-700"
+                        onClick={() => onSubmit('Ditolak')}
+                    >
                         Tolak
                     </AlertDialogAction>
                 </AlertDialogFooter>
@@ -65,7 +67,7 @@ export function DialogTolak() {
     );
 }
 
-export function DialogRevisi() {
+export function DialogRevisi({onSubmit}: {onSubmit: (status: string) => void}) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -107,7 +109,9 @@ export function DialogRevisi() {
                 </AlertDialogHeader>
                 <AlertDialogFooter className="md:grid md:grid-cols-2">
                     <AlertDialogCancel>Batal</AlertDialogCancel>
-                    <AlertDialogAction className="hover:bg-red-700">
+                    <AlertDialogAction className="hover:bg-red-700"
+                        onClick={() => onSubmit('Revisi')}
+                    >
                         Kirim
                     </AlertDialogAction>
                 </AlertDialogFooter>
@@ -116,7 +120,7 @@ export function DialogRevisi() {
     );
 }
 
-export function DialogTerima() {
+export function DialogTerima({onSubmit}: {onSubmit: (status: string) => void}) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -142,7 +146,9 @@ export function DialogTerima() {
                 </AlertDialogHeader>
                 <AlertDialogFooter className="md:grid md:grid-cols-2">
                     <AlertDialogCancel>Batal</AlertDialogCancel>
-                    <AlertDialogAction className="hover:bg-red-700">
+                    <AlertDialogAction className="hover:bg-red-700"
+                        onClick={() => onSubmit('Diterima')}
+                    >
                         Terima
                     </AlertDialogAction>
                 </AlertDialogFooter>

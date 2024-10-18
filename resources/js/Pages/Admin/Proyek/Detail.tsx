@@ -1,3 +1,6 @@
+// TODO: ini chip sektor.name ga sama sama yang di figma, coba di cek lagi gitbooknya, mungkin sektor.name terus tags, tapi ndtau tags darimana
+// FIX: sementara fixnya, cuma show sektor.name aja
+
 import DetailCard from "@/Components/admin/dashboard/DetailCard";
 import { DialogTerbit } from "@/Components/admin/dashboard/proyek/DialogTerbit";
 import DataTableMitra from "@/Components/admin/dashboard/proyek/TabelProyekMitra";
@@ -13,6 +16,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Detail({ auth: { user }, proyek }: PageProps<{ proyek: Proyek }>) {
+    console.log(proyek);
+
     const [isSubmitted, setIsSubmitted] = useState(false)
 
     const terbitkan = () => {
@@ -47,7 +52,7 @@ export default function Detail({ auth: { user }, proyek }: PageProps<{ proyek: P
                 <h1 className="text-3xl font-bold">Detail Proyek</h1>
                 <div className="bg-white rounded-md p-6 space-y-4 border">
                     <div className="flex gap-2">
-                        {proyek.status === "terbit" ? (
+                        {proyek.status === "Terbit" ? (
                             <Badge className="text-success bg-success-bg hover:bg-success-bg">
                                 Terbit
                             </Badge>
@@ -56,8 +61,11 @@ export default function Detail({ auth: { user }, proyek }: PageProps<{ proyek: P
                                 Draf
                             </Badge>
                         )}
-                        <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
+                        {/* <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
                             Social
+                        </Badge> */}
+                        <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
+                            {proyek.sektor.name}
                         </Badge>
                     </div>
                     <div className="flex pb-5 mb-5 border-b gap-4">
@@ -76,7 +84,7 @@ export default function Detail({ auth: { user }, proyek }: PageProps<{ proyek: P
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         <DetailCard
                             title="Tanggal"
-                            content={`${format(proyek.tgl_awal, 'dd MMMM Y')} - ${proyek.tgl_akhir ? format(proyek.tgl_akhir, 'dd MMMM Y') : "Tidak ditentukan"}`}
+                            content={`${format(proyek.tgl_awal, 'dd MMMM y')} - ${proyek.tgl_akhir ? format(proyek.tgl_akhir, 'dd MMMM y') : "Tidak ditentukan"}`}
                         />
                         <DetailCard
                             title="Kecamatan"
@@ -88,30 +96,9 @@ export default function Detail({ auth: { user }, proyek }: PageProps<{ proyek: P
                     </div>
                     <div className="space-y-2">
                         <h1 className="text-2xl font-bold">Rincian Laporan</h1>
-                        <div className="space-y-4">
-                            <p>
-                                Lorem ipsum dolor sit amet consectetur,
-                                adipisicing elit. Non error ab cum sapiente
-                                beatae nam, magnam quod distinctio rem assumenda
-                                consectetur quidem? Ducimus dolorum quo repellat
-                                delectus sed consequuntur dicta esse dolorem
-                                consectetur eum mollitia, accusantium neque
-                                natus quisquam suscipit, molestiae harum. Facere
-                                tenetur ullam aperiam suscipit minus quia fugiat
-                                quisquam doloribus repellendus quas in
-                                molestiae, nemo earum distinctio. Perferendis
-                                excepturi neque est dolorem nam delectus
-                                distinctio corrupti nemo voluptas quam
-                                repudiandae provident, repellendus laborum,
-                                asperiores quos maiores libero. Blanditiis iste
-                                impedit sequi hic eius molestias facere
-                                repellendus ad est iure, voluptate nostrum
-                                cumque aspernatur praesentium explicabo omnis
-                                sunt veniam?
-                            </p>
-                        </div>
+                        <p>{proyek.deskripsi}</p>
                     </div>
-                    {proyek.status === "terbit" && (
+                    {proyek.status === "Terbit" && (
                         <div className="border-t pt-5">
                             <h1 className="font-bold text-2xl mb-4">
                                 Mitra Yang Berpartisipasi
@@ -120,7 +107,7 @@ export default function Detail({ auth: { user }, proyek }: PageProps<{ proyek: P
                         </div>
                     )}
                 </div>
-                {proyek.status === "draf" && (
+                {proyek.status === "Draf" && (
                     <div className="bg-white rounded-md p-6 border">
                         <div className="block sm:flex space-y-3 sm:space-y-0 sm:w-fit sm:mx-auto gap-5">
                             <DialogTerbit terbitkan={terbitkan} isSubmitted={isSubmitted} />
