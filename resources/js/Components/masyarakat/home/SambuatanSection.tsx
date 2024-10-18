@@ -24,10 +24,10 @@ export default function SambutanSection() {
                             </div>
                         </div>
                         <div className="w-full h-full pl-5">
-                            <div className="w-full h-full bg-slate-100 hidden xl:block"></div>
+                            {/* <div className="w-full h-full bg-slate-100 hidden xl:block"></div> */}
                             <img src="/images/masyarakat/sambutan.png" className="mx-auto xl:hidden" alt="sambutan" />
                         </div>
-                        <img src="/images/masyarakat/sambutan.png" className="xl:absolute xl:right-0 xl:bottom-0 hidden xl:block" alt="sambutan" />
+                        <img src="/images/masyarakat/sambutan.png" className="xl:absolute xl:right-0 xl:bottom-0 hidden xl:block sambutan-image" alt="sambutan" />
                     </div>
                 </div>
             </div>

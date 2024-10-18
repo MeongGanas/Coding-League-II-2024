@@ -92,5 +92,36 @@
 
 .tablerow>.sortable:hover {
     @apply bg-gray-200 cursor-pointer;
-    /* anim */
+}
+
+.center {
+    @apply flex items-center justify-center;
+}
+
+/* for mitra */
+
+.border-item-mitra {
+    border: 1px solid #e3e5ef;
+}
+
+.border-item-mitra:nth-child(5n+1) {
+    border-left: none;
+}
+
+.border-item-mitra:nth-child(5n) {
+    border-right: none;
+}
+
+.border-item-mitra:nth-child(-n+5) {
+    border-top: none;
+}
+
+.border-item-mitra:nth-last-child(-n+5) {
+    border-bottom: none;
+}
+
+/* for sambutan */
+.sambutan-image {
+    /* solid shadow, 100px to left, but has 100px more height */
+    box-shadow: -100px 0 0 0 #F2F4F7, -100px -70px 0 0 #F2F4F7;
 }

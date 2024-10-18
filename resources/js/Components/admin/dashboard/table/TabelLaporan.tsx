@@ -137,7 +137,7 @@ export default function DataTableLaporan({ laporans }: { laporans: LaporanProps 
                                                 handleSort(header.sortKey);
                                             }
                                         }
-                                    } className={`sortable uppercase font-bold text-black ${currentSort === header.sortKey ? '!bg-gray-200' : ''}`}>
+                                    } className={`sortable uppercase font-bold text-black text-nowrap ${currentSort === header.sortKey ? '!bg-gray-200' : ''}`}>
                                         {header.title} {
                                             isAscending === "true"
                                                 ? <ArrowUp className="w-4 h-4 ml-1 rounded-md inline" />

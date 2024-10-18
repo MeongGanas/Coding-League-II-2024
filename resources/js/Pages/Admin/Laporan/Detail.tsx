@@ -15,7 +15,6 @@ import { id } from "date-fns/locale";
 import { BriefcaseBusiness } from "lucide-react";
 
 export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan: any }>) {
-    console.log(laporan);
     return (
         <LayoutAdmin user={user}>
             <Head title="Detail Laporan" />

@@ -28,8 +28,9 @@ class MitraFactory extends Factory
             'alamat' => $this->faker->address(),
             'perusahaan' => $perusahaan,
             'deskripsi' => $this->faker->paragraph(),
-            'tgl_daftar' => $this->faker->dateTimeBetween('-1 years', 'now'),
-            'status' => $this->faker->randomElement(['Aktif', 'Non-Aktif']),
+            'tgl_daftar' => $this->faker->dateTimeBetween('-1 years', '-1 months'),
+            // 'status' => $this->faker->randomElement(['Aktif', 'Non-Aktif']),
+            'status' => "Non-Aktif",
         ];
     }
 }
