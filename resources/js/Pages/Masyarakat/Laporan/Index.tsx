@@ -4,12 +4,43 @@ import OtherWelcomeSection from "@/Components/masyarakat/OtherWelcomeSection";
 import { Button } from "@/Components/ui/button";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
 import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
-import { Laporan, PageProps } from "@/types";
+import { Laporan, Mitra, PageProps } from "@/types";
 import { useState } from "react";
 
-export default function LaporanPage({ auth: { user }, laporans }: PageProps<{ laporans: Laporan[] }>) {
+export default function LaporanPage({ auth: { user }, laporans, mitras }: PageProps<{ laporans: Laporan[], mitras: Mitra[] }>) {
     const [currentMax, setCurrentMax] = useState(8)
     const [laporanData, setLaporanData] = useState(laporans.slice(0, currentMax));
+
+    const params = new URLSearchParams(window.location.search);
+    const sortall = params.get("sortall") as string
+    const mitra = params.get("mitra") as string
+    const [selectedValue, setSelectedValue] = useState(sortall || "terbaru");
+    const [selectedMitra, setSelectedMitra] = useState(mitra || "semua");
+
+    const handleFilterChange = (value: string) => {
+        if (value === "terbaru") {
+            params.delete("sortall");
+        } else if (value === "terlama") {
+            params.set("sortall", "terlama");
+        }
+
+        window.location.replace(
+            `${window.location.pathname}?${params.toString()}`
+        )
+    }
+
+    const handleFilterMitra = (value: string) => {
+        if (value === "semua") {
+            params.delete("mitra");
+        } else {
+            params.set("mitra", value);
+        }
+
+        window.location.replace(
+            `${window.location.pathname}?${params.toString()}`
+        )
+    }
+
 
     const muatLebihBanyak = () => {
         setLaporanData(laporans.slice(0, currentMax + 8))
@@ -30,9 +61,9 @@ export default function LaporanPage({ auth: { user }, laporans }: PageProps<{ la
                     <div
                         className={`grid grid-cols-2 md:grid-cols-5 gap-4`}
                     >
-                        <Select>
+                        <Select onValueChange={handleFilterChange} value={selectedValue}>
                             <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Urutkan berdasarkan" />
+                                <SelectValue placeholder="Sortir" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
@@ -41,14 +72,16 @@ export default function LaporanPage({ auth: { user }, laporans }: PageProps<{ la
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <Select>
+                        <Select onValueChange={handleFilterMitra} value={selectedMitra}>
                             <SelectTrigger className="w-full">
                                 <SelectValue placeholder="Filter mitra" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
                                     <SelectItem value="semua">Semua mitra</SelectItem>
-                                    <SelectItem value="terlama">Terlama</SelectItem>
+                                    {mitras.map(mitra => (
+                                        <SelectItem value={mitra.id.toString()}>{mitra.name}</SelectItem>
+                                    ))}
                                 </SelectGroup>
                             </SelectContent>
                         </Select>

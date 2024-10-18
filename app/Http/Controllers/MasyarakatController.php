@@ -72,8 +72,27 @@ class MasyarakatController extends Controller
 
     public function laporan()
     {
+        $query = Laporan::query()->where('status', 'Diterima');
+
+        if (request("sortall") == "terlama") {
+            $query->orderBy('tgl_kirim', 'asc');
+        } else {
+            $query->orderBy('tgl_kirim', 'desc');
+        }
+
+        if (request("mitra")) {
+            $query->where('mitra_id', request("mitra"));
+        }
+
+        if (request("search")) {
+            $searchTerm = request("search");
+
+            $query->where('name', 'like', '%' . $searchTerm . '%');
+        }
+
         return Inertia::render('Masyarakat/Laporan/Index', [
-            'laporans' => Laporan::where('status', 'Diterima')->with('mitra')->get()
+            'laporans' => $query->with('mitra')->get(),
+            'mitras' => Mitra::where('status', 'Aktif')->get()
         ]);
     }
     public function laporanDetail(Laporan $laporan)
