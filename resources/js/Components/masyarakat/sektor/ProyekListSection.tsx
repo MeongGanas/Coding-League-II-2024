@@ -4,11 +4,27 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import ProyekCard from "../card/ProyekCard";
 import { Button } from "@/Components/ui/button";
 import { useState } from "react";
-import { Proyek } from "@/types";
+import { Proyek, Sektor } from "@/types";
 
-export default function ProyekListSection({ proyeks }: { proyeks: Proyek[] }) {
+export default function ProyekListSection({ proyeks, sektors }: { proyeks: Proyek[], sektors: Sektor[] }) {
     const [currentMax, setCurrentMax] = useState(8)
     const [proyekData, setProyekData] = useState(proyeks.slice(0, currentMax));
+
+    const params = new URLSearchParams(window.location.search);
+    const sektor = params.get("sektor") as string
+    const [selectedSektor, setSelectedSektor] = useState(sektor || "semua");
+
+    const handleFilterSektor = (value: string) => {
+        if (value === "semua") {
+            params.delete("sektor");
+        } else {
+            params.set("sektor", value);
+        }
+
+        window.location.replace(
+            `${window.location.pathname}?${params.toString()}`
+        )
+    }
 
     const muatLebihBanyak = () => {
         setProyekData(proyeks.slice(0, currentMax + 8))
@@ -30,14 +46,16 @@ export default function ProyekListSection({ proyeks }: { proyeks: Proyek[] }) {
                     <div
                         className={`grid grid-cols-2 md:grid-cols-4 gap-4`}
                     >
-                        <Select>
+                        <Select onValueChange={handleFilterSektor} value={selectedSektor}>
                             <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Filter Berdasarkan" />
+                                <SelectValue placeholder="Filter sektor" />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectItem value="semua">Semua sektor CSR</SelectItem>
-                                    <SelectItem value="terlama">Terlama</SelectItem>
+                                    <SelectItem value="semua">Semua mitra</SelectItem>
+                                    {sektors.map(sektor => (
+                                        <SelectItem value={sektor.id.toString()} key={sektor.id}>{sektor.name}</SelectItem>
+                                    ))}
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
@@ -50,7 +68,7 @@ export default function ProyekListSection({ proyeks }: { proyeks: Proyek[] }) {
                 {proyeks ? (
                     <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
                         {proyekData.map((proyek) => (
-                            <ProyekCard proyek={proyek} />
+                            <ProyekCard proyek={proyek} key={proyek.id} />
                         ))}
                     </div>
                 ) : (

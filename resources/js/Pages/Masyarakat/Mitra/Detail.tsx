@@ -36,13 +36,17 @@ export default function Detail({ auth: { user }, mitra }: PageProps<{ mitra: Mit
                         <Garis />
                         <h1 className="font-extrabold text-3xl lg:text-4xl">Laporan Lainnya</h1>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                        {mitra.laporan && mitra.laporan.map((laporan) => (
-                            <LaporanCard withMitraImage={false} laporan={laporan} />
-                        ))}
-                    </div>
+                    {mitra.laporan && mitra.laporan?.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                            {mitra.laporan.map((laporan) => (
+                                <LaporanCard withMitraImage={false} laporan={laporan} key={laporan.id} />
+                            ))}
+                        </div>
+                    ) : (
+                        <h1>Belum ada laporan lainnya yang berkolerasi dengan data diatas.</h1>
+                    )}
                     <div className="flex justify-center">
-                        <Button variant={"outline"} asChild className="hover:bg-primary hover:border-primary hover:text-white"><Link href="/laporan">Lihat semua laporan</Link></Button>
+                        <Button variant={"outline"} asChild className="hover:bg-primary hover:border-primary hover:text-white"><Link href={`/laporan?mitra=${mitra.id}`}>Lihat semua laporan</Link></Button>
                     </div>
                 </div>
             </div>

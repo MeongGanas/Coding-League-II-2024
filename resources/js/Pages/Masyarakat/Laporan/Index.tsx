@@ -41,7 +41,6 @@ export default function LaporanPage({ auth: { user }, laporans, mitras }: PagePr
         )
     }
 
-
     const muatLebihBanyak = () => {
         setLaporanData(laporans.slice(0, currentMax + 8))
         setCurrentMax(currentMax + 8)
@@ -80,7 +79,7 @@ export default function LaporanPage({ auth: { user }, laporans, mitras }: PagePr
                                 <SelectGroup>
                                     <SelectItem value="semua">Semua mitra</SelectItem>
                                     {mitras.map(mitra => (
-                                        <SelectItem value={mitra.id.toString()}>{mitra.name}</SelectItem>
+                                        <SelectItem value={mitra.id.toString()} key={mitra.id}>{mitra.name}</SelectItem>
                                     ))}
                                 </SelectGroup>
                             </SelectContent>
@@ -93,7 +92,7 @@ export default function LaporanPage({ auth: { user }, laporans, mitras }: PagePr
                     {laporans ? (
                         <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
                             {laporanData.map((laporan) => (
-                                <LaporanCard laporan={laporan} />
+                                <LaporanCard laporan={laporan} key={laporan.id} />
                             ))}
                         </div>
                     ) : (

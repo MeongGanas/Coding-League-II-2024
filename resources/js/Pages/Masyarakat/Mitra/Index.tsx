@@ -34,7 +34,7 @@ export default function MitraPage({ auth: { user }, mitras }: PageProps<{ mitras
                         <Garis />
                     </div>
                     <div
-                        className={`grid grid-cols-2 md:grid-cols-4 gap-4`}
+                        className={`grid grid-cols-1 md:grid-cols-4 gap-4`}
                     >
                         <Select onValueChange={handleFilterChange} value={selectedValue}>
                             <SelectTrigger className="w-full">
@@ -47,7 +47,7 @@ export default function MitraPage({ auth: { user }, mitras }: PageProps<{ mitras
                                 </SelectGroup>
                             </SelectContent>
                         </Select>
-                        <div className="w-full col-span-2 md:col-span-3">
+                        <div className="w-full md:col-span-3">
                             <SearchForm />
                         </div>
                     </div>
@@ -55,7 +55,7 @@ export default function MitraPage({ auth: { user }, mitras }: PageProps<{ mitras
                     {mitras ? (
                         <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
                             {mitras.map((mitra) => (
-                                <MitraCard mitra={mitra} />
+                                <MitraCard mitra={mitra} key={mitra.id} />
                             ))}
                         </div>
                     ) : (

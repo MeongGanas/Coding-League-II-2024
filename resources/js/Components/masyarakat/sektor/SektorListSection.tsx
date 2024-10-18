@@ -17,7 +17,7 @@ export default function SektorListSection({ sektors }: { sektors: Sektor[] }) {
                 {sektors ? (
                     <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-5">
                         {sektors.map((sektor) => (
-                            <SektorCard sektor={sektor} />
+                            <SektorCard sektor={sektor} key={sektor.id} />
                         ))}
                     </div>
                 ) : (

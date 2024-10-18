@@ -9,7 +9,7 @@ export default function SektorPage({ auth: { user }, sektors, proyeks }: PagePro
         <LayoutMasyarakat user={user} title="Sektor">
             <OtherWelcomeSection title="Sektor" desc="Program CSR yang sudah berjalan di kabupaten cirebon" />
             <SektorListSection sektors={sektors} />
-            <ProyekListSection proyeks={proyeks} />
+            <ProyekListSection proyeks={proyeks} sektors={sektors} />
         </LayoutMasyarakat>
     )
 }

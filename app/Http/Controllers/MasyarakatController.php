@@ -48,14 +48,30 @@ class MasyarakatController extends Controller
 
     public function sektor()
     {
+        $proyek = Proyek::query()->where('status', 'Terbit');
+
+        if (request("sektor")) {
+            $proyek->where('sektor_id', request("sektor"));
+        }
+
+        if (request("search")) {
+            $searchTerm = request("search");
+
+            $proyek->where('name', 'like', '%' . $searchTerm . '%');
+        }
+
         return Inertia::render('Masyarakat/Sektor/Index', [
-            'sektors' => Sektor::with('proyeks')->latest()->get(),
-            'proyeks' => Proyek::where('status', 'Terbit')->with('sektor')->latest()->get(),
+            'sektors' => Sektor::with(['proyeks' => function ($query) {
+                $query->where('status', 'Terbit');
+            }])->latest()->get(),
+            'proyeks' => $proyek->with('sektor')->latest()->get(),
         ]);
     }
     public function sektorDetail(Sektor $sektor)
     {
-        $sektor->load('proyeks');
+        $sektor->load(['proyeks' => function ($query) {
+            $query->where('status', 'Terbit');
+        }]);
 
         return Inertia::render('Masyarakat/Sektor/Detail', [
             'sektor' => $sektor
@@ -146,7 +162,7 @@ class MasyarakatController extends Controller
     public function mitraDetail(Mitra $mitra)
     {
         $mitra->load(['laporan' => function ($query) {
-            $query->where('status', 'Terbit');
+            $query->where('status', 'Diterima')->limit(3);
         }]);
 
         return Inertia::render('Masyarakat/Mitra/Detail', [

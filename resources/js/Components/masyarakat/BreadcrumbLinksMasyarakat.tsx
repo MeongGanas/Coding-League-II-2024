@@ -30,7 +30,7 @@ export default function BreadcrumLinksMasyarakat({
         <Breadcrumb>
             <BreadcrumbList>
                 <BreadcrumbItem>
-                    <BreadcrumbLink href="/admin/dashboard" className="text-[#E66445] hover:text-red-200 text-base">
+                    <BreadcrumbLink href="/" className="text-[#E66445] hover:text-red-200 text-base">
                         Beranda
                     </BreadcrumbLink>
                 </BreadcrumbItem>
