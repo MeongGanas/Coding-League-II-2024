@@ -8,13 +8,13 @@ import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Badge } from "@/Components/ui/badge";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import formatPrice from "@/lib/formatPrice";
-import { PageProps } from "@/types";
+import { Laporan, PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { BriefcaseBusiness } from "lucide-react";
 
-export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan: any }>) {
+export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan: Laporan }>) {
     return (
         <LayoutAdmin user={user}>
             <Head title="Detail Laporan" />
@@ -33,14 +33,14 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                         </div>
                         <div className="space-y-1">
                             <h1 className="font-bold text-xl sm:text-2xl">
-                            {laporan.name}
+                                {laporan.name}
                             </h1>
                             <div className="block space-y-1 sm:flex sm:gap-4 sm:space-y-0">
                                 <p className="text-sm sm:text-base font-semibold">
-                                {laporan.mitra.perusahaan}
+                                    {laporan.mitra.perusahaan}
                                 </p>
                                 <p className="text-sm sm:text-base font-semibold">
-                                    { format(new Date(laporan.created_at), "dd MMMM yyyy", {locale: id}) }
+                                    {format(new Date(laporan.created_at), "dd MMMM yyyy", { locale: id })}
                                 </p>
                             </div>
                         </div>

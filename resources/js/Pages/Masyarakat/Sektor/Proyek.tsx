@@ -12,7 +12,9 @@ export default function DetailSektorProyek({ auth: { user }, proyek }: PageProps
     console.log(proyek)
     return (
         <LayoutMasyarakat user={user} title="Sektor Proyek">
-            <OtherWelcomeSection title={proyek.name} desc={`Mulai: ${format(new Date(proyek.tgl_awal), 'MMMM dd, y')} -  Tgl. Berakhir: ${proyek.tgl_akhir ? format(new Date(proyek.tgl_akhir), 'MMMM dd, y') : "-"}`} addBreadCrumb={proyek.sektor.name} addBreadCrumbID={proyek.sektor_id.toString()} />
+            <OtherWelcomeSection title={proyek.name} desc={`Mulai: ${format(new Date(proyek.tgl_awal), 'MMMM dd, y')} -  Tgl. Berakhir: ${proyek.tgl_akhir ? format(new Date(proyek.tgl_akhir), 'MMMM dd, y') : "-"}`} addBreadCrumb={proyek.sektor.name} addBreadCrumbID={proyek.sektor_id.toString()} anotherDesc={<p className="lg:text-lg text-light">
+                {proyek.kecamatan}
+            </p>} />
 
             <div className="relative">
                 <img src="/images/masyarakat/hiasan.png" width={150} alt="hiasan" className="absolute rotate-90 -z-10 right-0 top-0" />

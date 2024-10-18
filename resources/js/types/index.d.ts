@@ -118,6 +118,11 @@ export interface Laporan {
     tgl_kirim: string;
     status: string;
     realisasi: number;
+    photos: string[];
+    rincian: string;
+    created_at: string;
+    proyek_name: string;
+    sektor: Sektor;
 }
 
 export interface LaporanProps {

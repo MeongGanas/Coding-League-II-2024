@@ -16,6 +16,11 @@ class Laporan extends Model
         return $this->belongsTo(Mitra::class);
     }
 
+    public function sektor()
+    {
+        return $this->belongsTo(Sektor::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

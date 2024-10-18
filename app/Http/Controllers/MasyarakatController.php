@@ -32,7 +32,9 @@ class MasyarakatController extends Controller
 
     public function about()
     {
-        return Inertia::render('Masyarakat/Tentang/Index');
+        return Inertia::render('Masyarakat/Tentang/Index', [
+            'laporans' => Laporan::where('status', 'Diterima')->with('mitra')->take(3)->get()
+        ]);
     }
     public function pengajuan()
     {
@@ -70,12 +72,18 @@ class MasyarakatController extends Controller
 
     public function laporan()
     {
-        return Inertia::render('Masyarakat/Laporan/Index');
+        return Inertia::render('Masyarakat/Laporan/Index', [
+            'laporans' => Laporan::where('status', 'Diterima')->with('mitra')->get()
+        ]);
     }
     public function laporanDetail(Laporan $laporan)
     {
+        $laporan->load('mitra');
+        $laporan->load('sektor');
+
         return Inertia::render('Masyarakat/Laporan/Detail', [
-            'laporan' => $laporan
+            'laporan' => $laporan,
+            'laporanLainnya' => Laporan::where('id', '!=', $laporan->id)->where('status', 'Diterima')->with('mitra')->take(3)->get()
         ]);
     }
 

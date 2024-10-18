@@ -58,9 +58,9 @@ export default function KegiatanPage({ auth: { user }, kegiatans }: PageProps<{ 
 
                     <div className="flex justify-center">
                         {(currentMax === kegiatans.length || currentMax > kegiatans.length) && currentMax > 8 ? (
-                            <Button variant={"outline"} type="button" onClick={muatLebihSedikit} className="hover:bg-primary hover:border-primary hover:text-white">Muat lebih sedikit</Button>
+                            <Button variant={"outline"} type="button" disabled={kegiatans.length <= 8} onClick={muatLebihSedikit} className="hover:bg-primary hover:border-primary hover:text-white">Muat lebih sedikit</Button>
                         ) : (
-                            <Button variant={"outline"} type="button" onClick={muatLebihBanyak} className="hover:bg-primary hover:border-primary hover:text-white">Muat lebih banyak</Button>
+                            <Button variant={"outline"} type="button" disabled={kegiatans.length <= 8} onClick={muatLebihBanyak} className="hover:bg-primary hover:border-primary hover:text-white">Muat lebih banyak</Button>
                         )}
                     </div>
                 </div>

@@ -37,27 +37,11 @@ export default function KegiatanDetail({ auth: { user }, kegiatan, kegiatanLainn
                     <p className="text-gray-600">KABUPATEN CIREBON — Pemerintah Kabupaten Cirebon menerima bantuan Corporate Social Responsibility (CSR) dari Bank BJB, berupa lampu penerangan jalan umum (PJU) tematik. KABUPATEN CIREBON — Pemerintah Kabupaten Cirebon menerima bantuan Corporate Social Responsibility (CSR) dari Bank BJB, berupa lampu penerangan jalan umum (PJU) tematik.</p>
                 </div>
                 <div className="flex flex-wrap gap-3">
-                    <Badge className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/90 text-black">
-                        Sosial
-                    </Badge>
-                    <Badge className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/90 text-black">
-                        Bank BJB
-                    </Badge>
-                    <Badge className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/90 text-black">
-                        CSR
-                    </Badge>
-                    <Badge className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/90 text-black">
-                        Cirebon
-                    </Badge>
-                    <Badge className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/90 text-black">
-                        Kabupaten Cirebon
-                    </Badge>
-                    <Badge className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/90 text-black">
-                        Pemkab Cirebon
-                    </Badge>
-                    <Badge className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/90 text-black">
-                        PJ Bupati Cirebon
-                    </Badge>
+                    {kegiatan.tags.map((tag) => (
+                        <Badge className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/90 text-black">
+                            tag
+                        </Badge>
+                    ))}
                 </div>
                 <div className="flex justify-end text-gray-600 gap-3 items-center">
                     <h1>Bagikan kegiatan</h1>

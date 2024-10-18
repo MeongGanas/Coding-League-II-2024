@@ -15,4 +15,9 @@ class Sektor extends Model
     {
         return $this->hasMany(Proyek::class);
     }
+
+    public function laporans()
+    {
+        return $this->hasMany(Laporan::class);
+    }
 }

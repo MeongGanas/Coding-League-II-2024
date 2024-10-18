@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 import BreadcrumLinksMasyarakat from "./BreadcrumbLinksMasyarakat";
 
-export default function OtherWelcomeSection({ title, desc, pagePath, addBreadCrumb, addBreadCrumbID }: { title: string, desc: string, pagePath?: string, addBreadCrumb?: string, addBreadCrumbID?: string }) {
+export default function OtherWelcomeSection({ title, desc, anotherDesc, pagePath, addBreadCrumb, addBreadCrumbID }: { title: string, desc: string, pagePath?: string, addBreadCrumb?: string, addBreadCrumbID?: string, anotherDesc?: ReactNode }) {
     return (
         <div className="relative">
             <div className="py-10">
@@ -16,6 +17,7 @@ export default function OtherWelcomeSection({ title, desc, pagePath, addBreadCru
                                 <p className="lg:text-lg text-light">
                                     {desc}
                                 </p>
+                                {anotherDesc}
                             </div>
                         </div>
                     </div>

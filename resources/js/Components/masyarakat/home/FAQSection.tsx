@@ -5,10 +5,12 @@ import { useState } from "react";
 export default function FAQSection() {
     const [active, setActive] = useState('what')
 
-    const faqs: { [key: string]: {
-        question: string,
-        answer: string
-    } } = {
+    const faqs: {
+        [key: string]: {
+            question: string,
+            answer: string
+        }
+    } = {
         what: {
             question: 'Apa itu CSR?',
             answer: 'CSR atau Corporate Social Responsibility adalah komitmen perusahaan untuk berkontribusi dalam pembangunan berkelanjutan dengan cara memberikan dampak positif bagi masyarakat dan lingkungan sekitar. Di Kabupaten Cirebon, CSR dapat diwujudkan melalui berbagai program seperti pendidikan, kesehatan, lingkungan, dan pemberdayaan masyarakat.'
@@ -43,25 +45,10 @@ export default function FAQSection() {
                 <div className="grid lg:grid-cols-2 space-y-10 lg:space-y-0">
                     <div className="pl-5">
                         <ul className="w-full">
-                            {/* <li className={`w-full max-w-[400px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl lg:text- ${active === "what" ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`} onClick={what}>
-                                Apa itu CSR? <ChevronRight className="w-5 h-5" />
-                            </li>
-                            <li className={`w-full max-w-[400px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl lg:text- ${active === "why" ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`} onClick={why}>
-                                Mengapa CSR penting di Kabupaten Cirebon? <ChevronRight className="w-5 h-5" />
-                            </li>
-                            <li className={`w-full max-w-[400px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl lg:text- ${active === "how" ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`} onClick={how}>
-                                Bagaimana cara perusahaan di Kabupaten Cirebon menjalankan program CSR? <ChevronRight className="w-5 h-5" />
-                            </li>
-                            <li className={`w-full max-w-[400px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl lg:text- ${active === "contoh" ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`} onClick={contoh}>
-                                Apa saja contoh program CSR di Kabupaten Cirebon? <ChevronRight className="w-5 h-5" />
-                            </li>
-                            <li className={`w-full max-w-[400px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl lg:text- ${active === "mendukung" ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`} onClick={mendukung}>
-                                Bagaimana pemerintah Kabupaten Cirebon mendukung program CSR? <ChevronRight className="w-5 h-5" />
-                            </li> */}
                             {
-                                Object.entries(faqs).map(([key, {question}], index) => (
+                                Object.entries(faqs).map(([key, { question }], index) => (
                                     <li key={index} className={`w-full max-w-[430px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl lg:text- ${active === key ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`} onClick={() => setActive(key)}>
-                                        {question} <ChevronRight className="w-5 h-5 ml-[20px] " />
+                                        {question} <ChevronRight className="min-w-5 min-h-5 ml-[20px]" />
                                     </li>
                                 ))
                             }
