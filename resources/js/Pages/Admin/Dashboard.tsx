@@ -6,7 +6,7 @@ import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { Head } from "@inertiajs/react";
 import { PageProps } from "@/types";
 
-export default function Dashboard({ auth: { user } }: PageProps) {
+export default function Dashboard({ auth: { user }, counts, realisasi }: PageProps) {
     return (
         <LayoutAdmin user={user}>
             <Head title="Dashboard Admin" />
@@ -21,8 +21,8 @@ export default function Dashboard({ auth: { user } }: PageProps) {
                     sektor={true}
                     mitra={true}
                 />
-                <DataStatistik />
-                <RealisasiProyek />
+                <DataStatistik counts={counts} />
+                <RealisasiProyek realisasi={realisasi}/>
             </div>
         </LayoutAdmin>
     );

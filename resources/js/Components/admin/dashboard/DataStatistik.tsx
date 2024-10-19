@@ -1,21 +1,21 @@
-import formatPrice from "@/lib/formatPrice";
+import formatPrice, { prettyMoney } from "@/lib/formatPrice";
 import { BadgeCheck, LayoutPanelLeft } from "lucide-react";
 
-export default function DataStatistik() {
+export default function DataStatistik({ counts }: { counts: any }) {
     return (
         <div className="w-full">
             <h1 className="font-bold text-2xl py-5">Data Statistik</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:grid-cols-4">
-                <CardProyekCSR />
-                <CardProyekTerealisasi />
-                <CardMitra />
-                <CardDana />
+                <CardProyekCSR count={counts.countProyek || 0}/>
+                <CardProyekTerealisasi count={counts.countProyekRealized || 0}/>
+                <CardMitra count={counts.countMitra || 0} />
+                <CardDana count={counts.countTotalDanaRealized} />
             </div>
         </div>
     );
 }
 
-function CardProyekCSR() {
+function CardProyekCSR({ count }: { count: number }) {
     return (
         <div className="w-full p-6 rounded-xl bg-[#F95016] space-y-4">
             <div className="flex items-center gap-4">
@@ -25,13 +25,15 @@ function CardProyekCSR() {
                 <h1 className="text-white text-lg">Total Proyek CSR</h1>
             </div>
             <div className="bg-white/30 rounded-xl p-4 border border-white/50">
-                <h1 className="font-bold text-lg text-white">1000</h1>
+                <h1 className="font-bold text-lg text-white">
+                    {count}
+                </h1>
             </div>
         </div>
     );
 }
 
-function CardProyekTerealisasi() {
+function CardProyekTerealisasi({ count }: { count: number }) {
     return (
         <div className="w-full p-6 rounded-xl bg-[#7A5AF8] space-y-4">
             <div className="flex items-center gap-4">
@@ -41,13 +43,15 @@ function CardProyekTerealisasi() {
                 <h1 className="text-white text-lg">Proyek Terealisasi</h1>
             </div>
             <div className="bg-white/30 rounded-xl p-4 border border-white/50">
-                <h1 className="font-bold text-lg text-white">1000</h1>
+                <h1 className="font-bold text-lg text-white">
+                    {count}
+                </h1>
             </div>
         </div>
     );
 }
 
-function CardMitra() {
+function CardMitra({ count }: { count: number }) {
     return (
         <div className="w-full p-6 rounded-xl bg-[#2C5586] space-y-4">
             <div className="flex items-center gap-4">
@@ -57,13 +61,15 @@ function CardMitra() {
                 <h1 className="text-white text-lg">Mitra Bergabung</h1>
             </div>
             <div className="bg-white/30 rounded-xl p-4 border border-white/50">
-                <h1 className="font-bold text-lg text-white">1000</h1>
+                <h1 className="font-bold text-lg text-white">
+                    {count}
+                </h1>
             </div>
         </div>
     );
 }
 
-function CardDana() {
+function CardDana({ count }: { count: number}) {
     return (
         <div className="w-full p-6 rounded-xl bg-success space-y-4">
             <div className="flex items-center gap-4">
@@ -74,7 +80,8 @@ function CardDana() {
             </div>
             <div className="bg-white/30 rounded-xl p-4 border border-white/50">
                 <h1 className="font-bold text-lg text-white">
-                    {formatPrice(1000000)}
+                    {/* {formatPrice(count)} */}
+                    {prettyMoney(count)}
                 </h1>
             </div>
         </div>

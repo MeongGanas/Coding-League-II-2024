@@ -1,20 +1,8 @@
 import { Statistik } from "@/types";
 import Garis from "../Garis";
+import { prettyMoney } from "@/lib/formatPrice";
 
 export default function DataStatistikSection({ statistik }: { statistik: Statistik }) {
-    const prettyMoney = (money: number) => {
-        if (money < 1000) {
-            return `Rp${money}+`;
-        } else if (money < 1000000) {
-            return `Rp${(money / 1000).toFixed(2)}RB+`;
-        } else if (money < 1000000000) {
-            return `Rp${(money / 1000000).toFixed(2)}JT+`;
-        } else if (money < 1000000000000) {
-            return `Rp${(money / 1000000000).toFixed(2)}M+`;
-        } else {
-            return `Rp${(money / 1000000000000).toFixed(2)}T+`;
-        }
-    }
 
     return (
         <div className="container py-10 px-5 space-y-10">
