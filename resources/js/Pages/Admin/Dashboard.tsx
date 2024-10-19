@@ -6,7 +6,7 @@ import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { Head } from "@inertiajs/react";
 import { PageProps, RealisasiSektor, Statistik } from "@/types";
 
-export default function Dashboard({ auth: { user }, counts, realisasi }: PageProps) {
+export default function Dashboard({ auth: { user }, counts, realisasi, filters }: PageProps<{ counts: Statistik, realisasi: RealisasiSektor[], filters: any }>) {
     return (
         <LayoutAdmin user={user}>
             <Head title="Dashboard Admin" />
@@ -16,6 +16,7 @@ export default function Dashboard({ auth: { user }, counts, realisasi }: PagePro
             <div className="container py-10 px-5">
                 <SelectAndDownload
                     menu="dashboard"
+                    tahunOptions={filters.tahun}
                     tahun={true}
                     kuartal={true}
                     sektor={true}

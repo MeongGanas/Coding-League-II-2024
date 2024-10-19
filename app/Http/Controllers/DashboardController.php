@@ -6,17 +6,43 @@ use App\Models\Laporan;
 use App\Models\Mitra;
 use App\Models\Proyek;
 use App\Models\Sektor;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $countProyek = Proyek::where('status', 'Terbit')->count();
-        $proyekRealized = Laporan::where('status', 'Diterima');
-        $countProyekRealized = $proyekRealized->count();
-        $countMitra = Mitra::where('status', '!=', 'Pengajuan')->count();
-        $countTotalDanaRealized = $proyekRealized->sum('realisasi');
+        $proyek = Proyek::where('status', 'Terbit');
+        $mitra = Mitra::where('status', '!=', 'Pengajuan');
+        $laporan = Laporan::where('status', 'Diterima');
+        if (request("tahun")) {
+            $proyek->whereYear('tgl_awal', request("tahun"));
+            $mitra->whereYear('tgl_daftar', request("tahun"));
+            $laporan->whereYear('realisasi_date', request("tahun"));
+        }
+        $countProyek = $proyek->count();
+        $countMitra = $mitra->count();
+        $countProyekRealized = $laporan->count();
+        $countTotalDanaRealized = $laporan->sum('realisasi');
+
+        $possibleYearProyek = Proyek::where('status', 'Terbit')
+            ->selectRaw('YEAR(tgl_awal) as year')
+            ->distinct()
+            ->get()
+            ->pluck('year');
+        $possibleYearMitra = Mitra::where('status', '!=', 'Pengajuan')
+            ->selectRaw('YEAR(tgl_daftar) as year')
+            ->distinct()
+            ->get()
+            ->pluck('year');
+        $possibleYearLaporan = Laporan::where('status', 'Diterima')
+            ->selectRaw('YEAR(realisasi_date) as year')
+            ->distinct()
+            ->get()
+            ->pluck('year');
+
+        $possibleYear = $possibleYearProyek->merge($possibleYearMitra)->merge($possibleYearLaporan)->unique();
 
         $realisasiBySektor = Laporan::where('status', 'Diterima')->get()->groupBy('sektor_id')->map(function ($item) {
             return [
@@ -38,7 +64,6 @@ class DashboardController extends Controller
                 'total' => $totalSum - $topSixSum
             ]);
         }
-
         $realisasiByMitra = Laporan::where('status', 'Diterima')->get()->groupBy('mitra_id')->map(function ($item) {
             return [
                 'mitra' => $item->first()->mitra->name,
@@ -54,7 +79,6 @@ class DashboardController extends Controller
                 'total' => $totalSum - $topSixSum
             ]);
         }
-
         $realisasiByKecamatan = Laporan::where('status', 'Diterima')->get()->groupBy('lokasi')->map(function ($item) {
             return [
                 'kecamatan' => $item->first()->lokasi,
@@ -82,7 +106,25 @@ class DashboardController extends Controller
                 'dataCSR' => $newRealisasiBySektor->values(),
                 'persenTotalMitra' => $newRealisasiByMitra->values(),
                 'persenTotalKecamatan' => $newRealisasiByKecamatan->values(),
+            ],
+            'filters' => [
+                'tahun' => $possibleYear->values()
             ]
         ]);
+    }
+
+    public function downloadPDF()
+    {
+        $proyek = Proyek::get()->groupBy('status')->map(function ($item) {
+            return [
+                'count' => $item->count()
+            ];
+        });
+
+        $pdf = Pdf::loadView('pdfs.dashboard', [
+            'proyek' => $proyek
+        ]);
+
+        return $pdf->download(date('Y-m-d') . '-dashboard.pdf');
     }
 }

@@ -1,7 +1,12 @@
 import formatPrice, { prettyMoney } from "@/lib/formatPrice";
+
+import { useSpring, animated } from '@react-spring/web';
 import { BadgeCheck, LayoutPanelLeft } from "lucide-react";
+import { useEffect } from "react";
 
 export default function DataStatistik({ counts }: { counts: any }) {
+
+
     return (
         <div className="w-full">
             <h1 className="font-bold text-2xl py-5">Data Statistik</h1>
@@ -16,6 +21,12 @@ export default function DataStatistik({ counts }: { counts: any }) {
 }
 
 function CardProyekCSR({ count }: { count: number }) {
+    const props = useSpring({
+        from: { number: 0 },
+        to: { number: count },
+        delay: 400
+    });
+
     return (
         <div className="w-full p-6 rounded-xl bg-[#F95016] space-y-4">
             <div className="flex items-center gap-4">
@@ -26,7 +37,7 @@ function CardProyekCSR({ count }: { count: number }) {
             </div>
             <div className="bg-white/30 rounded-xl p-4 border border-white/50">
                 <h1 className="font-bold text-lg text-white">
-                    {count}
+                    <animated.span>{props.number.to(n => n.toFixed(0))}</animated.span>
                 </h1>
             </div>
         </div>
@@ -34,6 +45,12 @@ function CardProyekCSR({ count }: { count: number }) {
 }
 
 function CardProyekTerealisasi({ count }: { count: number }) {
+    const props = useSpring({
+        from: { number: 0 },
+        to: { number: count },
+        delay: 400
+    });
+
     return (
         <div className="w-full p-6 rounded-xl bg-[#7A5AF8] space-y-4">
             <div className="flex items-center gap-4">
@@ -44,7 +61,7 @@ function CardProyekTerealisasi({ count }: { count: number }) {
             </div>
             <div className="bg-white/30 rounded-xl p-4 border border-white/50">
                 <h1 className="font-bold text-lg text-white">
-                    {count}
+                    <animated.span>{props.number.to(n => n.toFixed(0))}</animated.span>
                 </h1>
             </div>
         </div>
@@ -52,6 +69,12 @@ function CardProyekTerealisasi({ count }: { count: number }) {
 }
 
 function CardMitra({ count }: { count: number }) {
+    const props = useSpring({
+        from: { number: 0 },
+        to: { number: count },
+        delay: 400
+    });
+
     return (
         <div className="w-full p-6 rounded-xl bg-[#2C5586] space-y-4">
             <div className="flex items-center gap-4">
@@ -62,14 +85,24 @@ function CardMitra({ count }: { count: number }) {
             </div>
             <div className="bg-white/30 rounded-xl p-4 border border-white/50">
                 <h1 className="font-bold text-lg text-white">
-                    {count}
+                    <animated.span>{props.number.to(n => n.toFixed(0))}</animated.span>
                 </h1>
             </div>
         </div>
     );
 }
 
-function CardDana({ count }: { count: number}) {
+function CardDana({ count }: { count: string}) {
+    const parsedCount = parseFloat(count);
+    const props = useSpring({
+        from: { number: 0 },
+        to: { number: parsedCount },
+        delay: 400,
+        config: {
+            duration: 1500
+        }
+    });
+
     return (
         <div className="w-full p-6 rounded-xl bg-success space-y-4">
             <div className="flex items-center gap-4">
@@ -80,8 +113,9 @@ function CardDana({ count }: { count: number}) {
             </div>
             <div className="bg-white/30 rounded-xl p-4 border border-white/50">
                 <h1 className="font-bold text-lg text-white">
-                    {/* {formatPrice(count)} */}
-                    {prettyMoney(count)}
+                    <animated.span>{props.number.to(n =>
+                        prettyMoney(n)
+                    )}</animated.span>
                 </h1>
             </div>
         </div>

@@ -38,6 +38,8 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
         Route::get('laporan/pdf', [LaporanController::class, 'downloadPDF']);
         Route::get('proyek/csv', [ProyekController::class, 'downloadCSV']);
         Route::get('proyek/pdf', [ProyekController::class, 'downloadPDF']);
+        Route::get('dashboard/csv', [DashboardController::class, 'downloadCSV']);
+        Route::get('dashboard/pdf', [DashboardController::class, 'downloadPDF']);
     });
 
     Route::resource("laporan", LaporanController::class);
