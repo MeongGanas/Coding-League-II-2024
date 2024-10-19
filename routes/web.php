@@ -32,6 +32,7 @@ Route::get('/mitra/{mitra}/detail', [MasyarakatController::class, 'mitraDetail']
 
 Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
     Route::get("dashboard", [DashboardController::class, 'index'])->name('dashboardAdmin');
+
     Route::prefix('download')->group(function () {
         Route::get('laporan/csv', [LaporanController::class, 'downloadCSV']);
         Route::get('laporan/pdf', [LaporanController::class, 'downloadPDF']);

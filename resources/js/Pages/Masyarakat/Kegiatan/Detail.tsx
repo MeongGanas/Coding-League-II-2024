@@ -8,9 +8,25 @@ import { Kegiatan, PageProps } from "@/types";
 import { Link } from "@inertiajs/react";
 import { format } from "date-fns";
 import { Facebook, Instagram, Link as LinkIcon, Twitter, TwitterIcon } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function KegiatanDetail({ auth: { user }, kegiatan, kegiatanLainnya }: PageProps<{ kegiatan: Kegiatan, kegiatanLainnya: Kegiatan[] }>) {
-    console.log(kegiatanLainnya)
+    const shareToFacebook = () => {
+        const currentUrl = window.location.href;
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentUrl)}`, '_blank');
+    };
+
+    const shareToTwitter = () => {
+        const currentUrl = window.location.href;
+        window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}`, '_blank');
+    };
+
+    const copyToClipboard = () => {
+        const currentUrl = window.location.href;
+        navigator.clipboard.writeText(currentUrl);
+        toast.success("Link copied to clipboard!");
+    };
+
     return (
         <LayoutMasyarakat user={user} title="Kegiatan Detail">
             <OtherWelcomeSection title={kegiatan.name} desc={format(new Date(kegiatan.tgl_terbit), 'MMMM dd, y')} />
@@ -45,10 +61,10 @@ export default function KegiatanDetail({ auth: { user }, kegiatan, kegiatanLainn
                 </div>
                 <div className="flex justify-end text-gray-600 gap-3 items-center">
                     <h1>Bagikan kegiatan</h1>
-                    <Button variant={"outline"} size={"icon"}><Facebook className="w-4 h-4" /></Button>
-                    <Button variant={"outline"} size={"icon"}><TwitterIcon className="w-4 h-4" /></Button>
-                    <Button variant={"outline"} size={"icon"}><Instagram className="w-4 h-4" /></Button>
-                    <Button variant={"outline"} size={"icon"}><LinkIcon className="w-4 h-4" /></Button>
+                    <Button variant={"outline"} size={"icon"} onClick={shareToFacebook}><Facebook className="w-4 h-4" /></Button>
+                    <Button variant={"outline"} size={"icon"} onClick={shareToTwitter}><TwitterIcon className="w-4 h-4" /></Button>
+                    <Button variant={"outline"} size={"icon"} onClick={copyToClipboard}><Instagram className="w-4 h-4" /></Button>
+                    <Button variant={"outline"} size={"icon"} onClick={copyToClipboard}><LinkIcon className="w-4 h-4" /></Button>
                 </div>
             </div>
             <div className="container py-10 px-5 space-y-10">

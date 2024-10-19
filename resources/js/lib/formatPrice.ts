@@ -1,11 +1,9 @@
-export default function formatPrice(price: number) {
-    return new Intl.NumberFormat("id-ID", {
-        style: "currency",
-        currency: "IDR",
-        minimumFractionDigits: 0,
-    })
-        .format(price)
-        .replace(/\./g, ",");
+export default function formatPrice(price: number): string {
+    return `Rp ${new Intl.NumberFormat("id-ID", {
+        style: "decimal",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    }).format(price)}`;
 }
 
 export const prettyMoney = (money: number) => {

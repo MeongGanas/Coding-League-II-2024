@@ -43,14 +43,14 @@ class MasyarakatController extends Controller
     public function statistik()
     {
         $statistik = [
-            'total_proyek' => Proyek::count(),
-            'proyek_terealisasi' => Laporan::count(),
-            'mitra_bergabung' => Mitra::count(),
-            'dana_realisasi' => Laporan::sum('realisasi')
+            'total_proyek' => Proyek::where('status', 'Terbit')->count(),
+            'proyek_terealisasi' => Laporan::where('status', 'Diterima')->count(),
+            'mitra_bergabung' => Mitra::where('status', 'Aktif')->count(),
+            'dana_realisasi' => Laporan::where('status', 'Diterima')->sum('realisasi')
         ];
 
         return Inertia::render('Masyarakat/Statistik', [
-            'statistik' => $statistik
+            'statistik' => $statistik,
         ]);
     }
 

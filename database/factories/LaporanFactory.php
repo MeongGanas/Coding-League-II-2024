@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Mitra;
+use App\Models\Proyek;
 use App\Models\Sektor;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -27,6 +28,7 @@ class LaporanFactory extends Factory
             'proyek_name' => $this->faker->text(50),
             'mitra_id' => Mitra::inRandomOrder()->first()->id,
             'sektor_id' => Sektor::inRandomOrder()->first()->id,
+            'proyek_id' => Proyek::inRandomOrder()->first()->id,
             'lokasi' => $this->faker->randomElement([
                 'Gambir',
                 'Tanah Abang',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kegiatan;
 use App\Http\Requests\StoreKegiatanRequest;
 use App\Http\Requests\UpdateKegiatanRequest;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class KegiatanController extends Controller
@@ -46,13 +47,13 @@ class KegiatanController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Kegiatan/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreKegiatanRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -78,7 +79,7 @@ class KegiatanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateKegiatanRequest $request, Kegiatan $kegiatan)
+    public function update(Request $request, Kegiatan $kegiatan)
     {
         //
     }

@@ -13,6 +13,7 @@ import {
     ChartTooltipContent,
 } from "@/Components/ui/chart";
 import formatPrice from "@/lib/formatPrice";
+import { RealisasiSektor } from "@/types";
 
 const chartData = [
     { sektor: "sosial", total: 100000, fill: "#28A0F6" },
@@ -29,7 +30,7 @@ const chartData = [
 ];
 
 const chartConfig = {
-    total: {
+    total_realisasi: {
         label: "Total",
     },
     sosial: {
@@ -62,7 +63,7 @@ const chartConfig = {
     },
 } satisfies ChartConfig;
 
-export default function TotalRealisasiCSR() {
+export default function TotalRealisasiCSR({ realisasi_per_sektor }: { realisasi_per_sektor: RealisasiSektor[] }) {
     return (
         <div className="space-y-5">
             <h1 className="font-bold text-xl">
@@ -71,7 +72,7 @@ export default function TotalRealisasiCSR() {
             <ChartContainer config={chartConfig}>
                 <BarChart
                     accessibilityLayer
-                    data={chartData}
+                    data={realisasi_per_sektor}
                     layout="vertical"
                     margin={{
                         right: 16,
@@ -86,15 +87,15 @@ export default function TotalRealisasiCSR() {
                         axisLine={false}
                         hide
                     />
-                    <XAxis dataKey="total" type="number" hide />
+                    <XAxis dataKey="total_realisasi" type="number" hide />
                     <ChartTooltip
                         cursor={false}
                         content={<ChartTooltipContent indicator="line" />}
                     />
                     <Bar
-                        dataKey="total"
+                        dataKey="total_realisasi"
                         layout="vertical"
-                        fill="var(--color-desktop)"
+                        fill="var(--chart-1)"
                         radius={0}
                     >
                         <LabelList
@@ -108,7 +109,7 @@ export default function TotalRealisasiCSR() {
                             }}
                         />
                         <LabelList
-                            dataKey="total"
+                            dataKey="total_realisasi"
                             position="insideRight"
                             offset={8}
                             className="fill-white"

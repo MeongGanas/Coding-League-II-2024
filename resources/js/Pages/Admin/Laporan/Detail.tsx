@@ -20,7 +20,7 @@ import { BriefcaseBusiness } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-const status: { [key: string]: string }= {
+const status: { [key: string]: string } = {
     'Diterima': "bg-success-bg text-success hover:bg-success-bg",
     'Revisi': "bg-warning-bg text-warning hover:bg-warning-bg",
     'Ditolak': "bg-error-bg text-error hover:bg-error-bg",
@@ -62,14 +62,16 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                 </div>
                 <h1 className="text-3xl font-bold">Detail Laporan</h1>
                 <div className="bg-white rounded-md p-6 space-y-4 border">
-                    {['Diterima', 'Revisi', 'Ditolak'].includes(laporan.status) &&
-                        <Badge className={status[laporan.status]}>
-                            {laporan.status}
+                    <div className="flex gap-2">
+                        {['Diterima', 'Revisi', 'Ditolak'].includes(laporan.status) &&
+                            <Badge className={status[laporan.status]}>
+                                {laporan.status}
+                            </Badge>
+                        }
+                        <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
+                            {laporan.sektor.name}
                         </Badge>
-                    }
-                    <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
-                        {laporan.sektor.name}
-                    </Badge>
+                    </div>
                     <div className="flex pb-5 mb-5 border-b gap-4">
                         <div className="rounded-full p-3 h-fit bg-primary-bg text-primary">
                             <BriefcaseBusiness className="w-5 h-5" />

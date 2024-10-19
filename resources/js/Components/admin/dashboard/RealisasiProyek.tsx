@@ -1,3 +1,4 @@
+import { RealisasiSektor } from "@/types";
 import {
     PersentaseTotalCSR,
     PersentaseTotalKecamatan,

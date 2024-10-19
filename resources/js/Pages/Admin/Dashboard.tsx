@@ -4,7 +4,7 @@ import SelectAndDownload from "@/Components/admin/SelectAndDownload";
 import WelcomeAdmin from "@/Components/admin/dashboard/WelcomeAdmin";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { Head } from "@inertiajs/react";
-import { PageProps } from "@/types";
+import { PageProps, RealisasiSektor, Statistik } from "@/types";
 
 export default function Dashboard({ auth: { user }, counts, realisasi }: PageProps) {
     return (

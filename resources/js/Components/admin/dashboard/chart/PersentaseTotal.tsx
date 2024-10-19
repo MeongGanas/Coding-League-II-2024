@@ -15,6 +15,7 @@ import {
     ChartTooltipContent,
 } from "@/Components/ui/chart";
 import formatPrice from "@/lib/formatPrice";
+import { RealisasiSektor } from "@/types";
 
 const chartData = [
     { sektor: "sosial", total: 100000, fill: "#28A0F6" },
