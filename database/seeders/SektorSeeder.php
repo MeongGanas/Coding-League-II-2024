@@ -21,7 +21,8 @@ class SektorSeeder extends Seeder
             "Kesehatan",
             "Pendidikan",
             "Infrastruktur dan Sanitasi Lingkungan",
-            "Sarana dan Prasarana Keagamaan"
+            "Sarana dan Prasarana Keagamaan",
+            "Sektor ke-7"
         ];
 
         $found = false;
@@ -38,8 +39,9 @@ class SektorSeeder extends Seeder
 
         $image = [
             "sektor_image/sosial.png",
-            "sektor_image/example.jpg",
-            "sektor_image/example.jpg",
+            "sektor_image/lingkungan.jpg",
+            "sektor_image/kesehatan.jpg",
+            "sektor_image/pendidikan.jpg",
             "sektor_image/example.jpg",
             "sektor_image/example.jpg",
             "sektor_image/example.jpg"
@@ -51,7 +53,8 @@ class SektorSeeder extends Seeder
             "CSR dalam lingkup kesehatan merupakan komitmen perusahaan untuk meningkatkan kesehatan dan kesejahteraan masyarakat di sekitarnya. Ini melibatkan berbagai kegiatan yang bertujuan meningkatkan akses masyarakat terhadap layanan kesehatan, seperti program imunisasi, pemeriksaan kesehatan, dan penyuluhan kesehatan. Melalui CSR kesehatan, perusahaan tidak hanya memenuhi tanggung jawab sosialnya, tetapi juga membangun hubungan yang baik dengan masyarakat, meningkatkan reputasi perusahaan, dan menciptakan dampak kesehatan yang berkelanjutan. Kegiatan CSR kesehatan dapat berupa bantuan langsung, seperti donasi, atau program jangka panjang yang melibatkan partisipasi aktif masyarakat, seperti pelatihan kesehatan dan penyuluhan gizi.",
             "CSR dalam lingkup pendidikan merupakan komitmen perusahaan untuk meningkatkan akses pendidikan dan kualitas pendidikan masyarakat di sekitarnya. Ini melibatkan berbagai kegiatan yang bertujuan meningkatkan akses masyarakat terhadap pendidikan, seperti program beasiswa, bantuan buku, dan renovasi sekolah. Melalui CSR pendidikan, perusahaan tidak hanya memenuhi tanggung jawab sosialnya, tetapi juga membangun hubungan yang baik dengan masyarakat, meningkatkan reputasi perusahaan, dan menciptakan dampak pendidikan yang berkelanjutan. Kegiatan CSR pendidikan dapat berupa bantuan langsung, seperti donasi, atau program jangka panjang yang melibatkan partisipasi aktif masyarakat, seperti pelatihan guru dan pengembangan kurikulum.",
             "CSR dalam lingkup infrastruktur dan sanitasi lingkungan merupakan komitmen perusahaan untuk meningkatkan akses masyarakat terhadap infrastruktur dan sanitasi yang layak. Ini melibatkan berbagai kegiatan yang bertujuan meningkatkan akses masyarakat terhadap infrastruktur dasar, seperti jalan, air bersih, dan sanitasi. Melalui CSR infrastruktur dan sanitasi lingkungan, perusahaan tidak hanya memenuhi tanggung jawab sosialnya, tetapi juga membangun hubungan yang baik dengan masyarakat, meningkatkan reputasi perusahaan, dan menciptakan dampak infrastruktur yang berkelanjutan. Kegiatan CSR infrastruktur dan sanitasi lingkungan dapat berupa bantuan langsung, seperti donasi, atau program jangka panjang yang melibatkan partisipasi aktif masyarakat, seperti pembangunan jalan dan penyediaan air bersih.",
-            "CSR dalam lingkup sarana dan prasarana keagamaan merupakan komitmen perusahaan untuk meningkatkan akses masyarakat terhadap sarana dan prasarana keagamaan yang layak. Ini melibatkan berbagai kegiatan yang bertujuan meningkatkan akses masyarakat terhadap sarana dan prasarana keagamaan, seperti pembangunan masjid, gereja, dan pura. Melalui CSR sarana dan prasarana keagamaan, perusahaan tidak hanya memenuhi tanggung jawab sosialnya, tetapi juga membangun hubungan yang baik dengan masyarakat, meningkatkan reputasi perusahaan, dan menciptakan dampak keagamaan yang berkelanjutan. Kegiatan CSR sarana dan prasarana keagamaan dapat berupa bantuan langsung, seperti donasi, atau program jangka panjang yang melibatkan partisipasi aktif masyarakat, seperti pembangunan tempat ibadah dan penyediaan fasilitas keagamaan."
+            "CSR dalam lingkup sarana dan prasarana keagamaan merupakan komitmen perusahaan untuk meningkatkan akses masyarakat terhadap sarana dan prasarana keagamaan yang layak. Ini melibatkan berbagai kegiatan yang bertujuan meningkatkan akses masyarakat terhadap sarana dan prasarana keagamaan, seperti pembangunan masjid, gereja, dan pura. Melalui CSR sarana dan prasarana keagamaan, perusahaan tidak hanya memenuhi tanggung jawab sosialnya, tetapi juga membangun hubungan yang baik dengan masyarakat, meningkatkan reputasi perusahaan, dan menciptakan dampak keagamaan yang berkelanjutan. Kegiatan CSR sarana dan prasarana keagamaan dapat berupa bantuan langsung, seperti donasi, atau program jangka panjang yang melibatkan partisipasi aktif masyarakat, seperti pembangunan tempat ibadah dan penyediaan fasilitas keagamaan.",
+            "Deskripsi Sektor ke-6"
         ];
 
         foreach ($sektor as $key => $s) {

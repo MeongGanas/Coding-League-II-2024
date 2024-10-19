@@ -25,12 +25,51 @@ class DashboardController extends Controller
                 'total' => $item->sum('realisasi')
             ];
         });
-        $realisasiBySektor = $realisasiBySektor->take(6)->values();
-        $realisasiBySektor->push([
-            'sektor' => 'Lainnya',
-            'count' => $realisasiBySektor->sum('count'),
-            'total' => $realisasiBySektor->sum('total')
-        ]);
+        $newRealisasiBySektor = $realisasiBySektor->take(6)->values();
+        if ($realisasiBySektor->count() > 6) {
+            $totalSum = $realisasiBySektor->sum('total');
+            $topSixSum = $realisasiBySektor->take(6)->sum('total');
+            $countSum = $realisasiBySektor->sum('count');
+            $countSixSum = $realisasiBySektor->take(6)->sum('count');
+
+            $newRealisasiBySektor->push([
+                'sektor' => 'Lainnya',
+                'count' => $countSum - $countSixSum,
+                'total' => $totalSum - $topSixSum
+            ]);
+        }
+
+        $realisasiByMitra = Laporan::where('status', 'Diterima')->get()->groupBy('mitra_id')->map(function ($item) {
+            return [
+                'mitra' => $item->first()->mitra->name,
+                'total' => $item->sum('realisasi')
+            ];
+        });
+        $newRealisasiByMitra = $realisasiByMitra->take(6)->values();
+        if ($realisasiByMitra->count() > 6) {
+            $totalSum = $realisasiByMitra->sum('total');
+            $topSixSum = $realisasiByMitra->take(6)->sum('total');
+            $newRealisasiByMitra->push([
+                'mitra' => 'Lainnya',
+                'total' => $totalSum - $topSixSum
+            ]);
+        }
+
+        $realisasiByKecamatan = Laporan::where('status', 'Diterima')->get()->groupBy('lokasi')->map(function ($item) {
+            return [
+                'kecamatan' => $item->first()->lokasi,
+                'total' => $item->sum('realisasi')
+            ];
+        });
+        $newRealisasiByKecamatan = $realisasiByKecamatan->take(6)->values();
+        if ($realisasiByKecamatan->count() > 6) {
+            $totalSum = $realisasiByKecamatan->sum('total');
+            $countSixSum = $realisasiByKecamatan->take(6)->sum('total');
+            $newRealisasiByKecamatan->push([
+                'kecamatan' => 'Lainnya',
+                'total' => $totalSum - $countSixSum
+            ]);
+        }
 
         return Inertia::render('Admin/Dashboard', [
             'counts' => [
@@ -40,9 +79,9 @@ class DashboardController extends Controller
                 'countTotalDanaRealized' => $countTotalDanaRealized,
             ],
             'realisasi' => [
-                'dataCSR' => $realisasiBySektor->values(),
-                'persenTotalMitra' => [],
-                'persenTotalKec' => [],
+                'dataCSR' => $newRealisasiBySektor->values(),
+                'persenTotalMitra' => $newRealisasiByMitra->values(),
+                'persenTotalKecamatan' => $newRealisasiByKecamatan->values(),
             ]
         ]);
     }
