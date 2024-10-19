@@ -196,9 +196,7 @@ const ChartTooltipContent = React.forwardRef<
                   indicator === "dot" && "items-center"
                 )}
               >
-                {formatter && item?.value !== undefined && item.name ? (
-                  formatter(item.value, item.name, item, index, item.payload)
-                ) : (
+                {(
                   <>
                     {itemConfig?.icon ? (
                       <itemConfig.icon />
@@ -238,7 +236,13 @@ const ChartTooltipContent = React.forwardRef<
                       </div>
                       {item.value && (
                         <span className="font-mono font-medium tabular-nums text-foreground">
-                          {item.value.toLocaleString()}
+                          {
+                            formatter && item?.value !== undefined && item.name ? (
+                                formatter(item.value, item.name, item, index, item.payload)
+                              ) : (
+                                item.value
+                              )
+                          }
                         </span>
                       )}
                     </div>

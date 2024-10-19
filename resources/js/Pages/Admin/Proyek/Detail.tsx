@@ -16,8 +16,6 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function Detail({ auth: { user }, proyek }: PageProps<{ proyek: Proyek }>) {
-    console.log(proyek);
-
     const [isSubmitted, setIsSubmitted] = useState(false)
 
     const terbitkan = () => {

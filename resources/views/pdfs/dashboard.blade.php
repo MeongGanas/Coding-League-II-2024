@@ -41,13 +41,7 @@
 
 <body>
     <h1>Dashboard</h1>
-    <p>{{ date('Y-m-d H:i:s') }}</p>
-    <div class="card">
-        <h3>Proyek</h3>
-        <p><span class="label">Total:</span> {{ $proyek['Draf']['count'] + $proyek['Terbit']['count'] }}</p>
-        <p><span class="label">Draf:</span> {{ $proyek['Draf']['count'] }}</p>
-        <p><span class="label">Terbit:</span> {{ $proyek['Terbit']['count'] }}</p>
-    </div>
+
 </body>
 
 </html>

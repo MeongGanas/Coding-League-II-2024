@@ -21,6 +21,10 @@ class DashboardController extends Controller
             $mitra->whereYear('tgl_daftar', request("tahun"));
             $laporan->whereYear('realisasi_date', request("tahun"));
         }
+        if (request("sektor")) {
+            $proyek->where('sektor_id', request("sektor"));
+            $laporan->where('sektor_id', request("sektor"));
+        }
         $countProyek = $proyek->count();
         $countMitra = $mitra->count();
         $countProyekRealized = $laporan->count();
@@ -41,10 +45,15 @@ class DashboardController extends Controller
             ->distinct()
             ->get()
             ->pluck('year');
-
         $possibleYear = $possibleYearProyek->merge($possibleYearMitra)->merge($possibleYearLaporan)->unique();
+        //
+        $laporan = Laporan::where('status', 'Diterima');
 
-        $realisasiBySektor = Laporan::where('status', 'Diterima')->get()->groupBy('sektor_id')->map(function ($item) {
+        if (request("tahun")) {
+            $laporan->whereYear('realisasi_date', request("tahun"));
+        }
+
+        $realisasiBySektor = $laporan->get()->groupBy('sektor_id')->map(function ($item) {
             return [
                 'sektor' => $item->first()->sektor->name,
                 'count' => $item->count(),
@@ -64,7 +73,7 @@ class DashboardController extends Controller
                 'total' => $totalSum - $topSixSum
             ]);
         }
-        $realisasiByMitra = Laporan::where('status', 'Diterima')->get()->groupBy('mitra_id')->map(function ($item) {
+        $realisasiByMitra = $laporan->get()->groupBy('mitra_id')->map(function ($item) {
             return [
                 'mitra' => $item->first()->mitra->name,
                 'total' => $item->sum('realisasi')
@@ -79,7 +88,8 @@ class DashboardController extends Controller
                 'total' => $totalSum - $topSixSum
             ]);
         }
-        $realisasiByKecamatan = Laporan::where('status', 'Diterima')->get()->groupBy('lokasi')->map(function ($item) {
+
+        $realisasiByKecamatan = $laporan->get()->groupBy('lokasi')->map(function ($item) {
             return [
                 'kecamatan' => $item->first()->lokasi,
                 'total' => $item->sum('realisasi')
@@ -108,7 +118,8 @@ class DashboardController extends Controller
                 'persenTotalKecamatan' => $newRealisasiByKecamatan->values(),
             ],
             'filters' => [
-                'tahun' => $possibleYear->values()
+                'tahun' => $possibleYear->values(),
+                'sektors' => Sektor::latest()->get()->values()
             ]
         ]);
     }

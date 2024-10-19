@@ -26,17 +26,17 @@ const possibleColor = [
     "#B42121",
     "#F95016",
     "#FAC515",
-]
+];
 
 const getChartData = (data: any, key: any, category: string) => {
     return data.map((item: any, index: number) => {
         return {
             [category]: item[category],
             total: item[key],
-            fill: possibleColor[index]
-        }
-    })
-}
+            fill: possibleColor[index],
+        };
+    });
+};
 
 const getChartConfig = (data: any) => {
     return data.reduce((acc: any, item: any, index: number) => {
@@ -46,22 +46,32 @@ const getChartConfig = (data: any) => {
         };
         return acc;
     }, {});
-}
-
+};
 
 const CustomLabel = (props: any) => {
-    const { x, y, value, index, width, height, formatter, position, hiddenText, persistent } = props;
+    const {
+        x,
+        y,
+        value,
+        index,
+        width,
+        height,
+        formatter,
+        position,
+        hiddenText,
+        persistent,
+    } = props;
     const isLow = position === "left";
     const labelX = isLow ? x + 8 : x + width - 8;
     const labelY = y + height / 2 + 4.5;
-    const content = formatter ? formatter(value, index) : value
+    const content = formatter ? formatter(value, index) : value;
 
     const [textWidth, setTextWidth] = useState(0);
     const textRef = useRef<SVGTextElement>(null);
 
     useEffect(() => {
         if (textRef.current) {
-            const context = document.createElement('canvas').getContext('2d');
+            const context = document.createElement("canvas").getContext("2d");
             if (context) {
                 context.font = getComputedStyle(textRef.current).font;
                 const content = formatter ? formatter(value, index) : value;
@@ -81,14 +91,20 @@ const CustomLabel = (props: any) => {
             textAnchor={isLow ? "start" : "end"}
             className="fill-white text-[0.8rem]"
         >
-            {
-                textWidth + 20 > width
-                    ? hiddenText || ""
-                    : content
-            }
+            {textWidth + 20 > width ? hiddenText || "" : content}
         </text>
     );
 };
+
+function noData() {
+    return (
+        <div className="w-full h-[250px] flex items-center justify-center">
+            <p>Data tidak ditemukan</p>
+        </div>
+    );
+}
+
+// function barChart()
 
 export function PersentaseTotalCSR({ data }: { data: any }) {
     const chartData = getChartData(data, "count", "sektor");
@@ -99,41 +115,43 @@ export function PersentaseTotalCSR({ data }: { data: any }) {
             <h1 className="font-bold text-xl">
                 Persentase total realisasi berdasarkan sektor CSR
             </h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 items-center">
-                <ChartContainer
-                    config={chartConfig}
-                    className="aspect-square max-h-[250px]"
-                >
-                    <PieChart>
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent hideLabel />}
-                        />
-                        <Pie
-                            data={chartData}
-                            dataKey="total"
-                            nameKey="sektor"
-                        />
-                    </PieChart>
-                </ChartContainer>
-                <ul className="w-full space-y-3">
-                    {
-                        data.map((item: any, index: number) => (
+            {chartData.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 items-center">
+                    <ChartContainer
+                        config={chartConfig}
+                        className="aspect-square max-h-[250px]"
+                    >
+                        <PieChart>
+                            <ChartTooltip
+                                cursor={false}
+                                content={<ChartTooltipContent hideLabel />}
+                            />
+                            <Pie
+                                data={chartData}
+                                dataKey="total"
+                                nameKey="sektor"
+                            />
+                        </PieChart>
+                    </ChartContainer>
+                    <ul className="w-full space-y-3">
+                        {data.map((item: any, index: number) => (
                             <li className="flex items-center gap-2" key={index}>
                                 <div
                                     className={`w-3 h-3 rounded-full aspect-square`}
                                     style={{
-                                        backgroundColor: possibleColor[index]
+                                        backgroundColor: possibleColor[index],
                                     }}
                                 ></div>
                                 <h1>
                                     {item.sektor}: {item.count}
                                 </h1>
                             </li>
-                        ))
-                    }
-                </ul>
-            </div>
+                        ))}
+                    </ul>
+                </div>
+            ) : (
+                noData()
+            )}
         </div>
     );
 }
@@ -147,53 +165,63 @@ export function TotalRealisasiCSR({ data }: { data: any }) {
             <h1 className="font-bold text-xl">
                 Persentase total realisasi berdasarkan sektor CSR
             </h1>
-            <ChartContainer config={chartConfig}>
-                <BarChart
-                    accessibilityLayer
-                    data={chartData}
-                    layout="vertical"
-                    margin={{
-                        right: 16,
-                    }}
-                >
-                    <CartesianGrid horizontal={false} />
-                    <YAxis
-                        dataKey="sektor"
-                        type="category"
-                        tickLine={false}
-                        tickMargin={10}
-                        axisLine={false}
-                        hide
-                    />
-                    <XAxis dataKey="total" type="number" hide />
-                    <ChartTooltip
-                        cursor={false}
-                        content={<ChartTooltipContent indicator="line" />}
-                    />
-                    <Bar
-                        dataKey="total"
+            {chartData.length > 0 ? (
+                <ChartContainer config={chartConfig}>
+                    <BarChart
+                        accessibilityLayer
+                        data={chartData}
                         layout="vertical"
-                        fill="var(--color-desktop)"
-                        radius={0}
+                        margin={{
+                            right: 16,
+                        }}
                     >
-                        <LabelList
-                            dataKey="total"
-                            content={<CustomLabel
-                                hiddenText="..."
-                                formatter={
-                                    (value: number, index: number) => `${chartData[index]['sektor']} ${formatPrice(value)}`
-                                } />
-                            }
+                        <CartesianGrid horizontal={false} />
+                        <YAxis
+                            dataKey="sektor"
+                            type="category"
+                            tickLine={false}
+                            tickMargin={10}
+                            axisLine={false}
+                            hide
                         />
-                    </Bar>
-                </BarChart>
-            </ChartContainer>
+                        <XAxis dataKey="total" type="number" hide />
+                        <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent indicator="line" />}
+                        />
+                        <Bar
+                            dataKey="total"
+                            layout="vertical"
+                            fill="var(--color-desktop)"
+                            radius={0}
+                        >
+                            <LabelList
+                                dataKey="total"
+                                content={
+                                    <CustomLabel
+                                        hiddenText="..."
+                                        formatter={(
+                                            value: number,
+                                            index: number
+                                        ) =>
+                                            `${
+                                                chartData[index]["sektor"]
+                                            } ${formatPrice(value)}`
+                                        }
+                                    />
+                                }
+                            />
+                        </Bar>
+                    </BarChart>
+                </ChartContainer>
+            ) : (
+                noData()
+            )}
         </div>
     );
 }
 
-export function PersentaseTotalMitra({data}: {data: any}) {
-
+export function PersentaseTotalMitra({ data }: { data: any }) {
     const chartData = getChartData(data, "total", "mitra");
     const chartConfig = getChartConfig(data);
 
@@ -223,7 +251,11 @@ export function PersentaseTotalMitra({data}: {data: any}) {
                     <XAxis dataKey="total" type="number" hide />
                     <ChartTooltip
                         cursor={false}
-                        content={<ChartTooltipContent indicator="line" />}
+                        content={<ChartTooltipContent indicator="line" formatter={
+                            (value: any, name: any) => {
+                                return `${formatPrice(value)}`
+                            }
+                        } />}
                     />
                     <Bar
                         dataKey="total"
@@ -233,11 +265,15 @@ export function PersentaseTotalMitra({data}: {data: any}) {
                     >
                         <LabelList
                             dataKey="total"
-                            content={<CustomLabel
-                                hiddenText="..."
-                                formatter={
-                                    (value: number, index: number) => `${chartData[index]['mitra']} ${formatPrice(value)}`
-                                } />
+                            content={
+                                <CustomLabel
+                                    hiddenText="..."
+                                    formatter={(value: number, index: number) =>
+                                        `${
+                                            chartData[index]["mitra"]
+                                        } ${formatPrice(value)}`
+                                    }
+                                />
                             }
                         />
                     </Bar>
@@ -247,7 +283,7 @@ export function PersentaseTotalMitra({data}: {data: any}) {
     );
 }
 
-export function PersentaseTotalKecamatan({data}: {data: any}) {
+export function PersentaseTotalKecamatan({ data }: { data: any }) {
     const chartData = getChartData(data, "total", "kecamatan");
     const chartConfig = getChartConfig(data);
     return (
@@ -286,11 +322,15 @@ export function PersentaseTotalKecamatan({data}: {data: any}) {
                     >
                         <LabelList
                             dataKey="total"
-                            content={<CustomLabel
-                                hiddenText="..."
-                                formatter={
-                                    (value: number, index: number) => `${chartData[index]['kecamatan']} ${formatPrice(value)}`
-                                } />
+                            content={
+                                <CustomLabel
+                                    hiddenText="..."
+                                    formatter={(value: number, index: number) =>
+                                        `${
+                                            chartData[index]["kecamatan"]
+                                        } ${formatPrice(value)}`
+                                    }
+                                />
                             }
                         />
                     </Bar>

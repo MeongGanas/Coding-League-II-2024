@@ -17,6 +17,7 @@ export default function Dashboard({ auth: { user }, counts, realisasi, filters }
                 <SelectAndDownload
                     menu="dashboard"
                     tahunOptions={filters.tahun}
+                    sektors={filters.sektors}
                     tahun={true}
                     kuartal={true}
                     sektor={true}
