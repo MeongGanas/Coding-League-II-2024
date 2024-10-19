@@ -8,6 +8,7 @@ use App\Models\Proyek;
 use App\Models\Sektor;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Inertia\Inertia;
+use ZipArchive;
 
 class DashboardController extends Controller
 {
@@ -39,27 +40,27 @@ class DashboardController extends Controller
         ]);
     }
 
-    private function applyFilters($proyek, $mitra, $laporan)
+    private function applyFilters($proyek = null, $mitra = null, $laporan = null)
     {
         if (request("tahun")) {
             $tahun = request("tahun");
-            $proyek->whereYear('tgl_awal', $tahun);
-            $mitra->whereYear('tgl_daftar', $tahun);
-            $laporan->whereYear('realisasi_date', $tahun);
+            if ($proyek) $proyek->whereYear('tgl_awal', $tahun);
+            if ($mitra) $mitra->whereYear('tgl_daftar', $tahun);
+            if ($laporan) $laporan->whereYear('realisasi_date', $tahun);
         }
         if (request("kuartal")) {
             $kuartal = request("kuartal");
-            $proyek->whereRaw('QUARTER(tgl_awal) = ?', $kuartal);
-            $mitra->whereRaw('QUARTER(tgl_daftar) = ?', $kuartal);
-            $laporan->whereRaw('QUARTER(realisasi_date) = ?', $kuartal);
+            if ($proyek) $proyek->whereRaw('QUARTER(tgl_awal) = ?', $kuartal);
+            if ($mitra) $mitra->whereRaw('QUARTER(tgl_daftar) = ?', $kuartal);
+            if ($laporan) $laporan->whereRaw('QUARTER(realisasi_date) = ?', $kuartal);
         }
         if (request("sektor")) {
-            $proyek->where('sektor_id', request("sektor"));
-            $laporan->where('sektor_id', request("sektor"));
+            if ($proyek) $proyek->where('sektor_id', request("sektor"));
+            if ($laporan) $laporan->where('sektor_id', request("sektor"));
         }
         if (request("mitra")) {
-            $laporan->where('mitra_id', request("mitra"));
-            // $proyek->where('mitra_id', request("mitra"));
+            if ($laporan) $laporan->where('mitra_id', request("mitra"));
+            // if ($proyek) $proyek->where('mitra_id', request("mitra"));
         }
     }
 
@@ -73,7 +74,7 @@ class DashboardController extends Controller
         return $possibleYear;
     }
 
-    private function getRealisasiBy($laporan, $groupBy, $label, $relation, $useCount = false)
+    private function getRealisasiBy($laporan, $groupBy, $label, $relation, $useCount = false, $limit = 6, $noLimit = false)
     {
         $realisasi = $laporan->get()->groupBy($groupBy)->map(function ($item) use ($useCount, $label, $relation) {
             $result = [
@@ -86,37 +87,177 @@ class DashboardController extends Controller
             return $result;
         });
 
-        $newRealisasi = $realisasi->take(6)->values();
-        if ($realisasi->count() > 6) {
-            $totalSum = $realisasi->sum('total');
-            $topSixSum = $realisasi->take(6)->sum('total');
-            $data = [
-                $label => 'Lainnya',
-                'total' => $totalSum - $topSixSum
-            ];
-            if ($useCount) {
-                $countSum = $realisasi->sum('count');
-                $countSixSum = $realisasi->take(6)->sum('count');
-                $data['count'] = $countSum - $countSixSum;
-            }
+        if (!$noLimit) {
+            $newRealisasi = $realisasi->take($limit)->values();
+            if ($realisasi->count() > $limit) {
+                $totalSum = $realisasi->sum('total');
+                $topSixSum = $realisasi->take($limit)->sum('total');
+                $data = [
+                    $label => 'Lainnya',
+                    'total' => $totalSum - $topSixSum
+                ];
+                if ($useCount) {
+                    $countSum = $realisasi->sum('count');
+                    $countSixSum = $realisasi->take($limit)->sum('count');
+                    $data['count'] = $countSum - $countSixSum;
+                }
 
-            $newRealisasi->push($data);
+                $newRealisasi->push($data);
+            }
+        } else {
+            $newRealisasi = $realisasi->values();
         }
+
         return $newRealisasi;
     }
 
     public function downloadPDF()
     {
-        $proyek = Proyek::get()->groupBy('status')->map(function ($item) {
-            return [
-                'count' => $item->count()
-            ];
-        });
+        $proyek = Proyek::where('status', 'Terbit');
+        $mitra = Mitra::where('status', '!=', 'Pengajuan');
+        $laporan = Laporan::where('status', 'Diterima');
+
+        $this->applyFilters($proyek, $mitra, $laporan);
+
+        $kuartalOptions = [
+            1 => "Kuartal 1 (Januari, Februari, Maret)",
+            2 => "Kuartal 2 (April, Mei, Juni)",
+            3 => "Kuartal 3 (Juli, Agustus, September)",
+            4 => "Kuartal 4 (Oktober, November, Desember)",
+        ];
 
         $pdf = Pdf::loadView('pdfs.dashboard', [
-            'proyek' => $proyek
+            'filters' => [
+                'tahun' => request("tahun"),
+                'kuartal' => request("kuartal") ? $kuartalOptions[request("kuartal")] : null,
+                // 'sektor' => request("sektor") ?? Sektor::find(request("sektor")) get the name
+                'sektor' => request("sektor") ? Sektor::find(request("sektor")) : null,
+                'mitra' => request("mitra") ? Mitra::find(request("mitra")) : null,
+            ],
+            'counts' => [
+                'countProyek' => $proyek->count(),
+                'countProyekRealized' => $laporan->count(),
+                'countMitra' => $mitra->count(),
+                'countTotalDanaRealized' => $laporan->sum('realisasi'),
+            ],
+            'realisasi' => [
+                'dataCSR' => $this->getRealisasiBy($laporan, 'sektor_id', 'sektor', 'name', true, null, true)->values(),
+                'persenTotalMitra' => $this->getRealisasiBy($laporan, 'mitra_id', 'mitra', 'name', null, null, true)->values(),
+                'persenTotalKecamatan' => $this->getRealisasiBy($laporan, 'lokasi', 'kecamatan', 'lokasi', null, null, true)->values(),
+            ],
         ]);
 
         return $pdf->download(date('Y-m-d') . '-dashboard.pdf');
+    }
+
+    public function downloadCSV()
+    {
+        $proyek = Proyek::where('status', 'Terbit')->get();
+        $mitra = Mitra::where('status', '!=', 'Pengajuan')->get();
+        $laporan = Laporan::where('status', 'Diterima')->get();
+
+        $this->applyFilters($proyek, $mitra, $laporan);
+
+        $csvDataProyek = $this->generateCSVData($proyek, [
+            'ID',
+            'Sektor ID',
+            'Name',
+            'Kecamatan',
+            'Deskripsi',
+            'Status',
+            'Tgl Awal',
+            'Tgl Akhir',
+            'Tgl Terbit',
+        ], [
+            'id',
+            'sektor_id',
+            'name',
+            'kecamatan',
+            'deskripsi',
+            'status',
+            'tgl_awal',
+            'tgl_akhir',
+            'tgl_terbit'
+        ]);
+
+        $csvDataMitra = $this->generateCSVData($mitra, [
+            'ID',
+            'Name',
+            'Perusahaan',
+            'No Telepon',
+            'Alamat',
+            'Email',
+            'Deskripsi',
+            'Tgl Daftar',
+            'Status'
+        ], [
+            'id',
+            'name',
+            'perusahaan',
+            'no_telepon',
+            'alamat',
+            'email',
+            'deskripsi',
+            'tgl_daftar',
+            'status'
+
+        ]);
+
+        $csvDataLaporan = $this->generateCSVData($laporan, [
+            'ID',
+            'Name',
+            'Proyek Name',
+            'Mitra ID',
+            'Sektor ID',
+            'Proyek ID',
+            'Lokasi',
+            'Realisasi',
+            'Realisasi Date',
+            'Rincian',
+            'Tgl Kirim',
+            'Status',
+        ], [
+            'id',
+            'name',
+            'proyek_name',
+            'mitra_id',
+            'sektor_id',
+            'proyek_id',
+            'lokasi',
+            'realisasi',
+            'realisasi_date',
+            'rincian',
+            'tgl_kirim',
+            'status'
+        ]);
+
+        $zipFileName = 'data-' . date('Y-m-d-H-i-s') . '.zip';
+        $zip = new ZipArchive;
+
+        if ($zip->open(storage_path($zipFileName), ZipArchive::CREATE) === TRUE) {
+            $zip->addFromString('proyek.csv', $csvDataProyek);
+            $zip->addFromString('mitra.csv', $csvDataMitra);
+            $zip->addFromString('laporan.csv', $csvDataLaporan);
+            $zip->close();
+        }
+
+        return response()->download(storage_path($zipFileName))->deleteFileAfterSend(true);
+    }
+
+    private function generateCSVData($data, $headers, $columnNames)
+    {
+        $csvData = implode(',', $headers) . "\n";
+
+        foreach ($data as $item) {
+            $row = [];
+            foreach ($columnNames as $column) {
+                $value = $item->$column ?? '';
+                $value = str_replace(["\r", "\n"], ' ', $value);
+                $row[] = '"' . str_replace('"', '""', $value) . '"';
+            }
+            $csvData .= implode(',', $row) . "\n";
+        }
+
+        return $csvData;
     }
 }
