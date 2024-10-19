@@ -16,6 +16,31 @@ class DashboardController extends Controller
         $proyek = Proyek::where('status', 'Terbit');
         $mitra = Mitra::where('status', '!=', 'Pengajuan');
         $laporan = Laporan::where('status', 'Diterima');
+
+        $this->applyFilters($proyek, $mitra, $laporan);
+
+        return Inertia::render('Admin/Dashboard', [
+            'counts' => [
+                'countProyek' => $proyek->count(),
+                'countProyekRealized' => $laporan->count(),
+                'countMitra' => $mitra->count(),
+                'countTotalDanaRealized' => $laporan->sum('realisasi'),
+            ],
+            'realisasi' => [
+                'dataCSR' => $this->getRealisasiBy($laporan, 'sektor_id', 'sektor', 'name', true)->values(),
+                'persenTotalMitra' => $this->getRealisasiBy($laporan, 'mitra_id', 'mitra', 'name')->values(),
+                'persenTotalKecamatan' => $this->getRealisasiBy($laporan, 'lokasi', 'kecamatan', 'lokasi')->values(),
+            ],
+            'filters' => [
+                'tahun' => $this->getPossibleYear(clone $proyek, clone $mitra, clone $laporan)->values(),
+                'sektors' => Sektor::latest()->get()->values(),
+                'mitras' => Mitra::where('status', '!=', 'Pengajuan')->get()->values()
+            ]
+        ]);
+    }
+
+    private function applyFilters($proyek, $mitra, $laporan)
+    {
         if (request("tahun")) {
             $tahun = request("tahun");
             $proyek->whereYear('tgl_awal', $tahun);
@@ -35,101 +60,49 @@ class DashboardController extends Controller
         if (request("mitra")) {
             $laporan->where('mitra_id', request("mitra"));
             // $proyek->where('mitra_id', request("mitra"));
-            // TODO: for proyek, add partisipasi table and use where
         }
-        $countProyek = $proyek->count();
-        $countMitra = $mitra->count();
-        $countProyekRealized = $laporan->count();
-        $countTotalDanaRealized = $laporan->sum('realisasi');
+    }
 
-        $possibleYearProyek = Proyek::where('status', 'Terbit')
-            ->selectRaw('YEAR(tgl_awal) as year')
-            ->distinct()
-            ->get()
-            ->pluck('year');
-        $possibleYearMitra = Mitra::where('status', '!=', 'Pengajuan')
-            ->selectRaw('YEAR(tgl_daftar) as year')
-            ->distinct()
-            ->get()
-            ->pluck('year');
-        $possibleYearLaporan = Laporan::where('status', 'Diterima')
-            ->selectRaw('YEAR(realisasi_date) as year')
-            ->distinct()
-            ->get()
-            ->pluck('year');
+    private function getPossibleYear($proyek, $mitra, $laporan)
+    {
+        $possibleYearProyek = $proyek->selectRaw('YEAR(tgl_awal) as year')->distinct()->get()->pluck('year');
+        $possibleYearMitra = $mitra->selectRaw('YEAR(tgl_daftar) as year')->distinct()->get()->pluck('year');
+        $possibleYearLaporan = $laporan->selectRaw('YEAR(realisasi_date) as year')->distinct()->get()->pluck('year');
         $possibleYear = $possibleYearProyek->merge($possibleYearMitra)->merge($possibleYearLaporan)->unique();
 
+        return $possibleYear;
+    }
 
-        $realisasiBySektor = $laporan->get()->groupBy('sektor_id')->map(function ($item) {
-            return [
-                'sektor' => $item->first()->sektor->name,
-                'count' => $item->count(),
+    private function getRealisasiBy($laporan, $groupBy, $label, $relation, $useCount = false)
+    {
+        $realisasi = $laporan->get()->groupBy($groupBy)->map(function ($item) use ($useCount, $label, $relation) {
+            $result = [
+                $label => $item->first()->$relation ?? 'Unknown',
                 'total' => $item->sum('realisasi')
             ];
+            if ($useCount) {
+                $result['count'] = $item->count();
+            }
+            return $result;
         });
-        $newRealisasiBySektor = $realisasiBySektor->take(6)->values();
-        if ($realisasiBySektor->count() > 6) {
-            $totalSum = $realisasiBySektor->sum('total');
-            $topSixSum = $realisasiBySektor->take(6)->sum('total');
-            $countSum = $realisasiBySektor->sum('count');
-            $countSixSum = $realisasiBySektor->take(6)->sum('count');
 
-            $newRealisasiBySektor->push([
-                'sektor' => 'Lainnya',
-                'count' => $countSum - $countSixSum,
+        $newRealisasi = $realisasi->take(6)->values();
+        if ($realisasi->count() > 6) {
+            $totalSum = $realisasi->sum('total');
+            $topSixSum = $realisasi->take(6)->sum('total');
+            $data = [
+                $label => 'Lainnya',
                 'total' => $totalSum - $topSixSum
-            ]);
-        }
-        $realisasiByMitra = $laporan->get()->groupBy('mitra_id')->map(function ($item) {
-            return [
-                'mitra' => $item->first()->mitra->name,
-                'total' => $item->sum('realisasi')
             ];
-        });
-        $newRealisasiByMitra = $realisasiByMitra->take(6)->values();
-        if ($realisasiByMitra->count() > 6) {
-            $totalSum = $realisasiByMitra->sum('total');
-            $topSixSum = $realisasiByMitra->take(6)->sum('total');
-            $newRealisasiByMitra->push([
-                'mitra' => 'Lainnya',
-                'total' => $totalSum - $topSixSum
-            ]);
-        }
+            if ($useCount) {
+                $countSum = $realisasi->sum('count');
+                $countSixSum = $realisasi->take(6)->sum('count');
+                $data['count'] = $countSum - $countSixSum;
+            }
 
-        $realisasiByKecamatan = $laporan->get()->groupBy('lokasi')->map(function ($item) {
-            return [
-                'kecamatan' => $item->first()->lokasi,
-                'total' => $item->sum('realisasi')
-            ];
-        });
-        $newRealisasiByKecamatan = $realisasiByKecamatan->take(6)->values();
-        if ($realisasiByKecamatan->count() > 6) {
-            $totalSum = $realisasiByKecamatan->sum('total');
-            $countSixSum = $realisasiByKecamatan->take(6)->sum('total');
-            $newRealisasiByKecamatan->push([
-                'kecamatan' => 'Lainnya',
-                'total' => $totalSum - $countSixSum
-            ]);
+            $newRealisasi->push($data);
         }
-
-        return Inertia::render('Admin/Dashboard', [
-            'counts' => [
-                'countProyek' => $countProyek,
-                'countProyekRealized' => $countProyekRealized,
-                'countMitra' => $countMitra,
-                'countTotalDanaRealized' => $countTotalDanaRealized,
-            ],
-            'realisasi' => [
-                'dataCSR' => $newRealisasiBySektor->values(),
-                'persenTotalMitra' => $newRealisasiByMitra->values(),
-                'persenTotalKecamatan' => $newRealisasiByKecamatan->values(),
-            ],
-            'filters' => [
-                'tahun' => $possibleYear->values(),
-                'sektors' => Sektor::latest()->get()->values(),
-                'mitras' => Mitra::where('status', '!=', 'Pengajuan')->get()->values()
-            ]
-        ]);
+        return $newRealisasi;
     }
 
     public function downloadPDF()
