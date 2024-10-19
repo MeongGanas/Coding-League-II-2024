@@ -1,6 +1,3 @@
-// TODO, aktifkan fitur tolak, terima, dan revisi (kalau revisi, akan jadi draf lagi setelah diedit oleh mitra)
-// LAST LEFT HERE
-
 import DetailCard from "@/Components/admin/dashboard/DetailCard";
 import {
     DialogRevisi,

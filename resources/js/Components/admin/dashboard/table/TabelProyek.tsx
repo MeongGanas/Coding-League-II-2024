@@ -60,27 +60,6 @@ export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
             <div className="bg-white rounded-md border">
                 <Table className="overflow-x-auto">
                     <TableHeader>
-                            {/* <TableHead className="min-w-[300px] uppercase font-bold text-black">
-                                Judul
-                            </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                Lokasi
-                            </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                Jumlah Mitra
-                            </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                tgl mulai
-                            </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                Tgl Diterbitkan
-                            </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                Status
-                            </TableHead>
-                            <TableHead className="uppercase font-bold text-black">
-                                Aksi
-                            </TableHead> */}
                         <TableRow className="tablerow">
                             {
                                tableHeader && tableHeader.map(header => (

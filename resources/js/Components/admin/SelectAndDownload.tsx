@@ -13,7 +13,61 @@ import {
 } from "@/Components/ui/select";
 import DownloadButtons from "./DownloadButtons";
 import { Sektor } from "@/types";
-import { useEffect, useRef, useState } from "react";
+import { forwardRef } from "react";
+
+const selectComponent = ({
+    label,
+    options,
+    customKey,
+    customValue,
+    onValueChange,
+}: {
+    label: string;
+    options?: string[] | { [key: string]: string };
+    onValueChange: (label: string, value: string) => void;
+    customKey?: string;
+    customValue?: string;
+}) => {
+    return (
+        <Select onValueChange={(value) => onValueChange(label, value)}
+        >
+            <SelectTrigger className="w-full">
+                <SelectValue
+                    placeholder={`Pilih ${
+                        label.charAt(0).toUpperCase() + label.slice(1)
+                    }`}
+                />
+            </SelectTrigger>
+            <SelectContent>
+                <SelectGroup className="cursor-pointer">
+                    <SelectItem value="clear">
+                        Semua {label.charAt(0).toUpperCase() + label.slice(1)}
+                    </SelectItem>
+                    {options
+                        ? Array.isArray(options)
+                            ? options.map((key: string) => (
+                                  <SelectItem value={key} key={key}>
+                                      {key}
+                                  </SelectItem>
+                              ))
+                            : Object.keys(options).map((key: string) => (
+                                  <SelectItem value={key.toString()} key={key}>
+                                      {options[key]}
+                                  </SelectItem>
+                              ))
+                        : null}
+                </SelectGroup>
+            </SelectContent>
+        </Select>
+    );
+};
+
+const kuartalOptions = {
+    "1": "Kuartal 1 (Januari, Februari, Maret)",
+    "2": "Kuartal 2 (April, Mei, Juni)",
+    "3": "Kuartal 3 (Juli, Agustus, September)",
+    "4": "Kuartal 4 (Oktober, November, Desember)",
+};
 
 export default function SelectAndDownload({
     tahun,
@@ -22,8 +76,8 @@ export default function SelectAndDownload({
     sektor,
     mitra,
     sektors,
-    menu
-
+    mitras,
+    menu,
 }: {
     tahun?: boolean;
     tahunOptions?: string[];
@@ -31,117 +85,85 @@ export default function SelectAndDownload({
     sektor?: boolean;
     mitra?: boolean;
     sektors?: Sektor[];
+    mitras?: any[];
     menu: string;
 }) {
     const params = new URLSearchParams(window.location.search);
-    let changedParams: string[] = [];
+    let paramchanged: boolean = false;
+
+    console.log(tahunOptions);
 
     const handleParamSet = (param: string, value: string) => {
-        if (value) {
+        paramchanged = true;
+        if (value && value !== "clear") {
             params.set(param, value);
-            if (!changedParams.includes(param)) {
-                changedParams.push(param);
-            }
         } else {
             params.delete(param);
-            changedParams = changedParams.filter((p) => p !== param);
         }
-    }
+    };
 
     const commitParams = () => {
-        if (changedParams.length === 0) {
-            params.delete("tahun");
-            params.delete("kuartal");
-            params.delete("sektor");
-            params.delete("mitra");
-        } else {
-            params.delete("page");
-        }
-        const newParams = new URLSearchParams(
-            changedParams.map(param => [param, params.get(param) as string])
+        if (!paramchanged) return;
+        params.delete("page");
+        window.location.replace(
+            `${window.location.pathname}?${params.toString()}`
         );
-        window.location.replace(`${window.location.pathname}?${newParams.toString()}`);
+    };
+
+    const newSektorOptions = () => {
+        if (sektors) {
+            return sektors.reduce((acc: any, sektor) => {
+                acc[sektor.id] = sektor.name;
+                return acc;
+            }, {});
+        }
+        return {};
+    };
+
+    const newMitraOptions = () => {
+        if (mitras) {
+            return mitras.reduce((acc: any, mitra) => {
+                acc[mitra.id] = mitra.name;
+                return acc;
+            }, {});
+        }
+        return {};
     }
+
+    console.log(newSektorOptions());
 
     return (
         <div
-            className={`grid grid-cols-2 md:grid-cols-4 ${tahun && kuartal && sektor && mitra
-                ? "xl:grid-cols-6"
-                : "xl:grid-cols-4"
-                } gap-4 items-center`}
+            className={`grid grid-cols-2 md:grid-cols-4 ${
+                tahun && kuartal && sektor && mitra
+                    ? "xl:grid-cols-6"
+                    : "xl:grid-cols-4"
+            } gap-4 items-center`}
         >
-            {tahun && (
-                <Select
-                    onValueChange={(value) => handleParamSet("tahun", value)}>
-                    <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Pilih Tahun" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            {
-                                tahunOptions && tahunOptions.map(tahun => (
-                                    <SelectItem value={tahun} key={tahun}>{tahun}</SelectItem>
-                                ))
-                            }
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-            )}
-            {kuartal && (
-                <Select
-                onValueChange={
-                    (value) => handleParamSet("kuartal", value)
-                }
-                >
-                    <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Pilih Kuartal" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectItem value="1">
-                                Kuartal 1 (Januari, Februari, Maret)
-                            </SelectItem>
-                            <SelectItem value="2">
-                                Kuartal 2 (April, Mei, Juni)
-                            </SelectItem>
-                            <SelectItem value="3">
-                                Kuartal 3 (Juli, Agustus, September)
-                            </SelectItem>
-                            <SelectItem value="4">
-                                Kuartal 4 (Oktober, November, Desember)
-                            </SelectItem>
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-            )}
-            {sektor && (
-                <Select onValueChange={
-                    (value) => handleParamSet("sektor", value)
-                }>
-                    <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Pilih Sektor" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            {/* <SelectItem value="semua" defaultChecked>Semua Sektor</SelectItem> */}
-                            {sektors && sektors.map(sektor => (
-                                <SelectItem value={sektor.id.toString()} key={sektor.id}>{sektor.name}</SelectItem>
-                            ))}
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-            )}
+            {tahun &&
+                selectComponent({
+                    label: "tahun",
+                    options: tahunOptions,
+                    onValueChange: handleParamSet,
+                })}
+            {kuartal &&
+                selectComponent({
+                    label: "kuartal",
+                    options: kuartalOptions,
+                    onValueChange: handleParamSet,
+                })}
+            {sektor &&
+                selectComponent({
+                    label: "sektor",
+                    options: newSektorOptions(),
+                    onValueChange: handleParamSet,
+                })}
             {mitra && (
-                <Select>
-                    <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Pilih Mitra" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            <SelectItem value="semua">Semua Mitra</SelectItem>
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
+                selectComponent({
+                    label: "mitra",
+                    options: newMitraOptions(),
+                    onValueChange: handleParamSet,
+                })
             )}
             <div className="col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <Button

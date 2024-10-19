@@ -104,7 +104,70 @@ function noData() {
     );
 }
 
-// function barChart()
+function barChart({
+    chartData,
+    chartConfig,
+    type,
+    key,
+    tooltipFormatter,
+    labelFormatter,
+}: {
+    chartData: RealisasiSektor[];
+    chartConfig: any;
+    type: string;
+    key: string;
+    tooltipFormatter: (value: any, name: any) => string;
+    labelFormatter: (value: any, index: number) => string;
+}) {
+    return (
+        <ChartContainer config={chartConfig}>
+            <BarChart
+                accessibilityLayer
+                data={chartData}
+                layout="vertical"
+                margin={{
+                    right: 16,
+                }}
+            >
+                <CartesianGrid horizontal={false} />
+                <YAxis
+                    dataKey={key}
+                    type="category"
+                    tickLine={false}
+                    tickMargin={10}
+                    axisLine={false}
+                    hide
+                />
+                <XAxis dataKey="total" type="number" hide />
+                <ChartTooltip
+                    cursor={false}
+                    content={
+                        <ChartTooltipContent
+                            indicator="line"
+                            formatter={tooltipFormatter}
+                        />
+                    }
+                />
+                <Bar
+                    dataKey="total"
+                    layout="vertical"
+                    fill="var(--color-desktop)"
+                    radius={0}
+                >
+                    <LabelList
+                        dataKey="total"
+                        content={
+                            <CustomLabel
+                                hiddenText="..."
+                                formatter={labelFormatter}
+                            />
+                        }
+                    />
+                </Bar>
+            </BarChart>
+        </ChartContainer>
+    );
+}
 
 export function PersentaseTotalCSR({ data }: { data: any }) {
     const chartData = getChartData(data, "count", "sektor");
@@ -112,7 +175,11 @@ export function PersentaseTotalCSR({ data }: { data: any }) {
 
     return (
         <div className="space-y-5">
-            <h1 className="font-bold text-xl">
+            <h1
+                className={`font-bold text-xl ${
+                    data.length === 0 ? "text-center" : null
+                }`}
+            >
                 Persentase total realisasi berdasarkan sektor CSR
             </h1>
             {chartData.length > 0 ? (
@@ -162,61 +229,29 @@ export function TotalRealisasiCSR({ data }: { data: any }) {
 
     return (
         <div className="space-y-5">
-            <h1 className="font-bold text-xl">
+            <h1
+                className={`font-bold text-xl ${
+                    data.length === 0 ? "text-center" : null
+                }`}
+            >
                 Persentase total realisasi berdasarkan sektor CSR
             </h1>
-            {chartData.length > 0 ? (
-                <ChartContainer config={chartConfig}>
-                    <BarChart
-                        accessibilityLayer
-                        data={chartData}
-                        layout="vertical"
-                        margin={{
-                            right: 16,
-                        }}
-                    >
-                        <CartesianGrid horizontal={false} />
-                        <YAxis
-                            dataKey="sektor"
-                            type="category"
-                            tickLine={false}
-                            tickMargin={10}
-                            axisLine={false}
-                            hide
-                        />
-                        <XAxis dataKey="total" type="number" hide />
-                        <ChartTooltip
-                            cursor={false}
-                            content={<ChartTooltipContent indicator="line" />}
-                        />
-                        <Bar
-                            dataKey="total"
-                            layout="vertical"
-                            fill="var(--color-desktop)"
-                            radius={0}
-                        >
-                            <LabelList
-                                dataKey="total"
-                                content={
-                                    <CustomLabel
-                                        hiddenText="..."
-                                        formatter={(
-                                            value: number,
-                                            index: number
-                                        ) =>
-                                            `${
-                                                chartData[index]["sektor"]
-                                            } ${formatPrice(value)}`
-                                        }
-                                    />
-                                }
-                            />
-                        </Bar>
-                    </BarChart>
-                </ChartContainer>
-            ) : (
-                noData()
-            )}
+            {chartData.length > 0
+                ? barChart({
+                      chartData,
+                      chartConfig,
+                      type: "sektor",
+                      key: "sektor",
+                      tooltipFormatter: (value, name) => {
+                          return `${formatPrice(value)}`;
+                      },
+                      labelFormatter: (value, index) => {
+                          return `${chartData[index]["sektor"]} ${formatPrice(
+                              value
+                          )}`;
+                      },
+                  })
+                : noData()}
         </div>
     );
 }
@@ -227,58 +262,29 @@ export function PersentaseTotalMitra({ data }: { data: any }) {
 
     return (
         <div className="space-y-5">
-            <h1 className="font-bold text-xl">
+            <h1
+                className={`font-bold text-xl ${
+                    data.length === 0 ? "text-center" : null
+                }`}
+            >
                 Persentase total realisasi berdasarkan Mitra
             </h1>
-            <ChartContainer config={chartConfig}>
-                <BarChart
-                    accessibilityLayer
-                    data={chartData}
-                    layout="vertical"
-                    margin={{
-                        right: 16,
-                    }}
-                >
-                    <CartesianGrid horizontal={false} />
-                    <YAxis
-                        dataKey="mitra"
-                        type="category"
-                        tickLine={false}
-                        tickMargin={10}
-                        axisLine={false}
-                        hide
-                    />
-                    <XAxis dataKey="total" type="number" hide />
-                    <ChartTooltip
-                        cursor={false}
-                        content={<ChartTooltipContent indicator="line" formatter={
-                            (value: any, name: any) => {
-                                return `${formatPrice(value)}`
-                            }
-                        } />}
-                    />
-                    <Bar
-                        dataKey="total"
-                        layout="vertical"
-                        fill="var(--color-desktop)"
-                        radius={0}
-                    >
-                        <LabelList
-                            dataKey="total"
-                            content={
-                                <CustomLabel
-                                    hiddenText="..."
-                                    formatter={(value: number, index: number) =>
-                                        `${
-                                            chartData[index]["mitra"]
-                                        } ${formatPrice(value)}`
-                                    }
-                                />
-                            }
-                        />
-                    </Bar>
-                </BarChart>
-            </ChartContainer>
+            {chartData.length > 0
+                ? barChart({
+                      chartData,
+                      chartConfig,
+                      type: "mitra",
+                      key: "mitra",
+                      tooltipFormatter: (value, name) => {
+                          return `${formatPrice(value)}`;
+                      },
+                      labelFormatter: (value, index) => {
+                          return `${chartData[index]["mitra"]} ${formatPrice(
+                              value
+                          )}`;
+                      },
+                  })
+                : noData()}
         </div>
     );
 }
@@ -288,54 +294,29 @@ export function PersentaseTotalKecamatan({ data }: { data: any }) {
     const chartConfig = getChartConfig(data);
     return (
         <div className="space-y-5">
-            <h1 className="font-bold text-xl">
+            <h1
+                className={`font-bold text-xl ${
+                    data.length === 0 ? "text-center" : null
+                }`}
+            >
                 Persentase total realisasi berdasarkan Kecamatan
             </h1>
-            <ChartContainer config={chartConfig}>
-                <BarChart
-                    accessibilityLayer
-                    data={chartData}
-                    layout="vertical"
-                    margin={{
-                        right: 16,
-                    }}
-                >
-                    <CartesianGrid horizontal={false} />
-                    <YAxis
-                        dataKey="kecamatan"
-                        type="category"
-                        tickLine={false}
-                        tickMargin={10}
-                        axisLine={false}
-                        hide
-                    />
-                    <XAxis dataKey="total" type="number" hide />
-                    <ChartTooltip
-                        cursor={false}
-                        content={<ChartTooltipContent indicator="line" />}
-                    />
-                    <Bar
-                        dataKey="total"
-                        layout="vertical"
-                        fill="var(--color-desktop)"
-                        radius={0}
-                    >
-                        <LabelList
-                            dataKey="total"
-                            content={
-                                <CustomLabel
-                                    hiddenText="..."
-                                    formatter={(value: number, index: number) =>
-                                        `${
-                                            chartData[index]["kecamatan"]
-                                        } ${formatPrice(value)}`
-                                    }
-                                />
-                            }
-                        />
-                    </Bar>
-                </BarChart>
-            </ChartContainer>
+            {chartData.length > 0
+                ? barChart({
+                      chartData,
+                      chartConfig,
+                      type: "kecamatan",
+                      key: "kecamatan",
+                      tooltipFormatter: (value, name) => {
+                          return `${formatPrice(value)}`;
+                      },
+                      labelFormatter: (value, index) => {
+                          return `${
+                              chartData[index]["kecamatan"]
+                          } ${formatPrice(value)}`;
+                      },
+                  })
+                : noData()}
         </div>
     );
 }

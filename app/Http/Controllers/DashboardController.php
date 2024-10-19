@@ -17,13 +17,25 @@ class DashboardController extends Controller
         $mitra = Mitra::where('status', '!=', 'Pengajuan');
         $laporan = Laporan::where('status', 'Diterima');
         if (request("tahun")) {
-            $proyek->whereYear('tgl_awal', request("tahun"));
-            $mitra->whereYear('tgl_daftar', request("tahun"));
-            $laporan->whereYear('realisasi_date', request("tahun"));
+            $tahun = request("tahun");
+            $proyek->whereYear('tgl_awal', $tahun);
+            $mitra->whereYear('tgl_daftar', $tahun);
+            $laporan->whereYear('realisasi_date', $tahun);
+        }
+        if (request("kuartal")) {
+            $kuartal = request("kuartal");
+            $proyek->whereRaw('QUARTER(tgl_awal) = ?', $kuartal);
+            $mitra->whereRaw('QUARTER(tgl_daftar) = ?', $kuartal);
+            $laporan->whereRaw('QUARTER(realisasi_date) = ?', $kuartal);
         }
         if (request("sektor")) {
             $proyek->where('sektor_id', request("sektor"));
             $laporan->where('sektor_id', request("sektor"));
+        }
+        if (request("mitra")) {
+            $laporan->where('mitra_id', request("mitra"));
+            // $proyek->where('mitra_id', request("mitra"));
+            // TODO: for proyek, add partisipasi table and use where
         }
         $countProyek = $proyek->count();
         $countMitra = $mitra->count();
@@ -46,12 +58,7 @@ class DashboardController extends Controller
             ->get()
             ->pluck('year');
         $possibleYear = $possibleYearProyek->merge($possibleYearMitra)->merge($possibleYearLaporan)->unique();
-        //
-        $laporan = Laporan::where('status', 'Diterima');
 
-        if (request("tahun")) {
-            $laporan->whereYear('realisasi_date', request("tahun"));
-        }
 
         $realisasiBySektor = $laporan->get()->groupBy('sektor_id')->map(function ($item) {
             return [
@@ -119,7 +126,8 @@ class DashboardController extends Controller
             ],
             'filters' => [
                 'tahun' => $possibleYear->values(),
-                'sektors' => Sektor::latest()->get()->values()
+                'sektors' => Sektor::latest()->get()->values(),
+                'mitras' => Mitra::where('status', '!=', 'Pengajuan')->get()->values()
             ]
         ]);
     }

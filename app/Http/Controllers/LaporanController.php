@@ -29,14 +29,11 @@ class LaporanController extends Controller
 
         if (request("kuartal")) {
             $kuartal = request("kuartal");
-
-            $query->whereMonth('realisasi_date', '>=', ($kuartal - 1) * 3 + 1)
-                ->whereMonth('realisasi_date', '<=', $kuartal * 3);
+            $query->whereRaw('QUARTER(realisasi_date) = ?', $kuartal);
         }
 
         if (request("search")) {
             $searchTerm = request("search");
-
             $query->where('name', 'like', '%' . $searchTerm . '%');
         }
 
@@ -137,9 +134,7 @@ class LaporanController extends Controller
 
         if (request("kuartal")) {
             $kuartal = request("kuartal");
-
-            $query->whereMonth('realisasi_date', '>=', ($kuartal - 1) * 3 + 1)
-                ->whereMonth('realisasi_date', '<=', $kuartal * 3);
+            $query->whereRaw('QUARTER(realisasi_date) = ?', $kuartal);
         }
 
         $laporans = $query->get();
@@ -199,9 +194,7 @@ class LaporanController extends Controller
 
         if (request("kuartal")) {
             $kuartal = request("kuartal");
-
-            $query->whereMonth('realisasi_date', '>=', ($kuartal - 1) * 3 + 1)
-                ->whereMonth('realisasi_date', '<=', $kuartal * 3);
+            $query->whereRaw('QUARTER(realisasi_date) = ?', $kuartal);
         }
 
         $laporans = $query->get();
