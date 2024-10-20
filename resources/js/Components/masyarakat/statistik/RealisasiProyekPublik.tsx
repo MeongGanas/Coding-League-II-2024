@@ -1,5 +1,4 @@
-import { PersentaseTotalCSR, PersentaseTotalKecamatan, PersentaseTotalMitra } from "@/Components/admin/dashboard/chart/PersentaseTotal";
-import TotalRealisasiCSR from "@/Components/admin/dashboard/chart/TotalRealisasiCSR";
+import { PersentaseTotalCSR, PersentaseTotalKecamatan, PersentaseTotalMitra, TotalRealisasiCSR } from "@/Components/admin/dashboard/chart/PersentaseTotal";
 import Garis from "../Garis";
 
 export default function RealisasiProyekPublik() {

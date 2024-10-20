@@ -9,7 +9,6 @@ import {
 } from "@/Components/ui/table";
 import { Link } from "@inertiajs/react";
 import { ArrowDown, ArrowUp, Eye } from "lucide-react";
-import { TablePagination, TableSelectTotalPaginate } from "./TabelPagination";
 import { Button } from "@/Components/ui/button";
 import formatPrice from "@/lib/formatPrice";
 import { id } from 'date-fns/locale';
@@ -25,7 +24,6 @@ const statusColor: { [key: string]: string } = {
 
 const tableHeader = [
     { title: "Judul Laporan", sortable: true, sortKey: "name", className: "min-w-[300px]" },
-    { title: "Mitra", sortable: true, sortKey: "mitra", isRelation: true, relationKey: "name" },
     { title: "Lokasi", sortable: true, sortKey: "lokasi" },
     { title: "Realisasi", sortable: true, sortKey: "realisasi" },
     { title: "Tgl Realisasi", sortable: true, sortKey: "realisasi_date" },
@@ -34,7 +32,7 @@ const tableHeader = [
     { title: "Aksi", className: "text-center" },
 ]
 
-export default function DataTableLaporan({ laporans }: { laporans: LaporanProps }) {
+export default function DataTableLaporanMitra({ laporans }: { laporans: LaporanProps }) {
     const params = new URLSearchParams(window.location.search);
     const currentSort = params.get("sort");
     const order = params.get("order");
@@ -53,9 +51,6 @@ export default function DataTableLaporan({ laporans }: { laporans: LaporanProps 
             params.set("sort", sort);
             params.set("order", "desc");
             params.delete("page");
-            if (tableHeader.find(header => header.sortKey === sort)?.isRelation) {
-                params.set("with", tableHeader.find(header => header.sortKey === sort)?.relationKey as string);
-            }
         }
 
         window.location.replace(
@@ -99,9 +94,6 @@ export default function DataTableLaporan({ laporans }: { laporans: LaporanProps 
                             <TableRow className="odd:bg-[#FCFCFD] even:bg-white" key={laporan.id}>
                                 <TableCell className="text-base min-w-[300px]">
                                     {laporan.name}
-                                </TableCell>
-                                <TableCell className="text-base">
-                                    {laporan.mitra.name}
                                 </TableCell>
                                 <TableCell className="text-base">
                                     {laporan.lokasi}
@@ -153,7 +145,7 @@ export default function DataTableLaporan({ laporans }: { laporans: LaporanProps 
                                         variant={"ghost"}
                                         className="px-2"
                                     >
-                                        <Link href={`/admin/laporan/${laporan.id}`}>
+                                        <Link href={`/mitra/laporan/${laporan.id}`}>
                                             <Eye />
                                         </Link>
                                     </Button>
@@ -166,10 +158,6 @@ export default function DataTableLaporan({ laporans }: { laporans: LaporanProps 
                         )}
                     </TableBody>
                 </Table>
-                <div className="p-4 border-t space-y-3 lg:space-y-0 lg:flex lg:justify-between">
-                    <TableSelectTotalPaginate data={laporans} />
-                    <TablePagination data={laporans} />
-                </div>
             </div>
         </div>
     );

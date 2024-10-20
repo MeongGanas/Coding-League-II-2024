@@ -9,48 +9,19 @@ import {
 import { Link } from "@inertiajs/react";
 import { User } from "lucide-react";
 import NavLink from "../all/NavLink";
-import Notifikasi from "../all/Notifikasi";
-import AdminSheet from "./AdminSheet";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 import LogoutButton from "../all/LogoutButton";
 import { User as UserType } from "@/types";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
+import Notifikasi from "../all/Notifikasi";
 
-export default function NavbarAdmin({ user }: { user: UserType }) {
+export default function NavbarMitra({ user }: { user: UserType }) {
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background">
             <div className="container flex py-4 justify-between items-center gap-4 px-4 md:px-6">
                 <Link href="/admin/dashboard">
                     <img src="/images/nav_logo.png" alt="logo" width={150} />
                 </Link>
-                <nav className="hidden flex-col gap-6 text-lg font-medium lg:flex lg:flex-row lg:items-center lg:text-sm lg:gap-10">
-                    <NavLink
-                        nama="Dashboard"
-                        href="/admin/dashboard"
-                        active="dashboard"
-                    />
-                    <NavLink
-                        nama="Kegiatan"
-                        href="/admin/kegiatan"
-                        active="kegiatan"
-                    />
-                    <NavLink
-                        nama="Proyek"
-                        href="/admin/proyek"
-                        active="proyek"
-                    />
-                    <NavLink
-                        nama="Sektor"
-                        href="/admin/sektor"
-                        active="sektor"
-                    />
-                    <NavLink
-                        nama="Laporan"
-                        href="/admin/laporan"
-                        active="laporan"
-                    />
-                    <NavLink nama="Mitra" href="/admin/mitra" active="mitra" />
-                </nav>
                 <div className="flex items-center">
                     <div className="flex items-center md:gap-2">
                         <div className="flex items-center gap-3">
@@ -78,7 +49,7 @@ export default function NavbarAdmin({ user }: { user: UserType }) {
                                         asChild
                                         className="cursor-pointer"
                                     >
-                                        <Link href="/admin/profile">
+                                        <Link href="/mitra/profile">
                                             Profile
                                         </Link>
                                     </DropdownMenuItem>
@@ -89,7 +60,6 @@ export default function NavbarAdmin({ user }: { user: UserType }) {
                             <Notifikasi />
                         </div>
                     </div>
-                    <AdminSheet />
                 </div>
             </div>
         </header>

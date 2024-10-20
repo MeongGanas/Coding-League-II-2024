@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardMitraController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\MasyarakatController;
@@ -57,10 +58,11 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
     })->name('editProfile');
 });
 
-Route::middleware(['auth', 'checkMitra'])->group(function () {
-    Route::get("/mitra/dashboard", function () {
-        return Inertia::render('Admin/Dashboard');
-    })->name('dashboardMitra');
+Route::prefix('mitra')->middleware(['auth', 'checkMitra'])->group(function () {
+    Route::get("/dashboard", [DashboardMitraController::class, 'index'])->name('dashboardMitra');
+    Route::get("/laporan/{laporan}", [DashboardMitraController::class, 'LaporanDetail'])->name('laporan.detail');
+
+    Route::get('/profile', [DashboardMitraController::class, 'profile'])->name('profile');
 });
 
 require __DIR__ . '/auth.php';

@@ -28,11 +28,10 @@ export default function BreadcrumbLinks({
         <Breadcrumb>
             <BreadcrumbList>
                 <BreadcrumbItem>
-                    <BreadcrumbLink href="/admin/dashboard">
+                    <BreadcrumbLink href={`${basePath}/dashboard`}>
                         <Home
-                            className={`w-5 h-5 ${
-                                textWhite ? "text-white" : ""
-                            }`}
+                            className={`w-5 h-5 ${textWhite ? "text-white" : ""
+                                }`}
                         />
                     </BreadcrumbLink>
                 </BreadcrumbItem>
@@ -50,11 +49,10 @@ export default function BreadcrumbLinks({
                                 <BreadcrumbLink asChild>
                                     <Link
                                         href={builtPath}
-                                        className={`capitalize ${
-                                            textWhite
+                                        className={`capitalize ${textWhite
                                                 ? "text-white hover:text-primary-bg"
                                                 : ""
-                                        }`}
+                                            }`}
                                     >
                                         {path}
                                     </Link>

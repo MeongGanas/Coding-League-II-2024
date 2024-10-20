@@ -153,6 +153,7 @@ function barChart({
                     layout="vertical"
                     fill="var(--color-desktop)"
                     radius={0}
+                    barSize={40}
                 >
                     <LabelList
                         dataKey="total"
@@ -176,9 +177,8 @@ export function PersentaseTotalCSR({ data }: { data: any }) {
     return (
         <div className="space-y-5">
             <h1
-                className={`font-bold text-xl ${
-                    data.length === 0 ? "text-center" : null
-                }`}
+                className={`font-bold text-xl ${data.length === 0 ? "text-center" : null
+                    }`}
             >
                 Persentase total realisasi berdasarkan sektor CSR
             </h1>
@@ -230,27 +230,26 @@ export function TotalRealisasiCSR({ data }: { data: any }) {
     return (
         <div className="space-y-5">
             <h1
-                className={`font-bold text-xl ${
-                    data.length === 0 ? "text-center" : null
-                }`}
+                className={`font-bold text-xl ${data.length === 0 ? "text-center" : null
+                    }`}
             >
                 Persentase total realisasi berdasarkan sektor CSR
             </h1>
             {chartData.length > 0
                 ? barChart({
-                      chartData,
-                      chartConfig,
-                      type: "sektor",
-                      key: "sektor",
-                      tooltipFormatter: (value, name) => {
-                          return `${formatPrice(value)}`;
-                      },
-                      labelFormatter: (value, index) => {
-                          return `${chartData[index]["sektor"]} ${formatPrice(
-                              value
-                          )}`;
-                      },
-                  })
+                    chartData,
+                    chartConfig,
+                    type: "sektor",
+                    key: "sektor",
+                    tooltipFormatter: (value, name) => {
+                        return `${formatPrice(value)}`;
+                    },
+                    labelFormatter: (value, index) => {
+                        return `${chartData[index]["sektor"]} ${formatPrice(
+                            value
+                        )}`;
+                    },
+                })
                 : noData()}
         </div>
     );
@@ -263,27 +262,26 @@ export function PersentaseTotalMitra({ data }: { data: any }) {
     return (
         <div className="space-y-5">
             <h1
-                className={`font-bold text-xl ${
-                    data.length === 0 ? "text-center" : null
-                }`}
+                className={`font-bold text-xl ${data.length === 0 ? "text-center" : null
+                    }`}
             >
                 Persentase total realisasi berdasarkan Mitra
             </h1>
             {chartData.length > 0
                 ? barChart({
-                      chartData,
-                      chartConfig,
-                      type: "mitra",
-                      key: "mitra",
-                      tooltipFormatter: (value, name) => {
-                          return `${formatPrice(value)}`;
-                      },
-                      labelFormatter: (value, index) => {
-                          return `${chartData[index]["mitra"]} ${formatPrice(
-                              value
-                          )}`;
-                      },
-                  })
+                    chartData,
+                    chartConfig,
+                    type: "mitra",
+                    key: "mitra",
+                    tooltipFormatter: (value, name) => {
+                        return `${formatPrice(value)}`;
+                    },
+                    labelFormatter: (value, index) => {
+                        return `${chartData[index]["mitra"]} ${formatPrice(
+                            value
+                        )}`;
+                    },
+                })
                 : noData()}
         </div>
     );
@@ -295,27 +293,25 @@ export function PersentaseTotalKecamatan({ data }: { data: any }) {
     return (
         <div className="space-y-5">
             <h1
-                className={`font-bold text-xl ${
-                    data.length === 0 ? "text-center" : null
-                }`}
+                className={`font-bold text-xl ${data.length === 0 ? "text-center" : null
+                    }`}
             >
                 Persentase total realisasi berdasarkan Kecamatan
             </h1>
             {chartData.length > 0
                 ? barChart({
-                      chartData,
-                      chartConfig,
-                      type: "kecamatan",
-                      key: "kecamatan",
-                      tooltipFormatter: (value, name) => {
-                          return `${formatPrice(value)}`;
-                      },
-                      labelFormatter: (value, index) => {
-                          return `${
-                              chartData[index]["kecamatan"]
-                          } ${formatPrice(value)}`;
-                      },
-                  })
+                    chartData,
+                    chartConfig,
+                    type: "kecamatan",
+                    key: "kecamatan",
+                    tooltipFormatter: (value, name) => {
+                        return `${formatPrice(value)}`;
+                    },
+                    labelFormatter: (value, index) => {
+                        return `${chartData[index]["kecamatan"]
+                            } ${formatPrice(value)}`;
+                    },
+                })
                 : noData()}
         </div>
     );
