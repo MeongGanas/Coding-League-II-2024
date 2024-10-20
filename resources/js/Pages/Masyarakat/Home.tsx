@@ -8,14 +8,14 @@ import SektorSection from "@/Components/masyarakat/home/SektorSection";
 import WelcomeSection from "@/Components/masyarakat/home/WelcomeSection";
 import WhatSection from "@/Components/masyarakat/home/WhatSection";
 import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
-import { Kegiatan, Laporan, Mitra, PageProps, Sektor, Statistik } from "@/types";
+import { Kegiatan, Laporan, Mitra, PageProps, Sektor, Counts } from "@/types";
 
-export default function Home({ auth: { user }, kegiatans, laporans, mitras, statistik, sektors }: PageProps<{ kegiatans: Kegiatan[], laporans: Laporan[], mitras: Mitra[], statistik: Statistik, sektors: Sektor[] }>) {
+export default function Home({ auth: { user }, kegiatans, laporans, mitras, counts, sektors }: PageProps<{ kegiatans: Kegiatan[], laporans: Laporan[], mitras: Mitra[], counts: Counts, sektors: Sektor[] }>) {
     return (
         <LayoutMasyarakat user={user} title="Home">
             <WelcomeSection />
             <MitraSection mitras={mitras} />
-            <DataStatistikSection statistik={statistik} />
+            <DataStatistikSection counts={counts} />
             <WhatSection />
             <SektorSection sektors={sektors} />
             <SambutanSection />

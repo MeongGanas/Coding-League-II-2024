@@ -172,18 +172,31 @@ export interface KegiatanProps {
     total: number;
 }
 
-export interface Statistik {
-    total_proyek: number;
-    proyek_terealisasi: number;
-    mitra_bergabung: number;
-    dana_realisasi: number;
+export interface Counts {
+    countProyek: number;
+    countProyekRealized: number;
+    countMitra: number;
+    countTotalDanaRealized: number;
 }
 
-export interface RealisasiSektor {
+export interface DataCSR {
     sektor: string;
-    total_realisasi: number;
-    total_laporan: number;
-    fill: string;
+    total: number;
+    count: number;
+}
+export interface PersenTotalMitra {
+    mitra: string;
+    total: number;
+}
+export interface PersenTotalKecamatan {
+    kecamatan: string;
+    total: number;
+}
+
+export interface Realisasi {
+    dataCSR: DataCSR[];
+    persenTotalMitra: PersenTotalMitra[];
+    persenTotalKecamatan: PersenTotalKecamatan[];
 }
 
 export type PageProps<

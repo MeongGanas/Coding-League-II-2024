@@ -15,8 +15,8 @@ import {
     ChartTooltipContent,
 } from "@/Components/ui/chart";
 import formatPrice from "@/lib/formatPrice";
-import { RealisasiSektor } from "@/types";
 import { useEffect, useRef, useState } from "react";
+import { DataCSR, PersenTotalKecamatan, PersenTotalMitra } from "@/types";
 
 const possibleColor = [
     "#28A0F6",
@@ -112,7 +112,7 @@ function barChart({
     tooltipFormatter,
     labelFormatter,
 }: {
-    chartData: RealisasiSektor[];
+    chartData: any[any];
     chartConfig: any;
     type: string;
     key: string;
@@ -170,7 +170,7 @@ function barChart({
     );
 }
 
-export function PersentaseTotalCSR({ data }: { data: any }) {
+export function PersentaseTotalCSR({ data }: { data: DataCSR[] }) {
     const chartData = getChartData(data, "count", "sektor");
     const chartConfig = getChartConfig(data);
 
@@ -223,7 +223,7 @@ export function PersentaseTotalCSR({ data }: { data: any }) {
     );
 }
 
-export function TotalRealisasiCSR({ data }: { data: any }) {
+export function TotalRealisasiCSR({ data }: { data: DataCSR[] }) {
     const chartData = getChartData(data, "total", "sektor");
     const chartConfig = getChartConfig(data);
 
@@ -255,7 +255,7 @@ export function TotalRealisasiCSR({ data }: { data: any }) {
     );
 }
 
-export function PersentaseTotalMitra({ data }: { data: any }) {
+export function PersentaseTotalMitra({ data }: { data: PersenTotalMitra[] }) {
     const chartData = getChartData(data, "total", "mitra");
     const chartConfig = getChartConfig(data);
 
@@ -287,7 +287,7 @@ export function PersentaseTotalMitra({ data }: { data: any }) {
     );
 }
 
-export function PersentaseTotalKecamatan({ data }: { data: any }) {
+export function PersentaseTotalKecamatan({ data }: { data: PersenTotalKecamatan[] }) {
     const chartData = getChartData(data, "total", "kecamatan");
     const chartConfig = getChartConfig(data);
     return (

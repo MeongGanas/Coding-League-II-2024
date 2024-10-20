@@ -4,9 +4,9 @@ import SelectAndDownload from "@/Components/admin/SelectAndDownload";
 import WelcomeAdmin from "@/Components/admin/dashboard/WelcomeAdmin";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { Head } from "@inertiajs/react";
-import { PageProps, RealisasiSektor, Statistik } from "@/types";
+import { Counts, Mitra, PageProps, Realisasi } from "@/types";
 
-export default function Dashboard({ auth: { user }, counts, realisasi, filters }: PageProps<{ counts: Statistik, realisasi: RealisasiSektor[], filters: any, mitras: any }>) {
+export default function Dashboard({ auth: { user }, counts, realisasi, filters }: PageProps<{ counts: Counts, realisasi: Realisasi, filters: any, mitras: Mitra[] }>) {
     return (
         <LayoutAdmin user={user}>
             <Head title="Dashboard Admin" />
@@ -25,7 +25,7 @@ export default function Dashboard({ auth: { user }, counts, realisasi, filters }
                     mitra={true}
                 />
                 <DataStatistik counts={counts} />
-                <RealisasiProyek realisasi={realisasi}/>
+                <RealisasiProyek realisasi={realisasi} />
             </div>
         </LayoutAdmin>
     );

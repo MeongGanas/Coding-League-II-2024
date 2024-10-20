@@ -1,15 +1,15 @@
 import DataStatistikSection from "@/Components/masyarakat/statistik/DataStatistikSection";
 import OtherWelcomeSection from "@/Components/masyarakat/OtherWelcomeSection";
 import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
-import { PageProps, Statistik } from "@/types";
+import { Counts, PageProps } from "@/types";
 import RealisasiProyekPublik from "@/Components/masyarakat/statistik/RealisasiProyekPublik";
 
-export default function StatistikPage({ auth: { user }, statistik }: PageProps<{ statistik: Statistik }>) {
+export default function StatistikPage({ auth: { user }, counts, filters, realisasi }: PageProps<{ counts: Counts, filters: any[any], realisasi: any[any] }>) {
     return (
         <LayoutMasyarakat user={user} title="Statistik">
             <OtherWelcomeSection title="Statistik" desc="Program CSR yang sudah berjalan di kabupaten cirebon" />
-            <DataStatistikSection statistik={statistik} />
-            <RealisasiProyekPublik />
+            <DataStatistikSection counts={counts} possibleYear={filters.tahun} />
+            <RealisasiProyekPublik realisasi={realisasi} />
         </LayoutMasyarakat>
     )
 }

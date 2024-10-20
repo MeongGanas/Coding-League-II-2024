@@ -1,4 +1,4 @@
-import { RealisasiSektor } from "@/types";
+import { Realisasi } from "@/types";
 import {
     PersentaseTotalCSR,
     PersentaseTotalKecamatan,
@@ -6,7 +6,7 @@ import {
     TotalRealisasiCSR,
 } from "./chart/PersentaseTotal";
 
-export default function RealisasiProyek({ realisasi }: { realisasi: any }) {
+export default function RealisasiProyek({ realisasi }: { realisasi: Realisasi }) {
     return (
         <div className="w-full mt-5">
             <h1 className="font-bold text-2xl py-5">Realisasi Proyek CSR</h1>
