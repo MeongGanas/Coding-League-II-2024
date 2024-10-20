@@ -6,6 +6,8 @@ use App\Models\Mitra;
 use App\Http\Requests\StoreMitraRequest;
 use App\Http\Requests\UpdateMitraRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class MitraController extends Controller
@@ -102,12 +104,20 @@ class MitraController extends Controller
     public function update(Request $request, Mitra $mitra)
     {
         $v = $request->validate([
-            'name' => 'required|string|min:3',
+            'name' => 'string|min:3',
+            'no_telepon' => 'string|min:3',
+            'email' => [
+                'required',
+                'email',
+                Rule::unique('mitras')->ignore($mitra->id),
+            ],
+            'alamat' => 'required|string|min:3',
             'perusahaan' => 'required|string|min:3',
-            'deskripsi' => 'required|string|min:5',
+            'deskripsi' => 'string|min:5',
         ]);
 
         if ($request->file('image')) {
+            Storage::delete($mitra->image);
             $v['image'] = $request->file('image')->store('mitra_image', 'public');
         }
 

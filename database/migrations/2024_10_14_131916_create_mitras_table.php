@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('mitras', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable();
             $table->string('image')->nullable();
             $table->string('name')->nullable();
             $table->string('perusahaan');

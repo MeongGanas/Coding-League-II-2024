@@ -7,18 +7,9 @@ import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Mail, MapPin, Pencil, Phone } from "lucide-react";
 
-const statusClass: { [key: string]: string } = {
-    'Aktif': "bg-success-bg text-success",
-    'Non-Aktif': "bg-success-bg text-success",
-    'Pengajuan': "bg-warning-bg text-warning",
-};
-const statusText: { [key: string]: string } = {
-    'Aktif': "Terverifikasi",
-    'Non-Aktif': "Terverifikasi",
-    'Pengajuan': "Pengajuan",
-};
-
 export default function Detail({ auth: { user } }: PageProps) {
+    console.log(user)
+
     return (
         <LayoutMitra user={user}>
             <Head title="Profile" />
@@ -71,13 +62,13 @@ export default function Detail({ auth: { user } }: PageProps) {
                                     <div className="p-2 border-4 text-primary bg-[#FFDDDC] rounded-full border-primary-bg">
                                         <Phone className="w-5 h-5" />
                                     </div>
-                                    <span>{user.no_telepon ?? '-'}</span>
+                                    {/* <span>{user.no_telepon ?? '-'}</span> */}
                                 </li>
                                 <li className="flex items-center gap-2">
                                     <div className="p-2 border-4 text-primary bg-[#FFDDDC] rounded-full border-primary-bg">
                                         <MapPin className="w-5 h-5" />
                                     </div>
-                                    <span>{user.alamat ?? '-'}</span>
+                                    {/* <span>{user.alamat ?? '-'}</span> */}
                                 </li>
                             </ul>
                             <p>

@@ -17,44 +17,73 @@ import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
 import { CloudUpload, Send } from "lucide-react";
 import { Textarea } from "@/Components/ui/textarea";
-import { PageProps } from "@/types";
+import { Mitra, PageProps } from "@/types";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-const proyekSchema = z.object({
-    nama: z.string(),
-    nama_pt: z.string(),
+const mitraSchema = z.object({
+    name: z.string(),
+    perusahaan: z.string(),
     no_telepon: z.string(),
     email: z.string(),
     alamat: z.string(),
     deskripsi: z.string(),
-    dokumen_pendukung: z
-        .instanceof(FileList)
-        .refine((file) => file?.length == 1, "File is required."),
+    image: z
+        .instanceof(FileList).optional(),
 });
 
-type ProyekSchema = z.infer<typeof proyekSchema>;
+type MitraSchema = z.infer<typeof mitraSchema>;
 
-export default function Edit({ auth: { user } }: PageProps) {
-    const [preview, setPreview] = useState<string | null>(null);
+export default function Edit({ auth: { user }, mitra }: PageProps<{ mitra: Mitra }>) {
+    const [preview, setPreview] = useState<string | null>(`/storage/${mitra.image}`);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const form = useForm<ProyekSchema>({
-        resolver: zodResolver(proyekSchema),
+    const form = useForm<MitraSchema>({
+        resolver: zodResolver(mitraSchema),
         defaultValues: {
-            nama: "",
-            nama_pt: "",
-            no_telepon: "",
-            email: "",
-            alamat: "",
-            deskripsi: "",
+            name: mitra.name ?? "",
+            perusahaan: mitra.perusahaan,
+            no_telepon: mitra.no_telepon ?? "",
+            email: mitra.email,
+            alamat: mitra.alamat ?? "",
+            deskripsi: mitra.deskripsi ?? "",
         },
     });
 
     const { handleSubmit, control } = form;
 
-    const fileRef = form.register("dokumen_pendukung");
+    const fileRef = form.register("image");
 
     const submit = handleSubmit((values) => {
-        console.log(values);
+        setIsSubmitted(true);
+
+        const formData = new FormData();
+        formData.append('_method', 'PATCH');
+        formData.append('name', values.name)
+        formData.append('email', values.email);
+        formData.append('alamat', values.alamat);
+        formData.append('no_telepon', values.no_telepon);
+        formData.append('perusahaan', values.perusahaan);
+        formData.append('deskripsi', values.deskripsi);
+
+        if (values.image && values.image?.length > 0) {
+            formData.append('image', values.image[0]);
+        }
+
+        const promise = axios.post(`/admin/mitra/${user.id}`, formData);
+
+        toast.promise(promise, {
+            loading: "Loading...",
+            success: () => {
+                setIsSubmitted(false);
+                window.location.replace('/admin/mitra')
+                return "Update Profile Mitra Success!"
+            },
+            error: (err) => {
+                setIsSubmitted(false)
+                return err?.response.data.message || "Something went wrong"
+            }
+        });
     });
 
     const handlePreview = (e: SyntheticEvent) => {
@@ -79,10 +108,21 @@ export default function Edit({ auth: { user } }: PageProps) {
                 <Form {...form}>
                     <form onSubmit={submit} className="space-y-5">
                         <div className="bg-white rounded-md p-6 space-y-3 lg:space-y-0 border grid grid-cols-1 lg:grid-cols-2 gap-5 items-start">
-                            <div className="bg-neutral-300 rounded-md w-full h-72"></div>
+                            {preview ? (
+                                <div className="bg-neutral-100 rounded-md w-full">
+                                    <img
+                                        src={preview}
+                                        alt=""
+                                        className="w-full"
+                                    />
+                                </div>
+
+                            ) : (
+                                <div className="bg-neutral-100 rounded-md w-full h-72"></div>
+                            )}
                             <FormField
                                 control={form.control}
-                                name="dokumen_pendukung"
+                                name="image"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="font-bold text-base">
@@ -97,13 +137,7 @@ export default function Edit({ auth: { user } }: PageProps) {
                                                 className="flex flex-col items-center justify-center w-full border rounded-lg cursor-pointer bg-white hover:bg-gray-50 "
                                             >
                                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                    {preview && (
-                                                        <img
-                                                            src={preview}
-                                                            alt=""
-                                                            className="w-60"
-                                                        />
-                                                    )}
+
                                                     <div className="rounded-full border-4 bg-[#FFDDDC] border-[#FFF1F0] text-primary p-2">
                                                         <CloudUpload className="w-5 h-5" />
                                                     </div>
@@ -123,7 +157,7 @@ export default function Edit({ auth: { user } }: PageProps) {
                                                     id="dropzone-file"
                                                     type="file"
                                                     accept="image/png, image/jpg"
-                                                    className="hidden"
+                                                    className="h-0 opacity-0"
                                                     onChange={(e) =>
                                                         handlePreview(e)
                                                     }
@@ -136,7 +170,7 @@ export default function Edit({ auth: { user } }: PageProps) {
                             />
                             <FormField
                                 control={control}
-                                name="nama"
+                                name="name"
                                 render={({ field }) => (
                                     <FormItem className="grid gap-2">
                                         <FormLabel className="font-bold text-base">
@@ -158,7 +192,7 @@ export default function Edit({ auth: { user } }: PageProps) {
                             />
                             <FormField
                                 control={control}
-                                name="nama_pt"
+                                name="perusahaan"
                                 render={({ field }) => (
                                     <FormItem className="grid gap-2">
                                         <FormLabel className="font-bold text-base">

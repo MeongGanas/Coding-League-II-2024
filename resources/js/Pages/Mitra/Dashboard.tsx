@@ -11,8 +11,6 @@ import { Plus } from "lucide-react";
 import SearchForm from "@/Components/admin/Search";
 
 export default function Dashboard({ auth: { user }, counts, realisasi, filters, laporans }: PageProps<{ counts: Statistik, realisasi: RealisasiSektor[], filters: any, laporans: LaporanProps }>) {
-    console.log(laporans)
-
     return (
         <LayoutMitra user={user}>
             <Head title="Dashboard Mitra" />
