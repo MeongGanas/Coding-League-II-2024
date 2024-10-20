@@ -42,7 +42,7 @@ export default function SektorSection(
                         <div className="relative">
                             <div className="w-[300px] h-60 bg-primary-darker"></div>
                             <img src={`/storage/${sektors.find(sektor => sektor.name === active)?.image || "sektor_image/example.jpg"
-                                }`} width={300} className="absolute top-0 left-10" alt="gambar" />
+                                }`} width={300} className="absolute -top-20 h-72 left-10" alt="gambar" />
                         </div>
                         <p>{
                             sektors.find(sektor => sektor.name === active)?.deskripsi
