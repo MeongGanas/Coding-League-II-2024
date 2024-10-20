@@ -44,6 +44,13 @@ export interface Proyek {
     image: string;
     status: string;
     sektor: Sektor;
+    partisipasi: Partisipasi[];
+}
+
+export interface Partisipasi {
+    id: number;
+    mitra: Mitra;
+    created_at: string;
 }
 
 export interface ProyekProps {

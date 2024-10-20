@@ -20,4 +20,9 @@ class Proyek extends Model
     {
         return $this->hasMany(Laporan::class);
     }
+
+    public function partisipasi()
+    {
+        return $this->hasMany(Partisipasi::class);
+    }
 }

@@ -3,12 +3,14 @@ import OtherWelcomeSection from "@/Components/masyarakat/OtherWelcomeSection";
 import { Button } from "@/Components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/Components/ui/table";
 import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
-import { PageProps, Proyek, Sektor } from "@/types";
+import { PageProps, Proyek } from "@/types";
 import { Link } from "@inertiajs/react";
 import { format } from "date-fns";
+import { id } from "date-fns/locale";
 import { Eye } from "lucide-react";
 
 export default function DetailSektorProyek({ auth: { user }, proyek }: PageProps<{ proyek: Proyek }>) {
+    console.log(proyek)
     return (
         <LayoutMasyarakat user={user} title="Sektor Proyek">
             <OtherWelcomeSection title={proyek.name} desc={`Mulai: ${format(new Date(proyek.tgl_awal), 'MMMM dd, y')} -  Tgl. Berakhir: ${proyek.tgl_akhir ? format(new Date(proyek.tgl_akhir), 'MMMM dd, y') : "-"}`} addBreadCrumb={proyek.sektor.name} addBreadCrumbID={proyek.sektor_id.toString()} anotherDesc={<p className="lg:text-lg text-light">
@@ -49,16 +51,40 @@ export default function DetailSektorProyek({ auth: { user }, proyek }: PageProps
                             </TableRow>
                         </TableHeader>
                         <TableBody className="overflow-auto">
-                            <TableRow className="bg-[#FCFCFD]">
-                                <TableCell className="font-medium min-w-52">GTIS Indonesia</TableCell>
-                                <TableCell className="font-medium min-w-52">info@gmail.com</TableCell>
-                                <TableCell className="font-medium min-w-52">022 677 ####</TableCell>
-                                <TableCell className="min-w-52">1 Juli 2024</TableCell>
-                                <TableCell><Button asChild className="hover:bg-red-700"><Link href={`/laporan/1/detail`} className="flex items-center gap-2"><Eye className="w-5 h-5" /><span>Lihat Laporan</span></Link></Button></TableCell>
-                            </TableRow>
-                            {/* <TableRow className="odd:bg-[#FCFCFD] even:bg-white">=
-                                    <TableCell colSpan={3}>Belum ada proyek tersedia</TableCell>=
-                                </TableRow> */}
+                            {proyek.partisipasi.length > 0 ? proyek.partisipasi.map((partisipasi) => {
+                                const punyaLaporan = (partisipasi?.mitra?.laporan?.length ?? 0) > 0;
+
+                                return (
+                                    <TableRow className="bg-[#FCFCFD]" key={partisipasi.id}>
+                                        <TableCell className="font-medium min-w-52">{partisipasi.mitra.name}</TableCell>
+                                        <TableCell className="font-medium min-w-52">{partisipasi.mitra.email}</TableCell>
+                                        <TableCell className="font-medium min-w-52">{partisipasi.mitra.no_telepon}</TableCell>
+                                        <TableCell className="min-w-52">
+                                            {partisipasi.created_at ? format(new Date(partisipasi.created_at), 'dd MMM y', { locale: id }) : "-"}
+                                        </TableCell>
+                                        <TableCell>
+                                            {punyaLaporan ? (
+                                                <Button asChild className="hover:bg-red-700">
+                                                    <Link
+                                                        href={punyaLaporan ? `/laporan/${partisipasi.mitra.laporan?.[0].id}/detail` : "#"}
+                                                        className="flex items-center gap-2"
+                                                    >
+                                                        <Eye className="w-5 h-5" />
+                                                        <span>Lihat Laporan</span>
+                                                    </Link>
+                                                </Button>
+                                            ) : (
+                                                <h1>Belum ada laporan</h1>
+                                            )}
+
+                                        </TableCell>
+                                    </TableRow>
+                                );
+                            }) : (
+                                <TableRow className="odd:bg-[#FCFCFD] even:bg-white">=
+                                    <TableCell colSpan={5}>Belum ada proyek tersedia</TableCell>=
+                                </TableRow>
+                            )}
                         </TableBody>
                     </Table>
                 </div>

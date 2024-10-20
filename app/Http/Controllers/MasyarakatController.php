@@ -324,7 +324,9 @@ class MasyarakatController extends Controller
     }
     public function sektorProyek(Proyek $proyek)
     {
-        $proyek->load('sektor');
+        $proyek->load(['sektor',  'partisipasi.mitra.laporan' => function ($query) use ($proyek) {
+            $query->where('proyek_id', $proyek->id);
+        }]);
 
         return Inertia::render('Masyarakat/Sektor/Proyek', [
             'proyek' => $proyek

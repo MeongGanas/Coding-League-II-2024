@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Mitra extends Model
+class Partisipasi extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
 
-    public function laporan()
+    public function mitra()
     {
-        return $this->hasMany(Laporan::class);
+        return $this->belongsTo(Mitra::class);
     }
 
-    public function partisipasi()
+    public function proyek()
     {
-        return $this->hasMany(Partisipasi::class);
+        return $this->belongsTo(Proyek::class);
     }
 }
