@@ -106,8 +106,12 @@ class ProyekController extends Controller
      */
     public function show(Proyek $proyek)
     {
+        $proyek->load(['sektor',  'partisipasi.mitra.laporan' => function ($query) use ($proyek) {
+            $query->where('proyek_id', $proyek->id);
+        }]);
+
         return Inertia::render('Admin/Proyek/Detail', [
-            'proyek' => $proyek->load('sektor')
+            'proyek' => $proyek
         ]);
     }
 

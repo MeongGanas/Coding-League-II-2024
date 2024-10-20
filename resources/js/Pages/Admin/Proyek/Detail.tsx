@@ -59,9 +59,6 @@ export default function Detail({ auth: { user }, proyek }: PageProps<{ proyek: P
                                 Draf
                             </Badge>
                         )}
-                        {/* <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
-                            Social
-                        </Badge> */}
                         <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
                             {proyek.sektor.name}
                         </Badge>
@@ -101,7 +98,7 @@ export default function Detail({ auth: { user }, proyek }: PageProps<{ proyek: P
                             <h1 className="font-bold text-2xl mb-4">
                                 Mitra Yang Berpartisipasi
                             </h1>
-                            <DataTableMitra />
+                            <DataTableMitra proyek={proyek} />
                         </div>
                     )}
                 </div>
