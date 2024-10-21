@@ -3,10 +3,10 @@ import Garis from "../Garis";
 export default function WhatSection() {
     return (
         <div className="relative">
-            <img src="/images/masyarakat/hiasan.png" width={100} alt="hiasan" className="absolute left-0 top-0" />
-            <div className="container py-20 space-y-5 px-5">
+            <img src="/images/masyarakat/hiasan.png" width={100} alt="hiasan" className="absolute right-0 top-0 scale-y-[-1]" />
+            <div className="container pt-20 pb-10 lg:py-20 space-y-5 px-5">
                 <div className="grid lg:grid-cols-2 space-y-5 md:space-y-0">
-                    <div className="space-y-5">
+                    <div className="space-y-5 max-lg:mb-5">
                         <Garis />
                         <h1 className="font-extrabold text-3xl lg:text-4xl">Apa Itu<span className="block">Kegiatan CSR?</span></h1>
                     </div>

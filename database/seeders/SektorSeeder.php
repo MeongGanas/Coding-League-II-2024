@@ -39,9 +39,9 @@ class SektorSeeder extends Seeder
 
         $image = [
             "sektor_image/sosial.png",
-            "sektor_image/lingkungan.jpg",
-            "sektor_image/kesehatan.jpg",
-            "sektor_image/pendidikan.jpg",
+            "sektor_image/lingkungan.png",
+            "sektor_image/kesehatan.png",
+            "sektor_image/pendidikan.png",
             "sektor_image/example.jpg",
             "sektor_image/example.jpg",
             "sektor_image/example.jpg"
