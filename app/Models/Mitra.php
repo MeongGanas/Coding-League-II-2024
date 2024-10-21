@@ -20,4 +20,11 @@ class Mitra extends Model
     {
         return $this->hasMany(Partisipasi::class);
     }
+
+    protected function casts(): array
+    {
+        return [
+            'password' => 'hashed',
+        ];
+    }
 }

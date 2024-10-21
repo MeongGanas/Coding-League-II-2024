@@ -34,7 +34,6 @@ export default function Register() {
     const [showPassConfirm, setShowPassConfirm] = useState(false);
     const [captchaValue, setCaptchaValue] = useState<null | string>(null);
 
-
     const form = useForm<RegisterSchema>({
         resolver: zodResolver(registerSchema),
         defaultValues: {

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mitras', function (Blueprint $table) {
             $table->id();
             $table->string('image')->nullable();
-            $table->string('name')->nullable();
+            $table->string('name');
             $table->string('perusahaan')->unique();
             $table->string('no_telepon')->nullable()->unique();
             $table->string('alamat')->nullable();
@@ -22,6 +22,8 @@ return new class extends Migration
             $table->text('deskripsi')->nullable();
             $table->dateTime('tgl_daftar')->nullable();
             $table->enum('status', ['Aktif', 'Non-Aktif', 'Pengajuan'])->default('Pengajuan');
+            $table->string('password');
+            $table->string('role')->default('mitra');
             $table->timestamps();
         });
     }

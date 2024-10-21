@@ -27,6 +27,7 @@ class MitraFactory extends Factory
             'no_telepon' => $this->faker->phoneNumber(),
             'alamat' => $this->faker->address(),
             'perusahaan' => $perusahaan,
+            'password' => '123123',
             'deskripsi' => $this->faker->paragraph(),
             'tgl_daftar' => $this->faker->dateTimeBetween('-1 years', '-1 months'),
             // 'status' => $this->faker->randomElement(['Aktif', 'Non-Aktif']),

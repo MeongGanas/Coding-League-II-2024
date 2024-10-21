@@ -29,12 +29,6 @@ class DatabaseSeeder extends Seeder
                 'role' => 'admin',
                 'password' => '123123'
             ]);
-
-            User::create([
-                'name' => 'Farrel',
-                'email' => 'farreluken@gmail.com',
-                'password' => '123123'
-            ]);
         } catch (\Throwable $th) {
             // do nothing
         }

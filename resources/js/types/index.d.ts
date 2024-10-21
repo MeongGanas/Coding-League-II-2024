@@ -101,6 +101,7 @@ export interface Mitra {
     deskripsi: string | null;
     image: string | null;
     status: "Aktif" | "Non-Aktif" | "Pengajuan";
+    password: string;
     laporan?: Laporan[];
 }
 

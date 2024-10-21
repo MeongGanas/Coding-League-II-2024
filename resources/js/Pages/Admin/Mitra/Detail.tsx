@@ -31,8 +31,8 @@ export default function Detail({ auth: { user }, mitra }: PageProps<{ mitra: Mit
                     <h1 className="text-3xl font-bold">Profil Mitra</h1>
                     <div className="flex items-center gap-4">
                         <Button
-                            type="submit"
                             className="hover:bg-red-700 font-semibold"
+                            asChild
                         >
                             <Link
                                 href={`/admin/mitra/${mitra.id}/edit`}

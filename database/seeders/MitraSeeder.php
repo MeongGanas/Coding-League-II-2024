@@ -81,6 +81,7 @@ class MitraSeeder extends Seeder
                 'no_telepon' => $no_telepon[$key],
                 'alamat' => $alamat[$key],
                 'perusahaan' => $perusahaan[$key],
+                'password' => '123123',
                 'deskripsi' => $deskripsi[$key],
                 'tgl_daftar' => $tgl_daftar[$key],
                 'status' => $status[$key],

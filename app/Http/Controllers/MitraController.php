@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mitra;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -66,9 +67,11 @@ class MitraController extends Controller
             'alamat' => 'string|min:3',
             'email' => 'required|string|min:3',
             'deskripsi' => 'string|min:5',
+            'password' => 'required|string|min:6'
         ]);
 
-        $v['status'] = 'Non-Aktif';
+        $v['status'] = 'Aktif';
+        $v['tgl_daftar'] = Carbon::now();
 
         if ($request->file('image')) {
             $v['image'] = $request->file('image')->store('mitra_image', 'public');
@@ -116,6 +119,10 @@ class MitraController extends Controller
             'perusahaan' => 'required|string|min:3',
             'deskripsi' => 'string|min:5',
         ]);
+
+        if ($request->password) {
+            $v['password'] = $request->password;
+        }
 
         if ($request->file('image')) {
             Storage::delete($mitra->image);
