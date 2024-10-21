@@ -173,7 +173,6 @@ function barChart({
 export function PersentaseTotalCSR({ data }: { data: DataCSR[] }) {
     const chartData = getChartData(data, "count", "sektor");
     const chartConfig = getChartConfig(data);
-
     return (
         <div className="space-y-5">
             <h1

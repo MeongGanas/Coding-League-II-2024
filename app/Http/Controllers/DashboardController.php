@@ -16,9 +16,9 @@ class DashboardController extends Controller
     {
         $proyek = Proyek::where('status', 'Terbit');
         $mitra = Mitra::where('status', '!=', 'Pengajuan');
-        $laporan = Laporan::where('status', 'Diterima');
+        $laporan = Laporan::where('status', 'Diterima')->with('sektor', 'mitra');
 
-        $this->applyFilters($proyek, $mitra, $laporan);
+        $this->applyFilters(clone $proyek, clone $mitra, clone $laporan);
 
         return Inertia::render('Admin/Dashboard', [
             'counts' => [
@@ -28,9 +28,9 @@ class DashboardController extends Controller
                 'countTotalDanaRealized' => $laporan->sum('realisasi'),
             ],
             'realisasi' => [
-                'dataCSR' => $this->getRealisasiBy($laporan, 'sektor_id', 'sektor', 'name', true)->values(),
-                'persenTotalMitra' => $this->getRealisasiBy($laporan, 'mitra_id', 'mitra', 'name')->values(),
-                'persenTotalKecamatan' => $this->getRealisasiBy($laporan, 'lokasi', 'kecamatan', 'lokasi')->values(),
+                'dataCSR' => $this->getRealisasiBy($laporan, 'sektor_id', 'sektor', 'name', true, null, true, true)->values(),
+                'persenTotalMitra' => $this->getRealisasiBy($laporan, 'mitra_id', 'mitra', 'name', null, null, true, true)->values(),
+                'persenTotalKecamatan' => $this->getRealisasiBy($laporan, 'lokasi', 'kecamatan', 'lokasi', null, null, true)->values(),
             ],
             'filters' => [
                 'tahun' => $this->getPossibleYear(clone $proyek, clone $mitra, clone $laporan)->values(),
@@ -40,7 +40,7 @@ class DashboardController extends Controller
         ]);
     }
 
-    private function applyFilters($proyek = null, $mitra = null, $laporan = null)
+    public function applyFilters($proyek = null, $mitra = null, $laporan = null)
     {
         if (request("tahun")) {
             $tahun = request("tahun");
@@ -64,7 +64,7 @@ class DashboardController extends Controller
         }
     }
 
-    private function getPossibleYear($proyek, $mitra, $laporan)
+    public function getPossibleYear($proyek, $mitra, $laporan)
     {
         $possibleYearProyek = $proyek->selectRaw('YEAR(tgl_awal) as year')->distinct()->get()->pluck('year');
         $possibleYearMitra = $mitra->selectRaw('YEAR(tgl_daftar) as year')->distinct()->get()->pluck('year');
@@ -74,15 +74,19 @@ class DashboardController extends Controller
         return $possibleYear;
     }
 
-    private function getRealisasiBy($laporan, $groupBy, $label, $relation, $useCount = false, $limit = 6, $noLimit = false)
+    public function getRealisasiBy($laporan, $groupBy, $label, $relation, $useCount = false, $limit = 6, $noLimit = false, $labelAsRelation = false)
     {
-        $realisasi = $laporan->get()->groupBy($groupBy)->map(function ($item) use ($useCount, $label, $relation) {
+        $realisasi = $laporan->get()->groupBy($groupBy)->map(function ($item) use ($useCount, $label, $relation, $labelAsRelation) {
             $result = [
-                $label => $item->first()->$relation ?? 'Unknown',
                 'total' => $item->sum('realisasi')
             ];
             if ($useCount) {
                 $result['count'] = $item->count();
+            }
+            if ($labelAsRelation) {
+                $result[$label] = $item->first()->$label->$relation;
+            } else {
+                $result[$label] = $item->first()->$relation;
             }
             return $result;
         });
@@ -130,7 +134,6 @@ class DashboardController extends Controller
             'filters' => [
                 'tahun' => request("tahun"),
                 'kuartal' => request("kuartal") ? $kuartalOptions[request("kuartal")] : null,
-                // 'sektor' => request("sektor") ?? Sektor::find(request("sektor")) get the name
                 'sektor' => request("sektor") ? Sektor::find(request("sektor")) : null,
                 'mitra' => request("mitra") ? Mitra::find(request("mitra")) : null,
             ],
@@ -141,8 +144,8 @@ class DashboardController extends Controller
                 'countTotalDanaRealized' => $laporan->sum('realisasi'),
             ],
             'realisasi' => [
-                'dataCSR' => $this->getRealisasiBy($laporan, 'sektor_id', 'sektor', 'name', true, null, true)->values(),
-                'persenTotalMitra' => $this->getRealisasiBy($laporan, 'mitra_id', 'mitra', 'name', null, null, true)->values(),
+                'dataCSR' => $this->getRealisasiBy($laporan, 'sektor_id', 'sektor', 'name', true, null, true, true)->values(),
+                'persenTotalMitra' => $this->getRealisasiBy($laporan, 'mitra_id', 'mitra', 'name', null, null, true, true)->values(),
                 'persenTotalKecamatan' => $this->getRealisasiBy($laporan, 'lokasi', 'kecamatan', 'lokasi', null, null, true)->values(),
             ],
         ]);

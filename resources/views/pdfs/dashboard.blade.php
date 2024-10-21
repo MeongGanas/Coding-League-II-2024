@@ -120,7 +120,7 @@
                 @foreach($realisasi['dataCSR'] as $item)
                 <tr>
                     <td>{{ $item['sektor'] }}</td>
-                    <td>{{ number_format($item['total'], 2, ',', '.') }}</td>
+                    <td>Rp {{ number_format($item['total'], 2, ',', '.') }}</td>
                     <td>{{ $item['count'] }}</td>
                 </tr>
                 @endforeach
@@ -139,7 +139,7 @@
                 @foreach($realisasi['persenTotalMitra'] as $item)
                 <tr>
                     <td>{{ $item['mitra'] }}</td>
-                    <td>{{ number_format($item['total'], 2, ',', '.') }}</td>
+                    <td>Rp {{ number_format($item['total'], 2, ',', '.') }}</td>
                 </tr>
                 @endforeach
             </tbody>
@@ -157,7 +157,7 @@
                 @foreach($realisasi['persenTotalKecamatan'] as $item)
                 <tr>
                     <td>{{ $item['kecamatan'] }}</td>
-                    <td>{{ number_format($item['total'], 2, ',', '.') }}</td>
+                    <td>Rp {{ number_format($item['total'], 2, ',', '.') }}</td>
                 </tr>
                 @endforeach
             </tbody>

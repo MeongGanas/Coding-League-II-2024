@@ -31,6 +31,11 @@ Route::get('/kegiatan/{kegiatan}/detail', [MasyarakatController::class, 'kegiata
 Route::get('/mitra', [MasyarakatController::class, 'mitra'])->name('mitra');
 Route::get('/mitra/{mitra}/detail', [MasyarakatController::class, 'mitraDetail'])->name('mitra.detail');
 
+Route::prefix('download')->group(function () {
+    Route::get('statistik/csv', [MasyarakatController::class, 'downloadCSV']);
+    Route::get('statistik/pdf', [MasyarakatController::class, 'downloadPDF']);
+});
+
 Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
     Route::get("dashboard", [DashboardController::class, 'index'])->name('dashboardAdmin');
 

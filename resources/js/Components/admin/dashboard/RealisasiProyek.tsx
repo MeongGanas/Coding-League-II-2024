@@ -7,6 +7,7 @@ import {
 } from "./chart/PersentaseTotal";
 
 export default function RealisasiProyek({ realisasi }: { realisasi: Realisasi }) {
+    console.log(realisasi);
     return (
         <div className="w-full mt-5">
             <h1 className="font-bold text-2xl py-5">Realisasi Proyek CSR</h1>

@@ -10,6 +10,7 @@ use App\Models\Sektor;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Inertia\Inertia;
 use ZipArchive;
+use App\Http\Controllers\DashboardController;
 
 class MasyarakatController extends Controller
 {
@@ -38,8 +39,8 @@ class MasyarakatController extends Controller
         $proyek = Proyek::where('status', 'Terbit');
         $mitra = Mitra::where('status', '!=', 'Pengajuan');
         $laporan = Laporan::where('status', 'Diterima');
-
-        $this->applyFilters($proyek, $mitra, $laporan);
+        $dashboardFunction = new DashboardController();
+        $dashboardFunction->applyFilters($proyek, $mitra, $laporan);
 
         return Inertia::render('Masyarakat/Statistik', [
             'counts' => [
@@ -49,85 +50,14 @@ class MasyarakatController extends Controller
                 'countTotalDanaRealized' => $laporan->sum('realisasi'),
             ],
             'realisasi' => [
-                'dataCSR' => $this->getRealisasiBy($laporan, 'sektor_id', 'sektor', 'name', true)->values(),
-                'persenTotalMitra' => $this->getRealisasiBy($laporan, 'mitra_id', 'mitra', 'name')->values(),
-                'persenTotalKecamatan' => $this->getRealisasiBy($laporan, 'lokasi', 'kecamatan', 'lokasi')->values(),
+                'dataCSR' => $dashboardFunction->getRealisasiBy($laporan, 'sektor_id', 'sektor', 'name', true, null, true, true)->values(),
+                'persenTotalMitra' => $dashboardFunction->getRealisasiBy($laporan, 'mitra_id', 'mitra', 'name', null, null, true, true)->values(),
+                'persenTotalKecamatan' => $dashboardFunction->getRealisasiBy($laporan, 'lokasi', 'kecamatan', 'lokasi', null, null, true)->values(),
             ],
             'filters' => [
-                'tahun' => $this->getPossibleYear(clone $proyek, clone $mitra, clone $laporan)->values(),
+                'tahun' => $dashboardFunction->getPossibleYear(clone $proyek, clone $mitra, clone $laporan)->values(),
             ]
         ]);
-    }
-
-    private function applyFilters($proyek = null, $mitra = null, $laporan = null)
-    {
-        if (request("tahun")) {
-            $tahun = request("tahun");
-            if ($proyek) $proyek->whereYear('tgl_awal', $tahun);
-            if ($mitra) $mitra->whereYear('tgl_daftar', $tahun);
-            if ($laporan) $laporan->whereYear('realisasi_date', $tahun);
-        }
-        if (request("kuartal")) {
-            $kuartal = request("kuartal");
-            if ($proyek) $proyek->whereRaw('QUARTER(tgl_awal) = ?', $kuartal);
-            if ($mitra) $mitra->whereRaw('QUARTER(tgl_daftar) = ?', $kuartal);
-            if ($laporan) $laporan->whereRaw('QUARTER(realisasi_date) = ?', $kuartal);
-        }
-        if (request("sektor")) {
-            if ($proyek) $proyek->where('sektor_id', request("sektor"));
-            if ($laporan) $laporan->where('sektor_id', request("sektor"));
-        }
-        if (request("mitra")) {
-            if ($laporan) $laporan->where('mitra_id', request("mitra"));
-            // if ($proyek) $proyek->where('mitra_id', request("mitra"));
-        }
-    }
-
-    private function getPossibleYear($proyek, $mitra, $laporan)
-    {
-        $possibleYearProyek = $proyek->selectRaw('YEAR(tgl_awal) as year')->distinct()->get()->pluck('year');
-        $possibleYearMitra = $mitra->selectRaw('YEAR(tgl_daftar) as year')->distinct()->get()->pluck('year');
-        $possibleYearLaporan = $laporan->selectRaw('YEAR(realisasi_date) as year')->distinct()->get()->pluck('year');
-        $possibleYear = $possibleYearProyek->merge($possibleYearMitra)->merge($possibleYearLaporan)->unique();
-
-        return $possibleYear;
-    }
-
-    private function getRealisasiBy($laporan, $groupBy, $label, $relation, $useCount = false, $limit = 6, $noLimit = false)
-    {
-        $realisasi = $laporan->get()->groupBy($groupBy)->map(function ($item) use ($useCount, $label, $relation) {
-            $result = [
-                $label => $item->first()->$relation ?? 'Unknown',
-                'total' => $item->sum('realisasi')
-            ];
-            if ($useCount) {
-                $result['count'] = $item->count();
-            }
-            return $result;
-        });
-
-        if (!$noLimit) {
-            $newRealisasi = $realisasi->take($limit)->values();
-            if ($realisasi->count() > $limit) {
-                $totalSum = $realisasi->sum('total');
-                $topSixSum = $realisasi->take($limit)->sum('total');
-                $data = [
-                    $label => 'Lainnya',
-                    'total' => $totalSum - $topSixSum
-                ];
-                if ($useCount) {
-                    $countSum = $realisasi->sum('count');
-                    $countSixSum = $realisasi->take($limit)->sum('count');
-                    $data['count'] = $countSum - $countSixSum;
-                }
-
-                $newRealisasi->push($data);
-            }
-        } else {
-            $newRealisasi = $realisasi->values();
-        }
-
-        return $newRealisasi;
     }
 
     public function downloadPDF()
@@ -135,8 +65,8 @@ class MasyarakatController extends Controller
         $proyek = Proyek::where('status', 'Terbit');
         $mitra = Mitra::where('status', '!=', 'Pengajuan');
         $laporan = Laporan::where('status', 'Diterima');
-
-        $this->applyFilters($proyek, $mitra, $laporan);
+        $dashboardFunction = new DashboardController();
+        $dashboardFunction->applyFilters($proyek, $mitra, $laporan);
 
         $kuartalOptions = [
             1 => "Kuartal 1 (Januari, Februari, Maret)",
@@ -160,9 +90,9 @@ class MasyarakatController extends Controller
                 'countTotalDanaRealized' => $laporan->sum('realisasi'),
             ],
             'realisasi' => [
-                'dataCSR' => $this->getRealisasiBy($laporan, 'sektor_id', 'sektor', 'name', true, null, true)->values(),
-                'persenTotalMitra' => $this->getRealisasiBy($laporan, 'mitra_id', 'mitra', 'name', null, null, true)->values(),
-                'persenTotalKecamatan' => $this->getRealisasiBy($laporan, 'lokasi', 'kecamatan', 'lokasi', null, null, true)->values(),
+                'dataCSR' => $dashboardFunction->getRealisasiBy($laporan, 'sektor_id', 'sektor', 'name', true, null, true)->values(),
+                'persenTotalMitra' => $dashboardFunction->getRealisasiBy($laporan, 'mitra_id', 'mitra', 'name', null, null, true)->values(),
+                'persenTotalKecamatan' => $dashboardFunction->getRealisasiBy($laporan, 'lokasi', 'kecamatan', 'lokasi', null, null, true)->values(),
             ],
         ]);
 
@@ -174,8 +104,9 @@ class MasyarakatController extends Controller
         $proyek = Proyek::where('status', 'Terbit')->get();
         $mitra = Mitra::where('status', '!=', 'Pengajuan')->get();
         $laporan = Laporan::where('status', 'Diterima')->get();
+        $dashboardFunction = new DashboardController();
 
-        $this->applyFilters($proyek, $mitra, $laporan);
+        $dashboardFunction->applyFilters($proyek, $mitra, $laporan);
 
         $csvDataProyek = $this->generateCSVData($proyek, [
             'ID',

@@ -91,8 +91,6 @@ export default function SelectAndDownload({
     const params = new URLSearchParams(window.location.search);
     let paramchanged: boolean = false;
 
-    console.log(tahunOptions);
-
     const handleParamSet = (param: string, value: string) => {
         paramchanged = true;
         if (value && value !== "clear") {
@@ -129,8 +127,6 @@ export default function SelectAndDownload({
         }
         return {};
     }
-
-    console.log(newSektorOptions());
 
     return (
         <div
