@@ -70,11 +70,11 @@ export default function Edit({ auth: { user }, mitra }: PageProps<{ mitra: Mitra
             formData.append('image', values.image[0]);
         }
 
-        const promise = axios.post(`/admin/mitra/${user.id}`, formData);
+        const promise = axios.post(`/admin/mitra/${mitra.id}`, formData);
 
         toast.promise(promise, {
             loading: "Loading...",
-            success: () => {
+            success: (res) => {
                 setIsSubmitted(false);
                 window.location.replace('/admin/mitra')
                 return "Update Profile Mitra Success!"
@@ -303,8 +303,8 @@ export default function Edit({ auth: { user }, mitra }: PageProps<{ mitra: Mitra
                         </div>
 
                         <div className="bg-white p-4 rounded-md border flex justify-end items-center gap-4">
-                            <Button variant={"outline"} disabled={isSubmitted}>
-                                <Link href="/admin/mitra/1/detail">
+                            <Button variant={"outline"} asChild disabled={isSubmitted}>
+                                <Link href={`/admin/mitra/${mitra.id}`}>
                                     Kembali
                                 </Link>
                             </Button>

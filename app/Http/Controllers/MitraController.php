@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mitra;
-use App\Http\Requests\StoreMitraRequest;
-use App\Http\Requests\UpdateMitraRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -65,9 +63,12 @@ class MitraController extends Controller
             'name' => 'string|min:3',
             'perusahaan' => 'required|string|min:3',
             'no_telepon' => 'string|min:3',
+            'alamat' => 'string|min:3',
             'email' => 'required|string|min:3',
             'deskripsi' => 'string|min:5',
         ]);
+
+        $v['status'] = 'Non-Aktif';
 
         if ($request->file('image')) {
             $v['image'] = $request->file('image')->store('mitra_image', 'public');

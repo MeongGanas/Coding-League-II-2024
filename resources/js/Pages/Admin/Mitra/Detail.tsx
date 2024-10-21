@@ -3,22 +3,23 @@ import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
-import { PageProps } from "@/types";
+import { Mitra, PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Mail, MapPin, Pencil, Phone } from "lucide-react";
 
 const statusClass: { [key: string]: string } = {
     'Aktif': "bg-success-bg text-success",
-    'Non-Aktif': "bg-success-bg text-success",
+    'Non-Aktif': "bg-error-bg text-error",
     'Pengajuan': "bg-warning-bg text-warning",
 };
 const statusText: { [key: string]: string } = {
     'Aktif': "Terverifikasi",
-    'Non-Aktif': "Terverifikasi",
+    'Non-Aktif': "Non-Aktif",
     'Pengajuan': "Pengajuan",
 };
 
-export default function Detail({ auth: { user }, mitra }: PageProps<{ mitra: any }>) {
+export default function Detail({ auth: { user }, mitra }: PageProps<{ mitra: Mitra }>) {
+    console.log(mitra)
     return (
         <LayoutAdmin user={user}>
             <Head title="Detail Mitra" />
@@ -34,7 +35,7 @@ export default function Detail({ auth: { user }, mitra }: PageProps<{ mitra: any
                             className="hover:bg-red-700 font-semibold"
                         >
                             <Link
-                                href="/admin/mitra/1/edit"
+                                href={`/admin/mitra/${mitra.id}/edit`}
                                 className="flex gap-2 items-center"
                             >
                                 <Pencil className="w-4 h-4" />
@@ -43,7 +44,7 @@ export default function Detail({ auth: { user }, mitra }: PageProps<{ mitra: any
                         </Button>
                         {
                             (mitra.status === 'Aktif' || mitra.status === 'Non-Aktif') && (
-                                <DialogToggleStatus data={mitra.id} status={mitra.status}/>
+                                <DialogToggleStatus data={mitra.id} status={mitra.status} />
                             )
                         }
                     </div>

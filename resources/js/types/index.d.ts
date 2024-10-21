@@ -100,6 +100,7 @@ export interface Mitra {
     alamat: string | null;
     deskripsi: string | null;
     image: string | null;
+    status: "Aktif" | "Non-Aktif" | "Pengajuan";
     laporan?: Laporan[];
 }
 

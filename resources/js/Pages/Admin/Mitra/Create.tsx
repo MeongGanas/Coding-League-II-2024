@@ -61,6 +61,7 @@ export default function Create({ auth: { user } }: PageProps) {
         const formData = new FormData()
         formData.append('name', values.name)
         formData.append('email', values.email)
+        formData.append('no_telepon', values.no_telepon)
         formData.append('deskripsi', values.deskripsi)
         formData.append('perusahaan', values.perusahaan)
         formData.append('alamat', values.alamat)
