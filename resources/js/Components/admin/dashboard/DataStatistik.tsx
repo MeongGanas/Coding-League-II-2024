@@ -5,8 +5,6 @@ import { BadgeCheck, LayoutPanelLeft } from "lucide-react";
 import { useEffect } from "react";
 
 export default function DataStatistik({ counts }: { counts: any }) {
-
-
     return (
         <div className="w-full">
             <h1 className="font-bold text-2xl py-5">Data Statistik</h1>
@@ -112,10 +110,10 @@ function CardDana({ count }: { count: string}) {
                 <h1 className="text-white text-lg">Total dana realisasi CSR</h1>
             </div>
             <div className="bg-white/30 rounded-xl p-4 border border-white/50">
-                <h1 className="font-bold text-lg text-white">
-                    <animated.span>{props.number.to(n =>
-                        prettyMoney(n)
-                    )}</animated.span>
+                <h1 className="font-bold text-lg text-white text-nowrap overflow-hidden text-ellipsis">
+                    <animated.span>
+                        {props.number.to(n => formatPrice(n))}
+                    </animated.span>
                 </h1>
             </div>
         </div>

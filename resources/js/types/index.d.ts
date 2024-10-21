@@ -183,7 +183,7 @@ export interface Counts {
     countProyek: number;
     countProyekRealized: number;
     countMitra: number;
-    countTotalDanaRealized: number;
+    countTotalDanaRealized: string;
 }
 
 export interface DataCSR {

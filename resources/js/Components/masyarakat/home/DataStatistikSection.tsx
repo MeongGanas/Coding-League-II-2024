@@ -1,8 +1,14 @@
 import { Counts } from "@/types";
 import Garis from "../Garis";
 import { prettyMoney } from "@/lib/formatPrice";
+import { useSpring, animated } from "@react-spring/web";
 
 export default function DataStatistikSection({ counts }: { counts: Counts }) {
+    const springProyek = useSpring({ number: counts.countProyek || 0, from: { number: 0 }, delay: 400 });
+    const springProyekRealized = useSpring({ number: counts.countProyekRealized || 0, from: { number: 0 }, delay: 400  });
+    const springMitra = useSpring({ number: counts.countMitra || 0, from: { number: 0 }, delay: 400  });
+    const parsedDana = parseFloat(counts.countTotalDanaRealized);
+    const springDana = useSpring({ number: parsedDana || 0, from: { number: 0 }, delay: 400  });
 
     return (
         <div className="container py-10 px-5 space-y-10">
@@ -12,27 +18,27 @@ export default function DataStatistikSection({ counts }: { counts: Counts }) {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 <div className="border-l-2 border-l-[#FFC3C0] space-y-2 px-5">
-                    <h1 className="font-extrabold text-3xl lg:text-5xl text-primary-darker">{
-                        counts.countProyek || 0
-                    }</h1>
+                    <h1 className="font-extrabold text-3xl lg:text-5xl text-primary-darker">
+                        <animated.span>{springProyek.number.to(n => n.toFixed(0))}</animated.span>
+                    </h1>
                     <p className="text-lg md:text-xl">Total Proyek CSR</p>
                 </div>
                 <div className="border-l-2 border-l-[#FFC3C0] space-y-2 px-5">
-                    <h1 className="font-extrabold text-3xl lg:text-5xl text-primary-darker">{
-                        counts.countProyekRealized || 0
-                    }</h1>
+                    <h1 className="font-extrabold text-3xl lg:text-5xl text-primary-darker">
+                        <animated.span>{springProyekRealized.number.to(n => n.toFixed(0))}</animated.span>
+                    </h1>
                     <p className="text-lg md:text-xl">Proyek Terealisasi</p>
                 </div>
                 <div className="border-l-2 border-l-[#FFC3C0] space-y-2 px-5">
-                    <h1 className="font-extrabold text-3xl lg:text-5xl text-primary-darker">{
-                        counts.countMitra || 0
-                    }</h1>
+                    <h1 className="font-extrabold text-3xl lg:text-5xl text-primary-darker">
+                        <animated.span>{springMitra.number.to(n => n.toFixed(0))}</animated.span>
+                    </h1>
                     <p className="text-lg md:text-xl">Mitra Bergabung</p>
                 </div>
                 <div className="border-l-2 border-l-[#FFC3C0] space-y-2 px-5">
-                    <h1 className="font-extrabold text-3xl lg:text-5xl text-primary-darker">{
-                        prettyMoney(counts.countTotalDanaRealized)
-                    }</h1>
+                    <h1 className="font-extrabold text-3xl lg:text-5xl text-primary-darker">
+                        <animated.span>{springDana.number.to(n => prettyMoney(n))}</animated.span>
+                    </h1>
                     <p className="text-lg md:text-xl">Dana Realisasi CSR</p>
                 </div>
             </div>

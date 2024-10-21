@@ -6,7 +6,15 @@ export default function formatPrice(price: number): string {
     }).format(price)}`;
 }
 
-export const prettyMoney = (money: number) => {
+export const prettyMoney = (money: number | string) => {
+    if (typeof money === "string") {
+        try {
+            money = parseFloat(money);
+        } catch (error) {
+            return 0;
+        }
+    }
+
     if (money < 1000) {
         return `Rp${money}+`;
     } else if (money < 1000000) {
