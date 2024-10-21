@@ -9,7 +9,7 @@ import {
 } from "@/Components/ui/form";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { Head } from "@inertiajs/react";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,9 +28,11 @@ const kegiatanSchema = z.object({
 
 type KegiatanSchema = z.infer<typeof kegiatanSchema>;
 
+
 export default function Create({ auth: { user } }: PageProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [editorState, setEditorState] = useState<string>('');
 
     const form = useForm<KegiatanSchema>({
         resolver: zodResolver(kegiatanSchema),
@@ -67,6 +69,9 @@ export default function Create({ auth: { user } }: PageProps) {
                     />
                 </div>
                 <h1 className="font-bold text-2xl mb-5">Buat Kegiatan Baru</h1>
+
+
+
                 <Form {...form}>
                     <form onSubmit={submit} className="space-y-5">
                         <div className="bg-white rounded-md p-6 space-y-5 border">
@@ -157,7 +162,9 @@ export default function Create({ auth: { user } }: PageProps) {
                                                 *
                                             </span>
                                         </FormLabel>
-                                        <FormControl></FormControl>
+                                        <FormControl>
+
+                                        </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
@@ -176,6 +183,7 @@ export default function Create({ auth: { user } }: PageProps) {
                         </div>
                     </form>
                 </Form>
+
             </div>
         </LayoutAdmin>
     );
