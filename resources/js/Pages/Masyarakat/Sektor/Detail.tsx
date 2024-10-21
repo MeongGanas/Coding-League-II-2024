@@ -42,7 +42,6 @@ export default function DetailSektor({ auth: { user }, sektor }: PageProps<{ sek
                                     <TableCell colSpan={3}>Belum ada proyek tersedia</TableCell>=
                                 </TableRow>
                             )}
-
                         </TableBody>
                     </Table>
                 </div>

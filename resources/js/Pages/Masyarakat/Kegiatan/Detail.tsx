@@ -39,7 +39,7 @@ export default function KegiatanDetail({ auth: { user }, kegiatan, kegiatanLainn
                 <div className="flex flex-wrap gap-3">
                     {kegiatan.tags.map((tag) => (
                         <Badge className="bg-[#F2F4F7] hover:bg-[#F2F4F7]/90 text-black">
-                            tag
+                            {tag}
                         </Badge>
                     ))}
                 </div>

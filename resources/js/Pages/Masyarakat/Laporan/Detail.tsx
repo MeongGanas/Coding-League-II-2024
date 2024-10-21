@@ -9,6 +9,7 @@ import formatPrice from "@/lib/formatPrice";
 import { Laporan, PageProps } from "@/types";
 import { Link } from "@inertiajs/react";
 import { format } from "date-fns";
+import Markdown from "react-markdown";
 
 export default function Detail({ auth: { user }, laporan, laporanLainnya }: PageProps<{ laporan: Laporan, laporanLainnya: Laporan[] }>) {
     return (
@@ -48,8 +49,7 @@ export default function Detail({ auth: { user }, laporan, laporanLainnya }: Page
                     </div>
                     <div className="space-y-2">
                         <h2 className="font-extrabold text-2xl lg:text-3xl">Rincian Laporan</h2>
-                        <div className="space-y-4" dangerouslySetInnerHTML={{ __html: laporan.rincian }}>
-                        </div>
+                        <Markdown className="space-y-4">{laporan.rincian}</Markdown>
                     </div>
                 </div>
             </div>
