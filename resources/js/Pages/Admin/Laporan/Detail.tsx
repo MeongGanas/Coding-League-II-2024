@@ -16,6 +16,7 @@ import { id } from "date-fns/locale";
 import { BriefcaseBusiness } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import Markdown from "react-markdown";
 
 const status: { [key: string]: string } = {
     'Diterima': "bg-success-bg text-success hover:bg-success-bg",
@@ -119,8 +120,7 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                     </div>
                     <div className="space-y-2">
                         <h1 className="text-2xl font-bold">Rincian Laporan</h1>
-                        <div className="space-y-4" dangerouslySetInnerHTML={{ __html: laporan.rincian }}>
-                        </div>
+                        <Markdown className="space-y-4">{laporan.rincian}</Markdown>
                     </div>
                 </div>
                 {

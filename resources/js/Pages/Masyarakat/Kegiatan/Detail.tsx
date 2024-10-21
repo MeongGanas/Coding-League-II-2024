@@ -9,6 +9,7 @@ import { Link } from "@inertiajs/react";
 import { format } from "date-fns";
 import { Facebook, Instagram, Link as LinkIcon, Twitter, TwitterIcon } from "lucide-react";
 import toast from "react-hot-toast";
+import Markdown from 'react-markdown';
 
 export default function KegiatanDetail({ auth: { user }, kegiatan, kegiatanLainnya }: PageProps<{ kegiatan: Kegiatan, kegiatanLainnya: Kegiatan[] }>) {
     const shareToFacebook = () => {
@@ -33,24 +34,7 @@ export default function KegiatanDetail({ auth: { user }, kegiatan, kegiatanLainn
             <div className="container py-10 max-w-screen-sm mx-auto space-y-4">
                 <div className="space-y-4 border-b pb-10">
                     <Garis />
-                    <p className="text-gray-600">KABUPATEN CIREBON — Pemerintah Kabupaten Cirebon menerima bantuan Corporate Social Responsibility (CSR) dari Bank BJB, berupa lampu penerangan jalan umum (PJU) tematik.</p>
-
-                    <p className="text-gray-600">KABUPATEN CIREBON — Pemerintah Kabupaten Cirebon menerima bantuan Corporate Social Responsibility (CSR) dari Bank BJB, berupa lampu penerangan jalan umum (PJU) tematik.</p>
-
-                    <p className="text-gray-600">KABUPATEN CIREBON — Pemerintah Kabupaten Cirebon menerima bantuan Corporate Social Responsibility (CSR) dari Bank BJB, berupa lampu penerangan jalan umum (PJU) tematik. KABUPATEN CIREBON — Pemerintah Kabupaten Cirebon menerima bantuan Corporate Social Responsibility (CSR) dari Bank BJB, berupa lampu penerangan jalan umum (PJU) tematik.</p>
-
-                    <div className="space-y-2">
-                        <img src="/storage/example.jpg" alt="example" className="w-full rounded-md" />
-                        <div className="flex items-center gap-1 text-gray-600">
-                            <LinkIcon className="w-4 h-4" />
-                            <h1>sumber gambar: </h1>
-                            <Link href="/" className="underline">Gambar</Link>
-                        </div>
-                    </div>
-
-                    <p className="text-gray-600">KABUPATEN CIREBON — Pemerintah Kabupaten Cirebon menerima bantuan Corporate Social Responsibility (CSR) dari Bank BJB, berupa lampu penerangan jalan umum (PJU) tematik.</p>
-
-                    <p className="text-gray-600">KABUPATEN CIREBON — Pemerintah Kabupaten Cirebon menerima bantuan Corporate Social Responsibility (CSR) dari Bank BJB, berupa lampu penerangan jalan umum (PJU) tematik. KABUPATEN CIREBON — Pemerintah Kabupaten Cirebon menerima bantuan Corporate Social Responsibility (CSR) dari Bank BJB, berupa lampu penerangan jalan umum (PJU) tematik.</p>
+                    <Markdown>{kegiatan.deskripsi}</Markdown>
                 </div>
                 <div className="flex flex-wrap gap-3">
                     {kegiatan.tags.map((tag) => (

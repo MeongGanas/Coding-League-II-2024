@@ -10,6 +10,7 @@ import { Head, Link } from "@inertiajs/react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { BriefcaseBusiness, Plus } from "lucide-react";
+import Markdown from "react-markdown";
 
 export default function Detail({ auth: { user }, kegiatan }: PageProps<{ kegiatan: any }>) {
     return (
@@ -48,7 +49,7 @@ export default function Detail({ auth: { user }, kegiatan }: PageProps<{ kegiata
             <div className="container py-10 px-5 space-y-5">
                 <div className="bg-white border rounded-md p-6 space-y-5">
                     <img src={`/storage/${kegiatan.image}`} className="w-full h-96 object-cover rounded-md" />
-                    <div dangerouslySetInnerHTML={{ __html: kegiatan.rincian }} />
+                    <Markdown>{kegiatan.rincian}</Markdown>
                     <div className="flex gap-2">
                         <h1 className="text-neutral-500 font-semibold text-base">
                             Tags:

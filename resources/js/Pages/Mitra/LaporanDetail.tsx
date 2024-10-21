@@ -10,6 +10,7 @@ import { Head, Link } from "@inertiajs/react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { AlertCircle, BriefcaseBusiness, Home } from "lucide-react";
+import Markdown from "react-markdown";
 
 export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan: Laporan }>) {
     return (
@@ -113,8 +114,7 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                     </div>
                     <div className="space-y-2">
                         <h1 className="text-2xl font-bold">Rincian Laporan</h1>
-                        <div className="space-y-4" dangerouslySetInnerHTML={{ __html: laporan.rincian }}>
-                        </div>
+                        <Markdown className="space-y-4">{laporan.rincian}</Markdown>
                     </div>
                 </div>
             </div>
