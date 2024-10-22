@@ -40,7 +40,7 @@ export default function Detail({ auth: { user }, laporan, laporanLainnya }: Page
                         />
                         <DetailCard
                             title="Nama Proyek"
-                            content={laporan.proyek_name}
+                            content={laporan.proyek.name}
                         />
                         <DetailCard
                             title="Kecamatan"

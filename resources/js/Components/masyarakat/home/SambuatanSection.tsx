@@ -7,7 +7,7 @@ export default function SambutanSection() {
                 <img src="/images/masyarakat/hiasan.png" width={100} alt="hiasan" className="absolute left-0 top-0 -z-10" />
                 <div className="container space-y-5 md:space-y-0 px-5 md:px-0">
                     <div className="grid lg:grid-cols-2 items-center space-y-16 lg:space-y-0">
-                        <div className="space-y-5 pl-5">
+                        <div className="space-y-5 pl-5 ">
                             <Garis />
                             <h1 className="font-extrabold text-3xl lg:text-4xl">Sambutan Bupati <span className="block">Kabupaten Cirebon</span></h1>
                             <div className="pl-3 space-y-5">
@@ -23,11 +23,12 @@ export default function SambutanSection() {
                                 </div>
                             </div>
                         </div>
-                        <div className="w-full h-full pl-5">
-                            {/* <div className="w-full h-full bg-slate-100 hidden xl:block"></div> */}
-                            <img src="/images/masyarakat/sambutan.png" className="mx-auto xl:hidden" alt="sambutan" />
+                        <div className="w-full h-full pl-5 xl:hidden flex items-center justify-end  ">
+                            <img src="/images/masyarakat/sambutan.png" className="mx-auto lg:w-[90%]" alt="sambutan" />
                         </div>
-                        <img src="/images/masyarakat/sambutan.png" className="xl:absolute xl:right-0 xl:bottom-0 hidden xl:block sambutan-image" alt="sambutan" />
+                        <div className="hidden md:h-[400px] xl:flex justify-end items-center">
+                            <img src="/images/masyarakat/sambutan.png" height={100} className="absolute max-2xl:right-0 manfaat-image max-h-[350px]" alt="manfaat" />
+                        </div>
                     </div>
                 </div>
             </div>

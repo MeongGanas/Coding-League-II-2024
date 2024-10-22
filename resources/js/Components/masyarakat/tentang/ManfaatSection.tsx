@@ -2,7 +2,7 @@ import Garis from "../Garis";
 
 export default function ManfaatSection() {
     return (
-        <div className="lg:py-20">
+        <div className="lg:py-20 ">
             <div className="relative">
                 <div className="container space-y-5 md:space-y-0 px-5 md:px-0">
                     <div className="grid lg:grid-cols-2 items-center space-y-16 lg:space-y-0">
@@ -18,8 +18,8 @@ export default function ManfaatSection() {
                         <div className="w-full h-full pl-5 mx-auto xl:hidden max-lg:order-first max-lg:flex justify-center ">
                             <img src="/images/masyarakat/manfaat.png" alt="manfaat" />
                         </div>
-                        <div className="hidden md:h-[400px] xl:block">
-                            <img src="/images/masyarakat/manfaat.png" height={100} className="xl:absolute xl:right-0 xl:bottom-0 manfaat-image max-h-[350px]" alt="manfaat" />
+                        <div className="hidden md:h-[400px] xl:flex justify-end items-center">
+                            <img src="/images/masyarakat/manfaat.png" height={100} className="absolute max-2xl:right-0 manfaat-image max-h-[350px]" alt="manfaat" />
                         </div>
                     </div>
                 </div>
