@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('laporans', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('proyek_name');
             $table->foreignId('mitra_id');
             $table->foreignId('sektor_id');
             $table->foreignId('proyek_id');

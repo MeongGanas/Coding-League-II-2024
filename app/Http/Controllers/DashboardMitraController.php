@@ -264,12 +264,19 @@ class DashboardMitraController extends Controller
         return $csvData;
     }
 
+    public function CreateLaporan()
+    {
+        return Inertia::render('Mitra/Laporan/Create', [
+            'sektors' => Sektor::latest()->get(),
+            'proyeks' => Proyek::where('status', 'Terbit')->latest()->get()
+        ]);
+    }
 
     public function LaporanDetail(Laporan $laporan)
     {
         $laporan->load('sektor');
 
-        return Inertia::render('Mitra/LaporanDetail', [
+        return Inertia::render('Mitra/Laporan/Detail', [
             'laporan' => $laporan
         ]);
     }

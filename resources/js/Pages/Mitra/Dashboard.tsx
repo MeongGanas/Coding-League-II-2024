@@ -2,7 +2,7 @@ import DataStatistik from "@/Components/mitra/DataStatistik";
 import RealisasiProyek from "@/Components/mitra/RealisasiProyek";
 import SelectAndDownload from "@/Components/admin/SelectAndDownload";
 import { Head, Link } from "@inertiajs/react";
-import { LaporanProps, PageProps, RealisasiSektor, Statistik } from "@/types";
+import { Counts, LaporanProps, PageProps, Realisasi } from "@/types";
 import WelcomeMitra from "@/Components/mitra/WelcomeMitra";
 import LayoutMitra from "@/Layouts/LayoutMitra";
 import DataTableLaporanMitra from "@/Components/mitra/TabelLaporan";
@@ -10,7 +10,7 @@ import { Button } from "@/Components/ui/button";
 import { Plus } from "lucide-react";
 import SearchForm from "@/Components/admin/Search";
 
-export default function Dashboard({ auth: { user }, counts, realisasi, filters, laporans }: PageProps<{ counts: Statistik, realisasi: RealisasiSektor[], filters: any, laporans: LaporanProps }>) {
+export default function Dashboard({ auth: { user }, counts, realisasi, filters, laporans }: PageProps<{ counts: Counts, realisasi: Realisasi, filters: any, laporans: LaporanProps }>) {
     return (
         <LayoutMitra user={user}>
             <Head title="Dashboard Mitra" />

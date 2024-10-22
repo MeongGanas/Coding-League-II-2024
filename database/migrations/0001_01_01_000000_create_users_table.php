@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('deskripsi')->nullable();
             $table->string('image')->nullable();
-            $table->string('role')->default('admin');
+            $table->enum('role', ['mitra', 'admin'])->default('mitra');
             $table->rememberToken();
             $table->timestamps();
         });

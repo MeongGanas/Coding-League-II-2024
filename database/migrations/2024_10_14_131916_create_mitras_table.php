@@ -22,8 +22,6 @@ return new class extends Migration
             $table->text('deskripsi')->nullable();
             $table->dateTime('tgl_daftar')->nullable();
             $table->enum('status', ['Aktif', 'Non-Aktif', 'Pengajuan'])->default('Pengajuan');
-            $table->string('password');
-            $table->string('role')->default('mitra');
             $table->timestamps();
         });
     }

@@ -25,7 +25,6 @@ class LaporanFactory extends Factory
 
         return [
             'name' => $this->faker->text(50),
-            'proyek_name' => $this->faker->text(50),
             'mitra_id' => Mitra::inRandomOrder()->first()->id,
             'sektor_id' => Sektor::inRandomOrder()->first()->id,
             'proyek_id' => Proyek::inRandomOrder()->first()->id,

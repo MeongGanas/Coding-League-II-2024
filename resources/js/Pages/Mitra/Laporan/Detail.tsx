@@ -1,5 +1,4 @@
 import DetailCard from "@/Components/admin/dashboard/DetailCard";
-import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
 import { Badge } from "@/Components/ui/badge";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/Components/ui/breadcrumb";

@@ -65,6 +65,7 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
 
 Route::prefix('mitra')->middleware(['auth', 'checkMitra'])->group(function () {
     Route::get("/dashboard", [DashboardMitraController::class, 'index'])->name('dashboardMitra');
+    Route::get("/laporan/create", [DashboardMitraController::class, 'CreateLaporan'])->name('laporan.create');
     Route::get("/laporan/{laporan}", [DashboardMitraController::class, 'LaporanDetail'])->name('laporan.detail');
 
     Route::get('/profile', [DashboardMitraController::class, 'profile'])->name('profile');

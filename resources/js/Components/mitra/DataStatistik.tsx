@@ -1,9 +1,10 @@
 import { prettyMoney } from "@/lib/formatPrice";
+import { Counts } from "@/types";
 
 import { useSpring, animated } from '@react-spring/web';
 import { BadgeCheck, LayoutPanelLeft } from "lucide-react";
 
-export default function DataStatistikMitra({ counts }: { counts: any }) {
+export default function DataStatistikMitra({ counts }: { counts: Counts }) {
     return (
         <div className="w-full">
             <h1 className="font-bold text-2xl py-5">Data Statistik</h1>

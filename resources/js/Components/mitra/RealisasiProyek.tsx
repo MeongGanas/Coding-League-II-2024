@@ -1,6 +1,7 @@
-import { PersentaseTotalCSR, PersentaseTotalKecamatan, PersentaseTotalMitra, TotalRealisasiCSR } from "../admin/dashboard/chart/PersentaseTotal";
+import { Realisasi } from "@/types";
+import { PersentaseTotalCSR, PersentaseTotalKecamatan, TotalRealisasiCSR } from "../admin/dashboard/chart/PersentaseTotal";
 
-export default function RealisasiProyek({ realisasi }: { realisasi: any }) {
+export default function RealisasiProyek({ realisasi }: { realisasi: Realisasi }) {
     return (
         <div className="w-full mt-5">
             <h1 className="font-bold text-2xl py-5">Realisasi Proyek CSR</h1>

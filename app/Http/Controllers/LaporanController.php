@@ -67,37 +67,13 @@ class LaporanController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreLaporanRequest $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(Laporan $laporan)
     {
         return Inertia::render('Admin/Laporan/Detail', [
-            'laporan' => $laporan->load('mitra')->load('sektor')
+            'laporan' => $laporan->load(['mitra', 'sektor', 'proyek'])
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Laporan $laporan)
-    {
-        //
     }
 
     /**

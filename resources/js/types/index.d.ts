@@ -133,8 +133,8 @@ export interface Laporan {
     photos: string[];
     rincian: string;
     created_at: string;
-    proyek_name: string;
     sektor: Sektor;
+    proyek: Proyek;
 }
 
 export interface LaporanProps {

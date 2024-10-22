@@ -8,7 +8,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/Components/ui/form";
-import { SyntheticEvent, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,7 +21,7 @@ import toast from "react-hot-toast";
 
 const registerSchema = z.object({
     email: z.string().email(),
-    name: z.string(),
+    perusahaan: z.string(),
     password: z.string(),
     confirm_password: z.string(),
 });
@@ -38,7 +38,7 @@ export default function Register() {
         resolver: zodResolver(registerSchema),
         defaultValues: {
             email: "",
-            name: "",
+            perusahaan: "",
             password: "",
             confirm_password: "",
         },
@@ -49,15 +49,13 @@ export default function Register() {
     const submit = handleSubmit((values) => {
         if (captchaValue) {
             setIsSubmitted(true)
-            console.log(values)
             const promise = axios.post('/register', values);
 
             toast.promise(promise, {
                 loading: "Loading...",
                 success: () => {
                     setIsSubmitted(false)
-                    window.location.replace('/login')
-                    return "Register Success!"
+                    return "Register Success! Silahkan cek email anda."
                 },
                 error: (err) => {
                     setIsSubmitted(false)
@@ -131,7 +129,7 @@ export default function Register() {
                                 />
                                 <FormField
                                     control={control}
-                                    name="name"
+                                    name="perusahaan"
                                     render={({ field }) => (
                                         <FormItem className="grid gap-2">
                                             <FormLabel className="font-bold text-base">
@@ -143,7 +141,7 @@ export default function Register() {
                                             <FormControl>
                                                 <Input
                                                     required
-                                                    placeholder="Masukan name perusahaan anda"
+                                                    placeholder="Masukan nama perusahaan anda"
                                                     {...field}
                                                 />
                                             </FormControl>
