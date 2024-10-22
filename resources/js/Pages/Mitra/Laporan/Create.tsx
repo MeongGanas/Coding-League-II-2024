@@ -6,7 +6,6 @@ import {
     FormLabel,
     FormMessage,
 } from "@/Components/ui/form";
-import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { Head, Link } from "@inertiajs/react";
 import { SyntheticEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -37,6 +36,7 @@ import { Kecamatan, PageProps, Proyek, Sektor } from "@/types";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/Components/ui/breadcrumb";
+import LayoutMitra from "@/Layouts/LayoutMitra";
 
 const proyekSchema = z.object({
     name: z.string(),
@@ -134,7 +134,7 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
     }, [])
 
     return (
-        <LayoutAdmin user={user}>
+        <LayoutMitra user={user}>
             <Head title="Buat Proyek" />
             <div className="container px-5 py-10">
                 <div className="mb-10">
@@ -496,6 +496,6 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
                     </form>
                 </Form>
             </div>
-        </LayoutAdmin>
+        </LayoutMitra>
     );
 }
