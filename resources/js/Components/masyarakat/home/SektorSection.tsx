@@ -54,9 +54,9 @@ export default function SektorSection(
                             sektors.find(sektor => sektor.name === active.name)?.deskripsi
                         }</p>
                         <div className="flex gap-5 ">
-                            <Button asChild className="hover:bg-red-700"><Link href={`/sektor/${active.id}/detail`}>Lihat program tersedia</Link></Button>
-                            {/* TODO */}
-                            <Button asChild variant={"outline"} className="bg-transparent hover:bg-primary hover:text-white hover:border-primary"><Link href="/">Lihat realisasi program</Link></Button>
+                            {/* TODO #button1 kalau udah cocok ini dua button hapusmi ini komen dan done ki di trello*/}
+                            <Button asChild className="hover:bg-red-700"><Link href={`/sektor?sektor=${active.id}`}>Lihat program tersedia</Link></Button>
+                            <Button asChild variant={"outline"} className="bg-transparent hover:bg-primary hover:text-white hover:border-primary"><Link href={`/sektor/${active.id}/detail?proyekcsr`}>Lihat realisasi program</Link></Button>
                         </div>
                     </div>
                 </div>

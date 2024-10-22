@@ -7,8 +7,19 @@ import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
 import { PageProps, Sektor } from "@/types";
 import { Link } from "@inertiajs/react";
 import { Eye } from "lucide-react";
+import { useEffect } from "react";
 
 export default function DetailSektor({ auth: { user }, sektor }: PageProps<{ sektor: Sektor }>) {
+    const params = new URLSearchParams(window.location.search);
+
+    useEffect(() => {
+        if (params.has("proyekcsr")) {
+            setTimeout(() => {
+                document.getElementById("proyekcsr")?.scrollIntoView({ behavior: "smooth" });
+            }, 200);
+        }
+    }, [params]);
+
     return (
         <LayoutMasyarakat user={user} title="Sektor Detail">
             <OtherWelcomeSection title={sektor.name} desc={"Program CSR yang sudah berjalan di kabupaten cirebon"} pagePath={sektor.name} />
@@ -20,11 +31,10 @@ export default function DetailSektor({ auth: { user }, sektor }: PageProps<{ sek
                 </div>
             </div>
 
-
-            <div className="relative">
+            <div className="relative" id="proyekcsr">
                 <img src="/images/masyarakat/hiasan.png" width={150} alt="hiasan" className="absolute rotate-180 -z-10 left-0 bottom-0" />
                 <div className="container px-5 py-20 space-y-5">
-                    <div className="space-y-5">
+                    <div className="space-y-5" >
                         <Garis />
                         <h1 className="font-extrabold text-3xl lg:text-4xl">Proyek CSR</h1>
                         <p className="text-gray-600">Proyek CSR Kabupaten Cirebon yang tersedia</p>
