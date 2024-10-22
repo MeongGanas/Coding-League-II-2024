@@ -29,7 +29,7 @@ import {
     PopoverTrigger,
 } from "@/Components/ui/popover";
 import { cn } from "@/lib/utils";
-import { CalendarIcon, CloudUpload, Home, Save, Send } from "lucide-react";
+import { CalendarIcon, CloudUpload, Home, Save, Send, Trash, Trash2 } from "lucide-react";
 import { Calendar } from "@/Components/ui/calendar";
 import { format } from "date-fns";
 import { Textarea } from "@/Components/ui/textarea";
@@ -45,18 +45,17 @@ const proyekSchema = z.object({
     realisasi_date: z.date({
         required_error: "Tanggal awal is required.",
     }),
-    realisasi: z.number(),
+    realisasi: z.string(),
     lokasi: z.string(),
     rincian: z.string(),
-    images: z
-        .instanceof(FileList)
-        .refine((file) => file?.length >= 1, "File is required."),
+    images: z.array(z.instanceof(File))
+        .min(1, "At least one file is required"),
 });
 
 type ProyekSchema = z.infer<typeof proyekSchema>;
 
 export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{ sektors: Sektor[], proyeks: Proyek[] }>) {
-    const [preview, setPreview] = useState<string | null>(null);
+    const [preview, setPreview] = useState<File[]>([]);
     const [status, setStatus] = useState("terbit");
     const [kecamatan, setKecamatan] = useState<Kecamatan[] | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -68,15 +67,13 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
             sektor_id: "",
             proyek_id: "",
             lokasi: "",
-            realisasi: 0,
+            realisasi: "0",
             realisasi_date: new Date(),
             rincian: "",
         },
     });
 
-    const { handleSubmit, control } = form;
-
-    const fileRef = form.register("images");
+    const { handleSubmit, control, setValue } = form;
 
     const submit = handleSubmit((values) => {
         setIsSubmitted(true)
@@ -84,11 +81,12 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
         const formData = new FormData()
         formData.append('name', values.name)
         formData.append('sektor_id', values.sektor_id)
-        formData.append('rincian', values.rincian)
         formData.append('proyek_id', values.proyek_id)
+        formData.append('lokasi', values.lokasi)
+        formData.append('realisasi', values.realisasi)
         formData.append('realisasi_date', values.realisasi_date.toISOString().slice(0, 19).replace('T', ' '))
-        // formData.append('image', values.image)
-
+        formData.append('rincian', values.rincian)
+        formData.append('images', JSON.stringify(values.images))
 
         const promise = axios.post('/mitra/laporan', formData);
 
@@ -96,8 +94,8 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
             loading: "Loading...",
             success: () => {
                 setIsSubmitted(false)
-                window.location.replace('/admin/proyek')
-                return "Add Proyek Success"
+                window.location.replace('/mitra/dashboard')
+                return "Add Laporan Success"
             },
             error: (err) => {
                 console.log(err.response.data)
@@ -107,13 +105,23 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
         })
     });
 
-    const handlePreview = (e: SyntheticEvent) => {
-        const target = e.target as HTMLInputElement;
-        const file = target.files?.[0];
-        if (file) {
-            setPreview(URL.createObjectURL(file));
-        }
-    }
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newFiles = Array.from(e.target.files || []);
+        const updatedFiles = [...preview, ...newFiles];
+
+        setPreview(updatedFiles);
+        setValue("images", updatedFiles);
+    };
+
+    const handlePreview = (file: File) => {
+        return URL.createObjectURL(file);
+    };
+
+    const handleDeleteFile = (index: number) => {
+        const updatedFiles = preview.filter((_, i) => i !== index);
+        setPreview(updatedFiles);
+        setValue("images", updatedFiles);
+    };
 
     useEffect(() => {
         (
@@ -412,45 +420,54 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
                                                 *
                                             </span>
                                         </FormLabel>
-                                        <FormControl>
-                                            <label
-                                                htmlFor="dropzone-file"
-                                                className="flex flex-col items-center justify-center w-full border rounded-lg cursor-pointer bg-white hover:bg-gray-50 "
-                                            >
-                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                    {preview && (
-                                                        <img
-                                                            src={preview}
-                                                            alt="preview"
-                                                            className="w-60 mb-5"
-                                                        />
-                                                    )}
-                                                    <div className="rounded-full border-4 bg-[#FFDDDC] border-[#FFF1F0] text-primary p-2">
-                                                        <CloudUpload className="w-5 h-5" />
-                                                    </div>
-                                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold">
-                                                        <span className="text-primary">
-                                                            Klik untuk unggah
-                                                        </span>{" "}
-                                                        atau seret dan lepas
-                                                        kesini
-                                                    </p>
-                                                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                        PNG, JPG up to 10MB
-                                                    </p>
+                                        <div className="flex gap-5">
+                                            {preview.length > 0 && (
+                                                <div className="flex w-full overflow-auto gap-4 scroll-hidden">
+                                                    {preview.map((p, i) => (
+                                                        <div className="relative" key={i}>
+                                                            <img
+                                                                src={handlePreview(p)}
+                                                                alt="preview"
+                                                                className="min-w-40 max-w-40 rounded-xl"
+                                                            />
+                                                            <Button className="hover:bg-red-700 absolute top-2 right-2 rounded-xl" onClick={() => handleDeleteFile(i)} size={"icon"}>
+                                                                <Trash2 className="w-5 h-5" />
+                                                            </Button>
+                                                        </div>
+                                                    ))}
                                                 </div>
-                                                <Input
-                                                    {...fileRef}
-                                                    id="dropzone-file"
-                                                    type="file"
-                                                    accept="image/png, image/jpg"
-                                                    className="h-0 opacity-0"
-                                                    onChange={(e) =>
-                                                        handlePreview(e)
-                                                    }
-                                                />
-                                            </label>
-                                        </FormControl>
+                                            )}
+                                            <FormControl>
+                                                <label
+                                                    htmlFor="dropzone-file"
+                                                    className={`flex flex-col items-center justify-center ${preview.length > 0 ? "w-72" : "w-full"} border rounded-lg cursor-pointer bg-white hover:bg-gray-50`}
+                                                >
+                                                    <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                        <div className="rounded-full border-4 bg-[#FFDDDC] border-[#FFF1F0] text-primary p-2">
+                                                            <CloudUpload className="w-5 h-5" />
+                                                        </div>
+                                                        <p className="mb-2 text-sm text-gray-500 text-center dark:text-gray-400 font-semibold">
+                                                            <span className="text-primary">
+                                                                Klik untuk unggah
+                                                            </span>{" "}
+                                                            atau seret dan lepas
+                                                            kesini
+                                                        </p>
+                                                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                                                            PNG, JPG up to 10MB
+                                                        </p>
+                                                    </div>
+                                                    <Input
+                                                        id="dropzone-file"
+                                                        type="file"
+                                                        accept="image/png, image/jpg"
+                                                        className="h-0 opacity-0"
+                                                        multiple
+                                                        onChange={handleFileChange}
+                                                    />
+                                                </label>
+                                            </FormControl>
+                                        </div>
                                         <FormMessage />
                                     </FormItem>
                                 )}

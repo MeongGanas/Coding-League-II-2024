@@ -271,10 +271,11 @@ class DashboardMitraController extends Controller
             'proyeks' => Proyek::where('status', 'Terbit')->latest()->get()
         ]);
     }
+    public function CreateLaporanPost() {}
 
     public function LaporanDetail(Laporan $laporan)
     {
-        $laporan->load('sektor');
+        $laporan->load(['sektor', 'proyek']);
 
         return Inertia::render('Mitra/Laporan/Detail', [
             'laporan' => $laporan
