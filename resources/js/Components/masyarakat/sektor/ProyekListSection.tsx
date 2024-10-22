@@ -52,7 +52,7 @@ export default function ProyekListSection({ proyeks, sektors }: { proyeks: Proye
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    <SelectItem value="semua">Semua mitra</SelectItem>
+                                    <SelectItem value="semua">Semua sektor CSR</SelectItem>
                                     {sektors.map(sektor => (
                                         <SelectItem value={sektor.id.toString()} key={sektor.id}>{sektor.name}</SelectItem>
                                     ))}

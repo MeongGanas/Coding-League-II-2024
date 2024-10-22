@@ -8,7 +8,11 @@ import { Sektor } from "@/types";
 export default function SektorSection(
     { sektors }: { sektors: Sektor[] }
 ) {
-    const [active, setActive] = useState('Sosial')
+    const [active, setActive] = useState({
+        name: sektors[0].name,
+        id: sektors[0].id
+    })
+
 
     return (
         <div className="bg-[#101828] px-5 py-20 relative text-white">
@@ -24,14 +28,16 @@ export default function SektorSection(
                         <ul className="w-full">
                             {
                                 sektors.map((sektor, index) => (
-                                    <li key={index} className={`w-full max-w-[400px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl ${active === sektor.name ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`}
-                                        onClick={() => setActive(sektor.name)}
+                                    <li key={index} className={`w-full max-w-[400px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl ${active.name === sektor.name ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`}
+                                        onClick={() => {
+                                            setActive({ name: sektor.name, id: sektor.id });
+                                        }}
                                     >
                                         {sektor.name} <ChevronRight className="ml-[20px] w-5 h-5" />
                                     </li>
                                 ))
                             }
-                            <li className={`w-full max-w-[400px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl ${active === "apalah" ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`}>
+                            <li className={`w-full max-w-[400px] p-5 flex border-l-4 justify-between cursor-pointer hover:bg-white/10 hover:border-l-[#FF5D56] transition-colors items-center text-lg md:text-xl ${active.name === "apalah" ? "bg-white/10 border-l-[#FF5D56] font-bold" : "border-l-white/10"}`}>
                                 <Link href="/sektor" className="flex items-center justify-between w-full">
                                     Lainnya <ChevronRight className="w-5 h-5" />
                                 </Link>
@@ -41,14 +47,15 @@ export default function SektorSection(
                     <div className="space-y-6">
                         <div className="relative">
                             <div className="w-[300px] h-60 bg-primary-darker"></div>
-                            <img src={`/storage/${sektors.find(sektor => sektor.name === active)?.image || "sektor_image/example.jpg"
+                            <img src={`/storage/${sektors.find(sektor => sektor.name === active.name)?.image || "sektor_image/example.jpg"
                                 }`} className="absolute -top-20 h-72 left-10 object-cover aspect-video" alt="gambar" />
                         </div>
                         <p>{
-                            sektors.find(sektor => sektor.name === active)?.deskripsi
+                            sektors.find(sektor => sektor.name === active.name)?.deskripsi
                         }</p>
                         <div className="flex gap-5 ">
-                            <Button asChild className="hover:bg-red-700"><Link href="/">Lihat program tersedia</Link></Button>
+                            <Button asChild className="hover:bg-red-700"><Link href={`/sektor/${active.id}/detail`}>Lihat program tersedia</Link></Button>
+                            {/* TODO */}
                             <Button asChild variant={"outline"} className="bg-transparent hover:bg-primary hover:text-white hover:border-primary"><Link href="/">Lihat realisasi program</Link></Button>
                         </div>
                     </div>
