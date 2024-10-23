@@ -8,6 +8,7 @@ import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
 import { Badge } from "@/Components/ui/badge";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import formatPrice from "@/lib/formatPrice";
+import { toCapitalize } from "@/lib/toCapitalize";
 import { Laporan, PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 import axios from "axios";
@@ -28,11 +29,13 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
 
     const [isSubmitted, setIsSubmitted] = useState(false)
 
-    const onSubmit = (status: string) => {
+    const onSubmit = (status: string, message?: string) => {
         setIsSubmitted(true)
 
-        const promise = axios.post(`/admin/laporan/${laporan.id}?status=${status}`, {
-            _method: "PATCH"
+        const promise = axios.post(`/admin/laporan/${laporan.id}/updateStatus`, {
+            _method: "PATCH",
+            status,
+            message
         });
 
         toast.promise(promise, {
@@ -40,7 +43,7 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
             success: () => {
                 setIsSubmitted(false)
                 window.location.replace(`/admin/laporan/${laporan.id}`)
-                return "Terbitkan Proyek Success"
+                return "Status Laporan Diupdate"
             },
             error: (err) => {
                 console.log(err.response.data)
@@ -115,7 +118,7 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                         />
                         <DetailCard
                             title="Kecamatan"
-                            content={`Kec ${laporan.lokasi}`}
+                            content={`Kec. ${toCapitalize(laporan.lokasi)}`}
                         />
                     </div>
                     <div className="space-y-2">
@@ -124,12 +127,12 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                     </div>
                 </div>
                 {
-                    !['Ditolak', 'Diterima', 'Revisi'].includes(laporan.status) &&
+                    !['Ditolak', 'Diterima', 'Revisi', 'Draf'].includes(laporan.status) &&
                     <div className="bg-white rounded-md p-6 border">
                         <div className="block sm:flex space-y-3 sm:space-y-0 sm:w-fit sm:mx-auto gap-5">
-                            <DialogTolak onSubmit={onSubmit} />
-                            <DialogRevisi onSubmit={onSubmit} />
-                            <DialogTerima onSubmit={onSubmit} />
+                            <DialogTolak onSubmit={onSubmit} isSubmitted={isSubmitted} />
+                            <DialogRevisi onSubmit={onSubmit} isSubmitted={isSubmitted} />
+                            <DialogTerima onSubmit={onSubmit} isSubmitted={isSubmitted} />
                         </div>
                     </div>
                 }

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Laporan;
-use App\Http\Requests\StoreLaporanRequest;
-use App\Http\Requests\UpdateLaporanRequest;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class LaporanController extends Controller
@@ -66,6 +66,36 @@ class LaporanController extends Controller
         ]);
     }
 
+    public function store(Request $request)
+    {
+        $v = $request->validate([
+            'name' => 'required|string|min:2',
+            'realisasi' => 'required|string',
+            'proyek_id' => 'required|string|exists:proyeks,id',
+            'sektor_id' => 'required|string|exists:sektors,id',
+            'rincian' => 'required|string',
+            'status' => 'required|string',
+            'lokasi' => 'required|string',
+            'realisasi_date' => 'required|string'
+        ]);
+
+        $v['mitra_id'] = $request->user()->id;
+
+        $imagesFile = $request->file('images');
+
+        $imagesPath = [];
+
+        foreach ($imagesFile as $image) {
+            $imagesPath[] = $image->store('laporan_image', 'public');
+        }
+
+        $v['photos'] = $imagesPath;
+
+        Laporan::create($v);
+
+        return redirect()->intended(route('dashboardMitra'));
+    }
+
     /**
      * Display the specified resource.
      */
@@ -79,15 +109,42 @@ class LaporanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Laporan $laporan)
+    public function update(Request $request, Laporan $laporan)
     {
-        $status = request('status');
+        $v = $request->validate([
+            'name' => 'required|string|min:2',
+            'realisasi' => 'required|string',
+            'proyek_id' => 'required|string|exists:proyeks,id',
+            'sektor_id' => 'required|string|exists:sektors,id',
+            'rincian' => 'required|string',
+            'status' => 'required|string',
+            'lokasi' => 'required|string',
+            'realisasi_date' => 'required|string'
+        ]);
 
-        $laporan->update(['status' => $status]);
+        if ($request->hasFile('images')) {
+            $imagesFile = $request->file('images');
 
-        if (in_array($status, ['Diterima', 'Revisi'])) {
-            // alasan here
+            $imagesPath = [];
+
+            foreach ($imagesFile as $image) {
+                $imagesPath[] = $image->store('laporan_image', 'public');
+            }
+
+            $v['photos'] = $imagesPath;
         }
+
+        $laporan->update($v);
+
+        return redirect()->intended(route('dashboardMitra'));
+    }
+
+    public function updateStatus(Request $request, Laporan $laporan)
+    {
+        $laporan->update([
+            'status' => $request->status,
+            'pesan' => $request->message
+        ]);
 
         return redirect()->intended(route('laporan.index'));
     }
@@ -97,7 +154,13 @@ class LaporanController extends Controller
      */
     public function destroy(Laporan $laporan)
     {
-        //
+        foreach ($laporan->photos as $image) {
+            Storage::delete($image);
+        }
+
+        $laporan->delete();
+
+        return redirect()->intended(route('dashboardMitra'));
     }
 
     public function downloadCSV()
@@ -138,7 +201,7 @@ class LaporanController extends Controller
                 $laporan->realisasi,
                 $laporan->realisasi_date,
                 $laporan->rincian,
-                $laporan->tgl_kirim,
+                $laporan->created_at,
                 $laporan->status,
             ];
         }

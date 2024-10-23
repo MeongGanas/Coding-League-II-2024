@@ -21,8 +21,8 @@ return new class extends Migration
             $table->decimal('realisasi', 18, 2);
             $table->dateTime('realisasi_date');
             $table->text('rincian');
-            $table->dateTime('tgl_kirim');
-            $table->enum('status', ['Diterima', 'Revisi', 'Draf', 'Ditolak'])->default('Draf');
+            $table->text('pesan')->nullable();
+            $table->enum('status', ['Diterima', 'Revisi', 'Draf', 'Dikirim', 'Ditolak'])->default('Dikirim');
             $table->json('photos')->nullable();
             $table->timestamps();
         });

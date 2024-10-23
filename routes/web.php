@@ -49,6 +49,8 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
     });
 
     Route::resource("laporan", LaporanController::class);
+    Route::patch("laporan/{laporan}/updateStatus", [LaporanController::class, 'updateStatus']);
+
     Route::resource("proyek", ProyekController::class);
     Route::resource('sektor', SektorController::class);
     Route::resource("mitra", MitraController::class);
@@ -65,11 +67,15 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
 
 Route::prefix('mitra')->middleware(['auth', 'checkMitra'])->group(function () {
     Route::get("/dashboard", [DashboardMitraController::class, 'index'])->name('dashboardMitra');
-    Route::get("/laporan/create", [DashboardMitraController::class, 'CreateLaporan'])->name('laporan.create');
-    Route::post("/laporan", [DashboardMitraController::class, 'CreateLaporanPost'])->name('laporan.post');
-    Route::get("/laporan/{laporan}", [DashboardMitraController::class, 'LaporanDetail'])->name('laporan.detail');
 
-    Route::get('/profile', [DashboardMitraController::class, 'profile'])->name('profile');
+    Route::get("/laporan/create", [DashboardMitraController::class, 'CreateLaporan'])->name('laporan.mitra.create');
+    Route::post("/laporan", [LaporanController::class, 'store'])->name('laporan.store');
+    Route::get("/laporan/{laporan}/edit", [DashboardMitraController::class, 'LaporanEdit'])->name('laporan.mitra.edit');
+    Route::patch("/laporan/{laporan}", [LaporanController::class, 'update'])->name('laporan.mitra.update');
+    Route::get("/laporan/{laporan}", [DashboardMitraController::class, 'LaporanDetail'])->name('laporan.mitra.detail');
+    Route::delete("/laporan/{laporan}", [LaporanController::class, 'destroy'])->name('laporan.delete');
+
+    Route::get('/profile', [DashboardMitraController::class, 'profile'])->name('mitra.profile');
 });
 
 require __DIR__ . '/auth.php';

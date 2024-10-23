@@ -2,13 +2,15 @@ import DetailCard from "@/Components/admin/dashboard/DetailCard";
 import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
 import { Badge } from "@/Components/ui/badge";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/Components/ui/breadcrumb";
+import { Button } from "@/Components/ui/button";
 import LayoutMitra from "@/Layouts/LayoutMitra";
 import formatPrice from "@/lib/formatPrice";
+import { toCapitalize } from "@/lib/toCapitalize";
 import { Laporan, PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import { AlertCircle, BriefcaseBusiness, Home } from "lucide-react";
+import { BriefcaseBusiness, Home, Pencil, Trash2, TriangleAlert } from "lucide-react";
 import Markdown from "react-markdown";
 
 export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan: Laporan }>) {
@@ -49,13 +51,26 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                 <h1 className="text-3xl font-bold">Detail Laporan</h1>
                 <div className="bg-white rounded-md p-6 space-y-4 border">
                     {laporan.status === "Ditolak" && (
-                        <Alert variant="destructive">
-                            <AlertCircle className="h-4 w-4" />
-                            <AlertTitle>Laporan Ditolak!</AlertTitle>
-                            <AlertDescription>
-                                Your session has expired. Please log in again.
-                            </AlertDescription>
-                        </Alert>
+                        <div className="p-5 rounded-md border border-[#FEC84B] bg-[#FFFCF5] text-[#B54708] flex gap-3">
+                            <TriangleAlert className="h-5 w-5" />
+                            <div>
+                                <AlertTitle>Laporan ditolak!</AlertTitle>
+                                <AlertDescription>
+                                    {laporan.pesan}
+                                </AlertDescription>
+                            </div>
+                        </div>
+                    )}
+                    {laporan.status === "Revisi" && (
+                        <div className="p-5 rounded-md border border-[#FEC84B] bg-[#FFFCF5] text-[#B54708] flex gap-3">
+                            <TriangleAlert className="h-5 w-5" />
+                            <div>
+                                <AlertTitle>Laporan perlu direvisi!</AlertTitle>
+                                <AlertDescription>
+                                    {laporan.pesan}
+                                </AlertDescription>
+                            </div>
+                        </div>
                     )}
                     <div className="flex gap-2">
                         <Badge className="text-[#344054] bg-[#F2F4F7] hover:bg-[#F2F4F7]">
@@ -104,7 +119,7 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                         />
                         <DetailCard
                             title="Kecamatan"
-                            content={`Kec ${laporan.lokasi}`}
+                            content={`Kec. ${toCapitalize(laporan.lokasi)}`}
                         />
                         <DetailCard
                             title="Tanggal Realisasi"
@@ -116,6 +131,15 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
                         <Markdown className="space-y-4">{laporan.rincian}</Markdown>
                     </div>
                 </div>
+                {
+                    ['Ditolak', 'Revisi', 'Draf'].includes(laporan.status) &&
+                    <div className="bg-white rounded-md p-6 border">
+                        <div className="block sm:flex space-y-3 sm:space-y-0 sm:w-fit sm:mx-auto gap-5">
+                            <Button asChild variant={"outline"}><Link href={route('laporan.delete', laporan.id)} method="delete" className="flex items-center gap-2"><Trash2 className="w-5 h-5" />Hapus Laporan</Link></Button>
+                            <Button asChild className="hover:bg-red-700"><Link href={`/mitra/laporan/${laporan.id}/edit`} className="flex items-center gap-2"><Pencil className="w-5 h-5" />Revisi Laporan</Link></Button>
+                        </div>
+                    </div>
+                }
             </div>
         </LayoutMitra>
     );

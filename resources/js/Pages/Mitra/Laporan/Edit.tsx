@@ -32,7 +32,7 @@ import { CalendarIcon, CloudUpload, Home, Save, Send, Trash2 } from "lucide-reac
 import { Calendar } from "@/Components/ui/calendar";
 import { format } from "date-fns";
 import { Textarea } from "@/Components/ui/textarea";
-import { Kecamatan, PageProps, Proyek, Sektor } from "@/types";
+import { Kecamatan, Laporan, PageProps, Proyek, Sektor } from "@/types";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/Components/ui/breadcrumb";
@@ -49,12 +49,12 @@ const proyekSchema = z.object({
     lokasi: z.string(),
     rincian: z.string(),
     images: z.array(z.instanceof(File))
-        .min(1, "At least one file is required"),
+        .optional(),
 });
 
 type ProyekSchema = z.infer<typeof proyekSchema>;
 
-export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{ sektors: Sektor[], proyeks: Proyek[] }>) {
+export default function Edit({ auth: { user }, laporan, sektors, proyeks }: PageProps<{ sektors: Sektor[], proyeks: Proyek[], laporan: Laporan }>) {
     const [preview, setPreview] = useState<File[]>([]);
     const [status, setStatus] = useState("Dikirim");
     const [kecamatan, setKecamatan] = useState<Kecamatan[] | null>(null);
@@ -63,13 +63,13 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
     const form = useForm<ProyekSchema>({
         resolver: zodResolver(proyekSchema),
         defaultValues: {
-            name: "",
-            sektor_id: "",
-            proyek_id: "",
-            lokasi: "",
-            realisasi: "0",
-            realisasi_date: new Date(),
-            rincian: "",
+            name: laporan.name,
+            sektor_id: laporan.sektor_id.toString(),
+            proyek_id: laporan.proyek_id.toString(),
+            lokasi: laporan.lokasi,
+            realisasi: laporan.realisasi.toString(),
+            realisasi_date: new Date(laporan.realisasi_date),
+            rincian: laporan.rincian,
         },
     });
 
@@ -78,9 +78,8 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
     const submit = handleSubmit((values) => {
         setIsSubmitted(true)
 
-        console.log(values.images)
-
         const formData = new FormData()
+        formData.append('_method', 'PATCH')
         formData.append('name', values.name)
         formData.append('sektor_id', values.sektor_id)
         formData.append('proyek_id', values.proyek_id)
@@ -90,11 +89,13 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
         formData.append('rincian', values.rincian)
         formData.append('status', status)
 
-        values.images.forEach((image) => {
-            formData.append(`images[]`, image);
-        })
+        if (values.images) {
+            values.images.forEach((image) => {
+                formData.append(`images[]`, image);
+            })
+        }
 
-        const promise = axios.post('/mitra/laporan', formData, {
+        const promise = axios.post(`/mitra/laporan/${laporan.id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -105,7 +106,7 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
             success: (res) => {
                 setIsSubmitted(false)
                 window.location.replace('/mitra/dashboard')
-                return "Add Laporan Success"
+                return "Update Laporan Success"
             },
             error: (err) => {
                 console.log(err.response.data)
@@ -145,7 +146,7 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
 
     return (
         <LayoutMitra user={user}>
-            <Head title="Buat Laporan" />
+            <Head title="Edit Laporan" />
             <div className="container px-5 py-10">
                 <div className="mb-10">
                     <Breadcrumb>
@@ -171,13 +172,13 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
                             <BreadcrumbSeparator />
                             <BreadcrumbItem>
                                 <BreadcrumbPage className="bg-primary-bg capitalize text-primary py-1 px-2 rounded-md font-bold">
-                                    Buat Laporan
+                                    Edit Laporan
                                 </BreadcrumbPage>
                             </BreadcrumbItem>
                         </BreadcrumbList>
                     </Breadcrumb>
                 </div>
-                <h1 className="font-bold text-2xl mb-5">Buat Laporan Baru</h1>
+                <h1 className="font-bold text-2xl mb-5">Edit Laporan</h1>
                 <Form {...form}>
                     <form onSubmit={submit} className="space-y-5">
                         <div className="bg-white rounded-md p-6 space-y-5 border">
@@ -419,16 +420,27 @@ export default function Create({ auth: { user }, sektors, proyeks }: PageProps<{
                                     </FormItem>
                                 )}
                             />
+                            <div className="space-y-4">
+                                <h1 className="font-bold">Current Photos</h1>
+                                <div className="flex w-full overflow-auto gap-4 scroll-hidden">
+                                    {laporan.photos.map((photo, i) => (
+                                        <div className="relative" key={i}>
+                                            <img
+                                                src={`/storage/${photo}`}
+                                                alt="preview"
+                                                className="min-w-40 max-w-40 rounded-xl"
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                             <FormField
                                 control={form.control}
                                 name="images"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="font-bold text-base">
-                                            Foto Laporan Kegiatan{" "}
-                                            <span className="text-red-800">
-                                                *
-                                            </span>
+                                            Foto Laporan Kegiatan
                                         </FormLabel>
                                         <div className="flex gap-5">
                                             {preview.length > 0 && (

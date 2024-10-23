@@ -7,6 +7,7 @@ use App\Models\Mitra;
 use App\Models\Proyek;
 use App\Models\Sektor;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use ZipArchive;
@@ -18,7 +19,7 @@ class DashboardMitraController extends Controller
         $proyek = Proyek::where('status', 'Terbit');
         $laporan = Laporan::where('status', 'Diterima')->where('mitra_id', Auth::user()->id);
 
-        $query = Laporan::where('status', 'Diterima')->where('mitra_id', Auth::user()->id);
+        $query = Laporan::where('mitra_id', Auth::user()->id);
         if (request("search")) {
             $searchTerm = request("search");
             $query->where('name', 'like', '%' . $searchTerm . '%');
@@ -40,7 +41,7 @@ class DashboardMitraController extends Controller
             'filters' => [
                 'tahun' => $this->getPossibleYear(clone $proyek, clone $laporan)->values(),
             ],
-            'laporans' => $query->paginate(5)
+            'laporans' => $query->latest()->paginate(5)
         ]);
     }
 
@@ -271,7 +272,6 @@ class DashboardMitraController extends Controller
             'proyeks' => Proyek::where('status', 'Terbit')->latest()->get()
         ]);
     }
-    public function CreateLaporanPost() {}
 
     public function LaporanDetail(Laporan $laporan)
     {
@@ -279,6 +279,15 @@ class DashboardMitraController extends Controller
 
         return Inertia::render('Mitra/Laporan/Detail', [
             'laporan' => $laporan
+        ]);
+    }
+
+    public function LaporanEdit(Laporan $laporan)
+    {
+        return Inertia::render('Mitra/Laporan/Edit', [
+            'laporan' => $laporan,
+            'sektors' => Sektor::latest()->get(),
+            'proyeks' => Proyek::where('status', 'Terbit')->latest()->get()
         ]);
     }
 

@@ -6,6 +6,7 @@ import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
 import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
 import formatPrice from "@/lib/formatPrice";
+import { toCapitalize } from "@/lib/toCapitalize";
 import { Laporan, PageProps } from "@/types";
 import { Link } from "@inertiajs/react";
 import { format } from "date-fns";
@@ -44,7 +45,7 @@ export default function Detail({ auth: { user }, laporan, laporanLainnya }: Page
                         />
                         <DetailCard
                             title="Kecamatan"
-                            content={`Kec ${laporan.lokasi}`}
+                            content={`Kec. ${toCapitalize(laporan.lokasi)}`}
                         />
                     </div>
                     <div className="space-y-2">

@@ -42,7 +42,6 @@ class LaporanFactory extends Factory
             ]),
             'realisasi' => $this->faker->randomFloat(2, 0, 1000000000),
             'realisasi_date' => $pastYear,
-            'tgl_kirim' => $this->faker->dateTimeBetween($pastYear, '+30 days'),
             'status' => $this->faker->randomElement(['Diterima', 'Revisi', 'Draf']),
             'rincian' => $this->faker->paragraph(4),
             'photos' => [

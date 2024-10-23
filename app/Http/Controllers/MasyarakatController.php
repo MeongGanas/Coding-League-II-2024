@@ -23,7 +23,7 @@ class MasyarakatController extends Controller
         return Inertia::render('Masyarakat/Home', [
             'kegiatans' => Kegiatan::where('status', 'Terbit')->latest()->take(4)->get(),
             'mitras' => Mitra::where('status', 'Aktif')->orderBy('tgl_daftar', 'desc')->take(10)->select('name', 'image', 'tgl_daftar')->get(),
-            'laporans' => Laporan::with('mitra')->where('status', 'Diterima')->orderBy('tgl_kirim')->take(4)->get(),
+            'laporans' => Laporan::with('mitra')->where('status', 'Diterima')->orderBy('created_at')->take(4)->get(),
             'sektors' => Sektor::latest()->take(6)->get(),
             'counts' => [
                 'countProyek' => $proyek->count(),
@@ -177,7 +177,7 @@ class MasyarakatController extends Controller
             'realisasi',
             'realisasi_date',
             'rincian',
-            'tgl_kirim',
+            'created_at',
             'status'
         ]);
 
@@ -270,9 +270,9 @@ class MasyarakatController extends Controller
         $query = Laporan::query()->where('status', 'Diterima');
 
         if (request("sortall") == "terlama") {
-            $query->orderBy('tgl_kirim', 'asc');
+            $query->orderBy('created_at', 'asc');
         } else {
-            $query->orderBy('tgl_kirim', 'desc');
+            $query->orderBy('created_at', 'desc');
         }
 
         if (request("mitra")) {
@@ -292,8 +292,7 @@ class MasyarakatController extends Controller
     }
     public function laporanDetail(Laporan $laporan)
     {
-        $laporan->load('mitra');
-        $laporan->load('sektor');
+        $laporan->load(['mitra', 'sektor', 'proyek']);
 
         return Inertia::render('Masyarakat/Laporan/Detail', [
             'laporan' => $laporan,

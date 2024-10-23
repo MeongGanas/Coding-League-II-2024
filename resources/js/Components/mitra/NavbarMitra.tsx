@@ -19,7 +19,7 @@ export default function NavbarMitra({ user }: { user: UserType }) {
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background">
             <div className="container flex py-4 justify-between items-center gap-4 px-4 md:px-6">
-                <Link href="/admin/dashboard">
+                <Link href="/mitra/dashboard">
                     <img src="/images/nav_logo.png" alt="logo" width={150} />
                 </Link>
                 <div className="flex items-center">

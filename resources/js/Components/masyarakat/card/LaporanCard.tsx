@@ -12,7 +12,7 @@ export default function LaporanCard({ laporan, withMitraImage }: { laporan: Lapo
                 <div className="absolute py-3 px-5 top-5 left-5 bg-primary text-white">
                     <h4 className="uppercase">
                         {
-                            format(new Date(laporan.tgl_kirim), 'dd MMMM, y', { locale: id })
+                            format(new Date(laporan.created_at), 'dd MMMM, y', { locale: id })
                         }
                     </h4>
                 </div>

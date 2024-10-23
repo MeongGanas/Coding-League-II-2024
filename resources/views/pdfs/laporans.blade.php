@@ -42,18 +42,18 @@
 <body>
     <h1>Laporan</h1>
     <p>{{ date('Y-m-d H:i:s') }}</p>
-    @foreach($laporans as $laporan)
-    <div class="card">
-        <h3>{{ $laporan->name }}</h3>
-        <p><span class="label">ID:</span> {{ $laporan->id }}</p>
-        <p><span class="label">Rincian:</span> {{ $laporan->rincian }}</p>
-        <p><span class="label">Mitra:</span> {{ $laporan->mitra->perusahaan }}</p>
-        <p><span class="label">Lokasi:</span> {{ $laporan->lokasi }}</p>
-        <p><span class="label">Realisasi:</span> {{ $laporan->realisasi }}</p>
-        <p><span class="label">Tanggal Realisasi:</span> {{ $laporan->realisasi_date }}</p>
-        <p><span class="label">Tanggal Kirim:</span> {{ $laporan->tgl_kirim }}</p>
-        <p><span class="label">Status:</span> {{ $laporan->status }}</p>
-    </div>
+    @foreach ($laporans as $laporan)
+        <div class="card">
+            <h3>{{ $laporan->name }}</h3>
+            <p><span class="label">ID:</span> {{ $laporan->id }}</p>
+            <p><span class="label">Rincian:</span> {{ $laporan->rincian }}</p>
+            <p><span class="label">Mitra:</span> {{ $laporan->mitra->perusahaan }}</p>
+            <p><span class="label">Lokasi:</span> {{ $laporan->lokasi }}</p>
+            <p><span class="label">Realisasi:</span> {{ $laporan->realisasi }}</p>
+            <p><span class="label">Tanggal Realisasi:</span> {{ $laporan->realisasi_date }}</p>
+            <p><span class="label">Tanggal Kirim:</span> {{ $laporan->created_at }}</p>
+            <p><span class="label">Status:</span> {{ $laporan->status }}</p>
+        </div>
     @endforeach
 </body>
 

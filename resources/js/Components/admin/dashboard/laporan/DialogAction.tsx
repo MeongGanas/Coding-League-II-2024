@@ -13,8 +13,11 @@ import { Button } from "@/Components/ui/button";
 import { Label } from "@/Components/ui/label";
 import { Textarea } from "@/Components/ui/textarea";
 import { Check, Info, Pencil, X } from "lucide-react";
+import { useState } from "react";
 
-export function DialogTolak({onSubmit}: {onSubmit: (status: string) => void}) {
+export function DialogTolak({ onSubmit, isSubmitted }: { onSubmit: (status: string, message: string) => void, isSubmitted: boolean }) {
+    const [message, setMessage] = useState("")
+
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -50,14 +53,16 @@ export function DialogTolak({onSubmit}: {onSubmit: (status: string) => void}) {
                                 placeholder="Masukan Alasan"
                                 className="text-base"
                                 id="alasan"
+                                onChange={(e) => setMessage(e.target.value)}
                             ></Textarea>
                         </div>
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="md:grid md:grid-cols-2">
-                    <AlertDialogCancel>Batal</AlertDialogCancel>
+                    <AlertDialogCancel disabled={isSubmitted}>Batal</AlertDialogCancel>
                     <AlertDialogAction className="hover:bg-red-700"
-                        onClick={() => onSubmit('Ditolak')}
+                        onClick={() => onSubmit('Ditolak', message)}
+                        disabled={isSubmitted}
                     >
                         Tolak
                     </AlertDialogAction>
@@ -67,7 +72,9 @@ export function DialogTolak({onSubmit}: {onSubmit: (status: string) => void}) {
     );
 }
 
-export function DialogRevisi({onSubmit}: {onSubmit: (status: string) => void}) {
+export function DialogRevisi({ onSubmit, isSubmitted }: { onSubmit: (status: string, message: string) => void, isSubmitted: boolean }) {
+    const [message, setMessage] = useState("")
+
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -103,14 +110,16 @@ export function DialogRevisi({onSubmit}: {onSubmit: (status: string) => void}) {
                                 placeholder="Masukan Alasan Revisi"
                                 className="text-base"
                                 id="alasan"
+                                onChange={(e) => setMessage(e.target.value)}
                             ></Textarea>
                         </div>
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="md:grid md:grid-cols-2">
-                    <AlertDialogCancel>Batal</AlertDialogCancel>
+                    <AlertDialogCancel disabled={isSubmitted}>Batal</AlertDialogCancel>
                     <AlertDialogAction className="hover:bg-red-700"
-                        onClick={() => onSubmit('Revisi')}
+                        onClick={() => onSubmit('Revisi', message)}
+                        disabled={isSubmitted}
                     >
                         Kirim
                     </AlertDialogAction>
@@ -120,7 +129,7 @@ export function DialogRevisi({onSubmit}: {onSubmit: (status: string) => void}) {
     );
 }
 
-export function DialogTerima({onSubmit}: {onSubmit: (status: string) => void}) {
+export function DialogTerima({ onSubmit, isSubmitted }: { onSubmit: (status: string, message?: string) => void, isSubmitted: boolean }) {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -145,9 +154,10 @@ export function DialogTerima({onSubmit}: {onSubmit: (status: string) => void}) {
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter className="md:grid md:grid-cols-2">
-                    <AlertDialogCancel>Batal</AlertDialogCancel>
+                    <AlertDialogCancel disabled={isSubmitted}>Batal</AlertDialogCancel>
                     <AlertDialogAction className="hover:bg-red-700"
                         onClick={() => onSubmit('Diterima')}
+                        disabled={isSubmitted}
                     >
                         Terima
                     </AlertDialogAction>

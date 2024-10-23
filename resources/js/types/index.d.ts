@@ -123,17 +123,20 @@ export interface MitrasProps {
 
 export interface Laporan {
     id: number;
+    sektor_id: number;
+    proyek_id: number;
     name: string;
     mitra: Mitra;
     lokasi: string;
     realisasi_date: string;
-    tgl_kirim: string;
+    created_at: string;
     status: string;
     realisasi: number;
     photos: string[];
     rincian: string;
     created_at: string;
     sektor: Sektor;
+    pesan: string;
     proyek: Proyek;
 }
 

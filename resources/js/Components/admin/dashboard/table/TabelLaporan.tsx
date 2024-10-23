@@ -18,6 +18,7 @@ import { LaporanProps } from "@/types";
 
 const statusColor: { [key: string]: string } = {
     "Diterima": "text-success bg-success-bg hover:bg-success-bg",
+    "Dikirim": "text-success bg-success-bg hover:bg-success-bg",
     "Revisi": "text-warning bg-warning-bg hover:bg-warning-bg",
     "Draf": "text-netral bg-netral-bg hover:bg-netral-bg",
     "Ditolak": "text-error bg-error-bg hover:bg-error-bg",
@@ -134,7 +135,7 @@ export default function DataTableLaporan({ laporans }: { laporans: LaporanProps 
                                 <TableCell className="text-base">
                                     {
                                         format(
-                                            new Date(laporan.tgl_kirim),
+                                            new Date(laporan.created_at),
                                             "d MMMM yyyy",
                                             { locale: id }
                                         )

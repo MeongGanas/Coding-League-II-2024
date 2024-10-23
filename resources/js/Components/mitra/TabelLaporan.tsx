@@ -14,9 +14,11 @@ import formatPrice from "@/lib/formatPrice";
 import { id } from 'date-fns/locale';
 import { format } from "date-fns";
 import { LaporanProps } from "@/types";
+import { toCapitalize } from "@/lib/toCapitalize";
 
 const statusColor: { [key: string]: string } = {
     "Diterima": "text-success bg-success-bg hover:bg-success-bg",
+    "Dikirim": "text-success bg-success-bg hover:bg-success-bg",
     "Revisi": "text-warning bg-warning-bg hover:bg-warning-bg",
     "Draf": "text-netral bg-netral-bg hover:bg-netral-bg",
     "Ditolak": "text-error bg-error-bg hover:bg-error-bg",
@@ -96,7 +98,7 @@ export default function DataTableLaporanMitra({ laporans }: { laporans: LaporanP
                                     {laporan.name}
                                 </TableCell>
                                 <TableCell className="text-base">
-                                    {laporan.lokasi}
+                                    Kec. {toCapitalize(laporan.lokasi)}
                                 </TableCell>
                                 <TableCell className="text-base text-nowrap">
                                     <span
@@ -126,7 +128,7 @@ export default function DataTableLaporanMitra({ laporans }: { laporans: LaporanP
                                 <TableCell className="text-base">
                                     {
                                         format(
-                                            new Date(laporan.tgl_kirim),
+                                            new Date(laporan.created_at),
                                             "d MMMM yyyy",
                                             { locale: id }
                                         )

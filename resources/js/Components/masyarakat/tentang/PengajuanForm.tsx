@@ -38,7 +38,6 @@ const pengajuanSchema = z.object({
 type PengajuanSchema = z.infer<typeof pengajuanSchema>;
 
 export default function PengajuanForm() {
-    const [preview, setPreview] = useState<string | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
     const form = useForm<PengajuanSchema>({
@@ -76,14 +75,6 @@ export default function PengajuanForm() {
             }
         })
     });
-
-    const handlePreview = (e: SyntheticEvent) => {
-        const target = e.target as HTMLInputElement;
-        const file = target.files?.[0];
-        if (file) {
-            setPreview(URL.createObjectURL(file));
-        }
-    };
 
     return (
         <div className="container space-y-10 px-5 py-10">
