@@ -65,9 +65,8 @@ class MitraController extends Controller
             'perusahaan' => 'required|string|min:3',
             'no_telepon' => 'string|min:3',
             'alamat' => 'string|min:3',
-            'email' => 'required|string|min:3',
+            'email' => 'required|string|min:3|unique:mitras',
             'deskripsi' => 'string|min:5',
-            'password' => 'required|string|min:6'
         ]);
 
         $v['status'] = 'Aktif';
@@ -119,10 +118,6 @@ class MitraController extends Controller
             'perusahaan' => 'required|string|min:3',
             'deskripsi' => 'string|min:5',
         ]);
-
-        if ($request->password) {
-            $v['password'] = $request->password;
-        }
 
         if ($request->file('image')) {
             Storage::delete($mitra->image);

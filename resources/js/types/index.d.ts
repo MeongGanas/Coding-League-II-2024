@@ -5,6 +5,7 @@ export interface User {
     role: string;
     image: string;
     deskripsi: string;
+    mitra: Mitra;
 }
 
 export interface Sektor {

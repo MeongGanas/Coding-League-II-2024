@@ -75,6 +75,7 @@ class MitraSeeder extends Seeder
 
         foreach ($name as $key => $n) {
             Mitra::create([
+                'user_id' => $key + 2,
                 'image' => $image[$key],
                 'name' => $n,
                 'email' => $email[$key],

@@ -11,6 +11,15 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('mitra', function ($query) {
+            $query->with(['mitra']);
+        });
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -39,5 +48,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function mitra()
+    {
+        return $this->hasOne(Mitra::class);
     }
 }
