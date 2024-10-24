@@ -18,14 +18,14 @@ import { format } from "date-fns";
 import { id } from 'date-fns/locale';
 
 const tableHeader = [
-    {title: "Judul", sortable: true, sortKey: "name", className: "min-w-[300px]"},
-    {title: "Lokasi", sortable: true, sortKey: "kecamatan"},
-    {title: "Jumlah Mitra", sortable: true, sortKey: "mitra"},
-    {title: "tgl mulai", sortable: true, sortKey: "tgl_awal"},
-    {title: "Tgl Akhir", sortable: true, sortKey: "tgl_akhir"},
-    {title: "Tgl Diterbitkan", sortable: true, sortKey: "tgl_terbit"},
-    {title: "Status", sortable: true, sortKey: "status"},
-    {title: "Aksi", className: "text-center"},
+    { title: "Judul", sortable: true, sortKey: "name", className: "min-w-[300px]" },
+    { title: "Lokasi", sortable: true, sortKey: "kecamatan" },
+    { title: "Jumlah Mitra", sortable: true, sortKey: "mitra" },
+    { title: "tgl mulai", sortable: true, sortKey: "tgl_awal" },
+    { title: "Tgl Akhir", sortable: true, sortKey: "tgl_akhir" },
+    { title: "Tgl Diterbitkan", sortable: true, sortKey: "tgl_terbit" },
+    { title: "Status", sortable: true, sortKey: "status" },
+    { title: "Aksi", className: "text-center" },
 ]
 
 export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
@@ -43,7 +43,7 @@ export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
             params.delete("page");
             params.delete("with");
         } else if (currentSort === sort && order === "desc") {
-            params.set("order", "asc" );
+            params.set("order", "asc");
         } else {
             params.set("sort", sort);
             params.set("order", "desc");
@@ -62,24 +62,24 @@ export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
                     <TableHeader>
                         <TableRow className="tablerow">
                             {
-                               tableHeader && tableHeader.map(header => (
+                                tableHeader && tableHeader.map(header => (
                                     <TableHead
-                                    key={header.title}
-                                     onClick={
-                                        () => {
-                                            if (header.sortable) {
-                                                handleSort(header.sortKey);
+                                        key={header.title}
+                                        onClick={
+                                            () => {
+                                                if (header.sortable) {
+                                                    handleSort(header.sortKey);
+                                                }
                                             }
-                                        }
-                                    } className={`sortable uppercase font-bold text-black text-nowrap ${currentSort === header.sortKey ? '!bg-gray-200' : ''} ${header.className || ''}`}>
+                                        } className={`sortable uppercase font-bold text-black text-nowrap ${currentSort === header.sortKey ? '!bg-gray-200' : ''} ${header.className || ''}`}>
                                         {header.title} {
                                             header.sortable ?
                                                 currentSort === header.sortKey
-                                                ? order === "asc"
-                                                    ? <ArrowUp className="w-4 h-4 inline-block" />
+                                                    ? order === "asc"
+                                                        ? <ArrowUp className="w-4 h-4 inline-block" />
+                                                        : <ArrowDown className="w-4 h-4 inline-block" />
                                                     : <ArrowDown className="w-4 h-4 inline-block" />
-                                                : <ArrowDown className="w-4 h-4 inline-block" />
-                                            : null
+                                                : null
                                         }
                                     </TableHead>
                                 ))
@@ -96,7 +96,7 @@ export default function DataTableProyek({ proyeks }: { proyeks: ProyekProps }) {
                                     {proyek.kecamatan}
                                 </TableCell>
                                 <TableCell className="text-base">
-                                    {proyek.status === "Terbit" ? 10 : "-"}
+                                    {proyek.status === "Terbit" ? proyek.partisipasi.length : "-"}
                                 </TableCell>
                                 <TableCell className="text-base">
                                     {format(proyek.tgl_awal, 'dd MMMM y', { locale: id })}

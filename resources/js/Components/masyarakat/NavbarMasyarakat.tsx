@@ -101,7 +101,7 @@ export default function NavbarMasyarakat({ user }: { user: UserType }) {
                                 </DropdownMenu>
                             ) : (
                                 <Button asChild className="hover:bg-red-700">
-                                    <Link href="/register">Pengajuan</Link>
+                                    <Link href="/tentang/pengajuan">Pengajuan</Link>
                                 </Button>
                             )}
                         </div>

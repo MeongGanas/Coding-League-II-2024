@@ -15,6 +15,7 @@ import formatPrice from "@/lib/formatPrice";
 import { id } from 'date-fns/locale';
 import { format } from "date-fns";
 import { LaporanProps } from "@/types";
+import { toCapitalize } from "@/lib/toCapitalize";
 
 const statusColor: { [key: string]: string } = {
     "Diterima": "text-success bg-success-bg hover:bg-success-bg",
@@ -105,7 +106,7 @@ export default function DataTableLaporan({ laporans }: { laporans: LaporanProps 
                                     {laporan.mitra.name}
                                 </TableCell>
                                 <TableCell className="text-base">
-                                    {laporan.lokasi}
+                                    {toCapitalize(laporan.lokasi)}
                                 </TableCell>
                                 <TableCell className="text-base text-nowrap">
                                     <span
