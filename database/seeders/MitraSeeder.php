@@ -3,9 +3,12 @@
 namespace Database\Seeders;
 
 use App\Models\Mitra;
+use App\Models\User;
+use App\Notifications\WelcomeNotification;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as faker;
+use Illuminate\Support\Facades\Notification;
 
 class MitraSeeder extends Seeder
 {
@@ -74,8 +77,11 @@ class MitraSeeder extends Seeder
         }
 
         foreach ($name as $key => $n) {
+            $user = User::factory()->create();
+            Notification::send($user, new WelcomeNotification(['database'], $user));
+
             Mitra::create([
-                'user_id' => $key + 2,
+                'user_id' => $user->id,
                 'image' => $image[$key],
                 'name' => $n,
                 'email' => $email[$key],

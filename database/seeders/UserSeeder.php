@@ -9,6 +9,7 @@ use App\Notifications\TestNotification;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\UserCreatedNotification;
+use App\Notifications\WelcomeNotification;
 
 class UserSeeder extends Seeder
 {
@@ -33,7 +34,7 @@ class UserSeeder extends Seeder
 
         foreach ($users as $userData) {
             $user = User::create($userData);
-            Notification::send($user, new TestNotification(['database']));
+            Notification::send($user, new WelcomeNotification(['database', 'mail'], $user));
         }
     }
 }

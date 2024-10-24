@@ -28,7 +28,6 @@ class DatabaseSeeder extends Seeder
             SektorSeeder::class,
         ]);
 
-        User::factory(10)->create();
         // Sektor::factory(15)->create();
         Proyek::factory(15)->create();
         // Mitra::factory(15)->create();
