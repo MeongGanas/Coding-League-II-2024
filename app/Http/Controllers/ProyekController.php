@@ -15,7 +15,7 @@ class ProyekController extends Controller
      */
     public function index()
     {
-        $query = Proyek::with('sektor')->latest();
+        $query = Proyek::with(['sektor', 'partisipasi'])->latest();
 
         if (request("search")) {
             $searchTerm = request("search");

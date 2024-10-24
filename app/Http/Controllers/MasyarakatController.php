@@ -219,7 +219,10 @@ class MasyarakatController extends Controller
     }
     public function pengajuan()
     {
-        return Inertia::render('Masyarakat/Tentang/Pengajuan');
+        return Inertia::render('Masyarakat/Tentang/Pengajuan', [
+            'proyeks' => Proyek::where('status', 'Terbit')->get(),
+            'mitras' => Mitra::where('status', 'Aktif')->get()
+        ]);
     }
 
     public function sektor()
