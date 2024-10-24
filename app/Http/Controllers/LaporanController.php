@@ -6,6 +6,7 @@ use App\Models\Laporan;
 use App\Models\Partisipasi;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -62,6 +63,7 @@ class LaporanController extends Controller
         $items = $query->paginate($paginate);
 
         return Inertia::render('Admin/Laporan/Index', [
+            'notifications' => Auth::user()->notifications->take(5),
             'laporans' => $items,
             'possibleYear' => $possibleYear
         ]);

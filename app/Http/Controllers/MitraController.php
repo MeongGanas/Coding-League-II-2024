@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Mitra;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -43,6 +44,7 @@ class MitraController extends Controller
         $mitras = $query->paginate($paginate);
 
         return Inertia::render('Admin/Mitra/Index', [
+            'notifications' => Auth::user()->notifications->take(5),
             'mitras' => $mitras,
         ]);
     }

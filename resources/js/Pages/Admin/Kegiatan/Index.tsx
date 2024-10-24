@@ -8,9 +8,9 @@ import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
-export default function Index({ auth: { user }, kegiatans }: PageProps<{ kegiatans: any }>) {
+export default function Index({ auth: { user }, kegiatans, notifications }: PageProps<{ kegiatans: any, notifications: any }>) {
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Kegiatan" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">

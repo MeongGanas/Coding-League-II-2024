@@ -8,28 +8,47 @@ import {
 } from "../ui/popover";
 import { Button } from "../ui/button";
 import { Link } from "@inertiajs/react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 
 
-export default function Notifikasi({ notifications }: { notifications: any }) {
-    const markAsRead = () => {
-        console.log("Mark as read");
-    }
+export default function Notifikasi({ notifications }: { notifications: any[] }) {
+
+    // const [notifications, setNotifications] = useState<any[]>([]);
+
+    // const markAsRead = async () => {
+    //     const unreadTimeout = setTimeout(() => {
+    //         clearTimeout(unreadTimeout);
+    //     }, 5000);
+    // }
+
+    // const hydrateNotifications = async () => {
+    //     const { data } = await axios.get('/notifications')
+    //     setNotifications(data.notifications);
+    //     return data.notifications;
+    // }
+
+    // useEffect(() => {
+    //     hydrateNotifications();
+    // }, []);
+
 
     return (
         <Popover>
-            <PopoverTrigger asChild>
-                <Button
-                    variant="ghost"
-                    size="icon"
-                    className="rounded-full relative"
-                    onClick={markAsRead}
-                >
-                    <Bell className="h-6 w-6" />
-                    <Badge className="w-6 -right-2 absolute top-0 bg-[#98100A] flex hover:bg-red-700 items-center justify-center">
-                        {notifications.filter((notification: any) => !notification.read_at).length}
-                    </Badge>
-                </Button>
+            <PopoverTrigger asChild >
+                <div>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="rounded-full relative"
+                    >
+                        <Bell className="h-6 w-6" />
+                        <Badge className="w-6 -right-2 absolute top-0 bg-[#98100A] flex hover:bg-red-700 items-center justify-center">
+                            {notifications.filter((notification: any) => !notification.read_at).length}
+                        </Badge>
+                    </Button>
+                </div>
             </PopoverTrigger>
             <PopoverContent className="w-[350px] space-y-4 md:w-[500px] mr-5 max-h-[89vh] overflow-y-scroll">
                 <div className="flex justify-between items-center">
@@ -61,7 +80,6 @@ const statusClass: any = {
 }
 
 function ItemNotifikasi({ notification }: { notification: any }) {
-    console.log(notification);
     return (
         <>
             {

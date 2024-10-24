@@ -10,7 +10,6 @@ export default function Dashboard({ auth: { user }, counts, realisasi, filters, 
     return (
         <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Dashboard Admin" />
-
             <WelcomeAdmin />
 
             <div className="container py-10 px-5">

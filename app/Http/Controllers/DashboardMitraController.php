@@ -17,9 +17,9 @@ class DashboardMitraController extends Controller
 {
     public function index()
     {
+
         $proyek = Proyek::where('status', 'Terbit');
         $laporan = Laporan::where('status', 'Diterima')->where('mitra_id', Auth::user()->mitra->id);
-
         $query = Laporan::where('mitra_id', Auth::user()->mitra->id);
         if (request("search")) {
             $searchTerm = request("search");
@@ -29,6 +29,7 @@ class DashboardMitraController extends Controller
         $this->applyFilters($proyek, $laporan);
 
         return Inertia::render('Mitra/Dashboard', [
+            'notifications' => Auth::user()->notifications->take(5),
             'counts' => [
                 'countProyek' => $proyek->count(),
                 'countProyekRealized' => $laporan->count(),
@@ -132,6 +133,7 @@ class DashboardMitraController extends Controller
         ];
 
         $pdf = Pdf::loadView('pdfs.dashboard', [
+            'notifications' => Auth::user()->notifications->take(5),
             'filters' => [
                 'tahun' => request("tahun"),
                 'kuartal' => request("kuartal") ? $kuartalOptions[request("kuartal")] : null,

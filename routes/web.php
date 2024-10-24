@@ -6,8 +6,10 @@ use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\MasyarakatController;
 use App\Http\Controllers\MitraController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\SektorController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -58,11 +60,19 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
     Route::resource("kegiatan", KegiatanController::class);
 
     Route::get("profile", function () {
-        return Inertia::render('Admin/Profile/Index');
+        return Inertia::render('Admin/Profile/Index', [
+            'notifications' => Auth::user()->notifications->take(5),
+        ]);
     })->name('adminProfile');
     Route::get("profile/{id}/edit", function () {
-        return Inertia::render('Admin/Profile/Edit');
+        return Inertia::render('Admin/Profile/Edit', [
+            'notifications' => Auth::user()->notifications->take(5),
+        ]);
     })->name('editProfile');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource("notifications", NotificationController::class);
 });
 
 Route::prefix('mitra')->middleware(['auth', 'checkMitra'])->group(function () {

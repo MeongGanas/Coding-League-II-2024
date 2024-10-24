@@ -6,6 +6,7 @@ use App\Models\Proyek;
 use App\Models\Sektor;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ProyekController extends Controller
@@ -55,6 +56,8 @@ class ProyekController extends Controller
         $proyeks = $query->paginate($paginate);
 
         return Inertia::render('Admin/Proyek/Index', [
+            'notifications' => Auth::user()->notifications->take(5),
+
             'proyeks' => $proyeks,
             'sektors' => Sektor::latest()->get(),
             'possibleYear' => $possibleYear

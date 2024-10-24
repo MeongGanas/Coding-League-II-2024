@@ -15,7 +15,7 @@ import { User as UserType } from "@/types";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
 import Notifikasi from "../all/Notifikasi";
 
-export default function NavbarMitra({ user }: { user: UserType }) {
+export default function NavbarMitra({ user, notifications }: { user: UserType, notifications: any }) {
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background">
             <div className="container flex py-4 justify-between items-center gap-4 px-4 md:px-6">
@@ -65,7 +65,7 @@ export default function NavbarMitra({ user }: { user: UserType }) {
                                     <LogoutButton />
                                 </DropdownMenuContent>
                             </DropdownMenu>
-                            <Notifikasi />
+                            <Notifikasi notifications={notifications} />
                         </div>
                     </div>
                 </div>

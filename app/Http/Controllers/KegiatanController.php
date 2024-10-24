@@ -6,6 +6,7 @@ use App\Models\Kegiatan;
 use App\Http\Requests\StoreKegiatanRequest;
 use App\Http\Requests\UpdateKegiatanRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class KegiatanController extends Controller
@@ -38,6 +39,7 @@ class KegiatanController extends Controller
         $items = $query->paginate($paginate);
 
         return Inertia::render('Admin/Kegiatan/Index', [
+            'notifications' => Auth::user()->notifications->take(5),
             'kegiatans' => $items
         ]);
     }

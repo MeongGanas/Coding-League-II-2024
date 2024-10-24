@@ -7,9 +7,9 @@ import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { LaporanProps, PageProps } from "@/types";
 import { Head } from "@inertiajs/react";
 
-export default function Index({ auth: { user }, laporans, possibleYear }: PageProps<{ laporans: LaporanProps, possibleYear: any }>) {
+export default function Index({ auth: { user }, laporans, possibleYear, notifications }: PageProps<{ laporans: LaporanProps, possibleYear: any, notifications: any }>) {
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Laporan" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">

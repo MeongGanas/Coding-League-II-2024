@@ -9,9 +9,9 @@ import { PageProps, ProyekProps, Sektor } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Plus } from "lucide-react";
 
-export default function Index({ auth: { user }, proyeks, sektors, possibleYear }: PageProps<{ proyeks: ProyekProps, sektors: Sektor[], possibleYear: any }>) {
+export default function Index({ auth: { user }, proyeks, sektors, possibleYear, notifications }: PageProps<{ proyeks: ProyekProps, sektors: Sektor[], possibleYear: any, notifications: any }>) {
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Proyek" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">

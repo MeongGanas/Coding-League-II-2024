@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Sektor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
@@ -34,6 +35,8 @@ class SektorController extends Controller
         $sektors = $query->paginate($paginate);
 
         return Inertia::render('Admin/Sektor/Index', [
+            'notifications' => Auth::user()->notifications->take(5),
+
             'sektors' => $sektors
         ]);
     }

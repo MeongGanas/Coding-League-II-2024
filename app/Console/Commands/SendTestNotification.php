@@ -14,7 +14,7 @@ class SendTestNotification extends Command
      *
      * @var string
      */
-    protected $signature = 'send:test-notification {userId}';
+    protected $signature = 'noti:test {userId}';
 
     /**
      * The console command description.

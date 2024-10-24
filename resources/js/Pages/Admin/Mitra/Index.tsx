@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 
 
 
-export default function Index({ auth: { user }, mitras }: PageProps<{ mitras: MitrasProps }>) {
+export default function Index({ auth: { user }, mitras, notifications }: PageProps<{ mitras: MitrasProps, notifications: any }>) {
 
     const params = new URLSearchParams(window.location.search);
     const sortall = params.get("sortall") as string
@@ -37,7 +37,7 @@ export default function Index({ auth: { user }, mitras }: PageProps<{ mitras: Mi
     }
 
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Mitra" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">

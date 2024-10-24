@@ -5,9 +5,9 @@ import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Pencil } from "lucide-react";
 
-export default function Index({ auth: { user } }: PageProps) {
+export default function Index({ auth: { user }, notifications }: PageProps<{ notifications: any }>) {
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Profil" />
             <div className="container px-5 py-10 space-y-5">
                 <div className="mb-10">
