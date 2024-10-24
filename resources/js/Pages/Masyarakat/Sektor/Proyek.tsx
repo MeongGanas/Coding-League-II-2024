@@ -10,6 +10,7 @@ import {
     TableRow,
 } from "@/Components/ui/table";
 import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
+import { toCapitalize } from "@/lib/toCapitalize";
 import { PageProps, Partisipasi, Proyek } from "@/types";
 import { Link } from "@inertiajs/react";
 import { format } from "date-fns";
@@ -20,11 +21,13 @@ export default function DetailSektorProyek({
     auth: { user },
     proyek,
     partisipasi,
-}: PageProps<{ proyek: any; partisipasi: Partisipasi; gallery: any }>) {
+}: PageProps<{ proyek: Proyek; partisipasi: Partisipasi[]; gallery: any }>) {
     const laporanPhotos = proyek.sektor.laporans.flatMap(
-        (laporan: any) => laporan.photos
+        (laporan) => laporan.photos
     );
-    console.log(laporanPhotos);
+
+    console.log(partisipasi)
+
     return (
         <LayoutMasyarakat user={user} title="Sektor Proyek">
             <OtherWelcomeSection
@@ -32,15 +35,14 @@ export default function DetailSektorProyek({
                 desc={`Mulai: ${format(
                     new Date(proyek.tgl_awal),
                     "MMMM dd, y"
-                )} -  Tgl. Berakhir: ${
-                    proyek.tgl_akhir
-                        ? format(new Date(proyek.tgl_akhir), "MMMM dd, y")
-                        : "-"
-                }`}
+                )} -  Tgl. Berakhir: ${proyek.tgl_akhir
+                    ? format(new Date(proyek.tgl_akhir), "MMMM dd, y")
+                    : "-"
+                    }`}
                 addBreadCrumb={proyek.sektor.name}
                 addBreadCrumbID={proyek.sektor_id.toString()}
                 anotherDesc={
-                    <p className="lg:text-lg text-light">{proyek.kecamatan}</p>
+                    <p className="lg:text-lg text-light">Kec. {toCapitalize(proyek.kecamatan)}</p>
                 }
             />
 
@@ -137,12 +139,12 @@ export default function DetailSektorProyek({
                                             <TableCell className="min-w-52">
                                                 {partisipasi.created_at
                                                     ? format(
-                                                          new Date(
-                                                              partisipasi.created_at
-                                                          ),
-                                                          "dd MMM y",
-                                                          { locale: id }
-                                                      )
+                                                        new Date(
+                                                            partisipasi.created_at
+                                                        ),
+                                                        "dd MMM y",
+                                                        { locale: id }
+                                                    )
                                                     : "-"}
                                             </TableCell>
                                             <TableCell>
@@ -174,11 +176,9 @@ export default function DetailSektorProyek({
                                 })
                             ) : (
                                 <TableRow className="odd:bg-[#FCFCFD] even:bg-white">
-                                    =
-                                    <TableCell colSpan={5}>
-                                        Belum ada proyek tersedia
+                                    <TableCell colSpan={5} className="text-center">
+                                        Belum ada yang partisipasi
                                     </TableCell>
-                                    =
                                 </TableRow>
                             )}
                         </TableBody>
