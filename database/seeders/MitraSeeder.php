@@ -79,7 +79,6 @@ class MitraSeeder extends Seeder
         foreach ($name as $key => $n) {
             $user = User::factory()->create();
             Notification::send($user, new WelcomeNotification(['database'], $user));
-
             Mitra::create([
                 'user_id' => $user->id,
                 'image' => $image[$key],

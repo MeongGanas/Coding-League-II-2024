@@ -30,7 +30,7 @@ const profileSchema = z.object({
 
 type ProfileSchema = z.infer<typeof profileSchema>;
 
-export default function Edit({ auth: { user } }: PageProps) {
+export default function Edit({ auth: { user }, notifications }: PageProps<{ notifications: any }>) {
     const [preview, setPreview] = useState<string | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -85,7 +85,7 @@ export default function Edit({ auth: { user } }: PageProps) {
     };
 
     return (
-        <LayoutMitra user={user}>
+        <LayoutMitra user={user} notifications={notifications}>
             <Head title="Ubah Profil" />
             <div className="container px-5 py-10">
                 <div className="mb-10">

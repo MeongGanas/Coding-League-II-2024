@@ -55,7 +55,7 @@ class WelcomeNotification extends Notification
     public function toArray(object $notifiable): array
     {
         $severity = 'info';
-        $actionUrl = url('/');
+        $actionUrl = $this->user->role === 'admin' ? url('/admin/profile') : url('/mitra/user');
 
         return [
             'title' => 'Selamat datang ke ' . Config::get('app.name'),

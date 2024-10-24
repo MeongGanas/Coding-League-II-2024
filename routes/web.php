@@ -73,6 +73,7 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource("notifications", NotificationController::class);
+    Route::post("notifications/read", [NotificationController::class, 'read']);
 });
 
 Route::prefix('mitra')->middleware(['auth', 'checkMitra'])->group(function () {

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -27,11 +28,10 @@ class MitraFactory extends Factory
             'no_telepon' => $this->faker->phoneNumber(),
             'alamat' => $this->faker->address(),
             'perusahaan' => $perusahaan,
-            'password' => '123123',
             'deskripsi' => $this->faker->paragraph(),
             'tgl_daftar' => $this->faker->dateTimeBetween('-1 years', '-1 months'),
-            // 'status' => $this->faker->randomElement(['Aktif', 'Non-Aktif']),
             'status' => "Non-Aktif",
+            'user_id' => User::where('role', 'mitra')->inRandomOrder()->first()->id,
         ];
     }
 }

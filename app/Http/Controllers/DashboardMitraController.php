@@ -17,9 +17,9 @@ class DashboardMitraController extends Controller
 {
     public function index()
     {
-
         $proyek = Proyek::where('status', 'Terbit');
         $laporan = Laporan::where('status', 'Diterima')->where('mitra_id', Auth::user()->mitra->id);
+        // $laporan = Laporan::where('status', 'Diterima');
         $query = Laporan::where('mitra_id', Auth::user()->mitra->id);
         if (request("search")) {
             $searchTerm = request("search");
@@ -296,21 +296,28 @@ class DashboardMitraController extends Controller
 
     public function profilePerusahaan()
     {
-        return Inertia::render('Mitra/Profile/Perusahaan/Index');
+        return Inertia::render('Mitra/Profile/Perusahaan/Index', [
+            'notifications' => Auth::user()->notifications->take(5),
+        ]);
     }
     public function editProfilePerusahaan(Mitra $mitra)
     {
         return Inertia::render('Mitra/Profile/Perusahaan/Edit', [
+            'notifications' => Auth::user()->notifications->take(5),
             'mitra' => $mitra
         ]);
     }
 
     public function profileUser()
     {
-        return Inertia::render('Mitra/Profile/User/Index');
+        return Inertia::render('Mitra/Profile/User/Index', [
+            'notifications' => Auth::user()->notifications->take(5),
+        ]);
     }
     public function editProfileUser()
     {
-        return Inertia::render('Mitra/Profile/User/Edit');
+        return Inertia::render('Mitra/Profile/User/Edit', [
+            'notifications' => Auth::user()->notifications->take(5),
+        ]);
     }
 }

@@ -5,11 +5,9 @@ import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Mail, MapPin, Pencil, Phone } from "lucide-react";
 
-export default function Detail({ auth: { user } }: PageProps) {
-    console.log(user)
-
+export default function Detail({ auth: { user }, notifications }: PageProps<{ notifications: any }>) {
     return (
-        <LayoutMitra user={user}>
+        <LayoutMitra user={user} notifications={notifications}>
             <Head title="Profile" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">

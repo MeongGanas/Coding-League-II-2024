@@ -10,9 +10,9 @@ import { Button } from "@/Components/ui/button";
 import { Plus } from "lucide-react";
 import SearchForm from "@/Components/admin/Search";
 
-export default function Dashboard({ auth: { user }, counts, realisasi, filters, laporans }: PageProps<{ counts: Counts, realisasi: Realisasi, filters: any, laporans: LaporanProps }>) {
+export default function Dashboard({ auth: { user }, counts, realisasi, filters, laporans, notifications }: PageProps<{ counts: Counts, realisasi: Realisasi, filters: any, laporans: LaporanProps, notifications: any }>) {
     return (
-        <LayoutMitra user={user} >
+        <LayoutMitra user={user} notifications={notifications}>
             <Head title="Dashboard Mitra" />
 
             <WelcomeMitra />

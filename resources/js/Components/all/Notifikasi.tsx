@@ -1,3 +1,5 @@
+// TODO: buat websocket untuk notifikasi
+
 import { Bell, X } from "lucide-react";
 import { Badge } from "../ui/badge";
 import {
@@ -12,27 +14,37 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 
-
 export default function Notifikasi({ notifications }: { notifications: any[] }) {
 
-    // const [notifications, setNotifications] = useState<any[]>([]);
+    const [localNotification, setLocalNotification] = useState<any[]>(notifications);
+    const [didUnread, setDidUnread] = useState(false);
+    const [unreadCount, setUnreadCount] = useState(notifications.filter((notification) => !notification.read_at).length);
 
-    // const markAsRead = async () => {
-    //     const unreadTimeout = setTimeout(() => {
-    //         clearTimeout(unreadTimeout);
-    //     }, 5000);
-    // }
+    const markAsRead = async () => {
+        if (!didUnread) {
+            await axios.post('/notifications/read');
+            setDidUnread(true);
+        } else {
+            setUnreadCount(0);
+            setLocalNotification(localNotification.map((notification) => {
+                return {
+                    ...notification,
+                    read_at: new Date().toISOString()
+                }
+            }));
+            return;
+        }
+    }
 
-    // const hydrateNotifications = async () => {
-    //     const { data } = await axios.get('/notifications')
-    //     setNotifications(data.notifications);
-    //     return data.notifications;
-    // }
+    const hydrateNotifications = async () => {
+        const { data } = await axios.get('/notifications')
+        setLocalNotification(data.notifications);
+        return data.notifications;
+    }
 
-    // useEffect(() => {
-    //     hydrateNotifications();
-    // }, []);
-
+    useEffect(() => {
+        hydrateNotifications();
+    }, []);
 
     return (
         <Popover>
@@ -42,10 +54,11 @@ export default function Notifikasi({ notifications }: { notifications: any[] }) 
                         variant="ghost"
                         size="icon"
                         className="rounded-full relative"
+                        onClick={markAsRead}
                     >
                         <Bell className="h-6 w-6" />
-                        <Badge className="w-6 -right-2 absolute top-0 bg-[#98100A] flex hover:bg-red-700 items-center justify-center">
-                            {notifications.filter((notification: any) => !notification.read_at).length}
+                        <Badge className={`w-6 -right-2 absolute top-0 aspect-square bg-[#98100A] flex hover:bg-red-700 items-center justify-center ${unreadCount === 0 ? '' : didUnread ? '' : 'pulse'}`}>
+                            {unreadCount}
                         </Badge>
                     </Button>
                 </div>
@@ -63,7 +76,7 @@ export default function Notifikasi({ notifications }: { notifications: any[] }) 
                 </div>
                 <div className="space-y-3 ">
                     {
-                        notifications.map((notification: any) => (
+                        localNotification.map((notification: any) => (
                             <ItemNotifikasi key={notification.id} notification={notification} />
                         ))
                     }
