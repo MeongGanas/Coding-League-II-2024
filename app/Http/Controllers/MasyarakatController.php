@@ -260,7 +260,12 @@ class MasyarakatController extends Controller
     public function sektorProyek(Proyek $proyek)
     {
         $proyekDetail = $proyek->load('sektor.laporans');
-        $partisipasi = $proyek->partisipasi()->with('mitra')->get();
+        $partisipasi = $proyek->partisipasi()
+            ->with(['mitra' => function ($query) use ($proyek) {
+                $query->with(['laporan' => function ($q) use ($proyek) {
+                    $q->where('proyek_id', $proyek->id);
+                }]);
+            }])->get();
 
         return Inertia::render('Masyarakat/Sektor/Proyek', [
             'proyek' => $proyekDetail,

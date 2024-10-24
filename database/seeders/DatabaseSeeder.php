@@ -65,6 +65,6 @@ class DatabaseSeeder extends Seeder
         // Mitra::factory(15)->create();
         Laporan::factory(30)->create();
         Kegiatan::factory(30)->create();
-        Partisipasi::factory(30)->create();
+        // Partisipasi::factory(30)->create();
     }
 }

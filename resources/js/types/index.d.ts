@@ -14,6 +14,7 @@ export interface Sektor {
     deskripsi: string;
     image: string;
     proyeks?: Proyek[];
+    laporans: Laporan[];
 }
 
 export interface SektorsProps {

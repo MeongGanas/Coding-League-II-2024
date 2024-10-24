@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Laporan;
+use App\Models\Partisipasi;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -145,6 +146,13 @@ class LaporanController extends Controller
             'status' => $request->status,
             'pesan' => $request->message
         ]);
+
+        if ($request->status === "Diterima") {
+            Partisipasi::create([
+                'proyek_id' => $laporan->proyek_id,
+                'mitra_id' => $laporan->mitra_id
+            ]);
+        }
 
         return redirect()->intended(route('laporan.index'));
     }
