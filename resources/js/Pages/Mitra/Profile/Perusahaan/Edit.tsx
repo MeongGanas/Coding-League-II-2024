@@ -7,7 +7,6 @@ import {
     FormLabel,
     FormMessage,
 } from "@/Components/ui/form";
-import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { Head, Link } from "@inertiajs/react";
 import { SyntheticEvent, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -20,6 +19,7 @@ import { Textarea } from "@/Components/ui/textarea";
 import { Mitra, PageProps } from "@/types";
 import axios from "axios";
 import toast from "react-hot-toast";
+import LayoutMitra from "@/Layouts/LayoutMitra";
 
 const mitraSchema = z.object({
     name: z.string(),
@@ -70,13 +70,13 @@ export default function Edit({ auth: { user }, mitra }: PageProps<{ mitra: Mitra
             formData.append('image', values.image[0]);
         }
 
-        const promise = axios.post(`/admin/mitra/${mitra.id}`, formData);
+        const promise = axios.post(`/mitra/perusahaan/${mitra.id}`, formData);
 
         toast.promise(promise, {
             loading: "Loading...",
             success: (res) => {
                 setIsSubmitted(false);
-                window.location.replace('/admin/mitra')
+                window.location.replace('/mitra/perusahaan')
                 return "Update Profile Mitra Success!"
             },
             error: (err) => {
@@ -95,7 +95,7 @@ export default function Edit({ auth: { user }, mitra }: PageProps<{ mitra: Mitra
     };
 
     return (
-        <LayoutAdmin user={user}>
+        <LayoutMitra user={user}>
             <Head title="Ubah Profil" />
             <div className="container px-5 py-10">
                 <div className="mb-10">
@@ -319,6 +319,6 @@ export default function Edit({ auth: { user }, mitra }: PageProps<{ mitra: Mitra
                     </form>
                 </Form>
             </div>
-        </LayoutAdmin>
+        </LayoutMitra>
     );
 }

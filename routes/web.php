@@ -75,7 +75,13 @@ Route::prefix('mitra')->middleware(['auth', 'checkMitra'])->group(function () {
     Route::get("/laporan/{laporan}", [DashboardMitraController::class, 'LaporanDetail'])->name('laporan.mitra.detail');
     Route::delete("/laporan/{laporan}", [LaporanController::class, 'destroy'])->name('laporan.delete');
 
-    Route::get('/profile', [DashboardMitraController::class, 'profile'])->name('mitra.profile');
+    Route::get('/user', [DashboardMitraController::class, 'profileUser'])->name('mitra.profile.user');
+    Route::get('/user/{user}/edit', [DashboardMitraController::class, 'editProfileUser'])->name('mitra.profile.user.edit');
+    Route::patch('/perusahaan/{mitra}', [MitraController::class, 'update'])->name('mitra.profile.perusahaan.patch');
+
+    Route::get('/perusahaan', [DashboardMitraController::class, 'profilePerusahaan'])->name('mitra.profile.perusahaan');
+    Route::get('/perusahaan/{mitra}/edit', [DashboardMitraController::class, 'editProfilePerusahaan'])->name('mitra.profile.perusahaan.edit');
+    Route::patch('/perusahaan/{mitra}', [MitraController::class, 'update'])->name('mitra.profile.perusahaan.patch');
 });
 
 require __DIR__ . '/auth.php';

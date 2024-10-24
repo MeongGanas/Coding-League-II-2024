@@ -79,7 +79,7 @@ class LaporanController extends Controller
             'realisasi_date' => 'required|string'
         ]);
 
-        $v['mitra_id'] = $request->user()->id;
+        $v['mitra_id'] = $request->user()->mitra->id;
 
         $imagesFile = $request->file('images');
 

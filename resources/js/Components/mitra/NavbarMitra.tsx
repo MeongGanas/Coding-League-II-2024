@@ -49,8 +49,16 @@ export default function NavbarMitra({ user }: { user: UserType }) {
                                         asChild
                                         className="cursor-pointer"
                                     >
-                                        <Link href="/mitra/profile">
-                                            Profile
+                                        <Link href="/mitra/perusahaan">
+                                            Profile Perusahaan
+                                        </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                        asChild
+                                        className="cursor-pointer"
+                                    >
+                                        <Link href="/mitra/user">
+                                            Profile User
                                         </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuSeparator className="border-black/10 border" />

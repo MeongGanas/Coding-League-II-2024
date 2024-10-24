@@ -1,74 +1,57 @@
-import { DialogToggleStatus } from "@/Components/admin/dashboard/mitra/DialogAction";
 import BreadcrumbLinks from "@/Components/all/BreadcrumbLinks";
-import { Badge } from "@/Components/ui/badge";
 import { Button } from "@/Components/ui/button";
-import LayoutAdmin from "@/Layouts/LayoutAdmin";
-import { Mitra, PageProps } from "@/types";
+import LayoutMitra from "@/Layouts/LayoutMitra";
+import { PageProps } from "@/types";
 import { Head, Link } from "@inertiajs/react";
 import { Mail, MapPin, Pencil, Phone } from "lucide-react";
 
-const statusClass: { [key: string]: string } = {
-    'Aktif': "bg-success-bg text-success",
-    'Non-Aktif': "bg-error-bg text-error",
-    'Pengajuan': "bg-warning-bg text-warning",
-};
-const statusText: { [key: string]: string } = {
-    'Aktif': "Terverifikasi",
-    'Non-Aktif': "Non-Aktif",
-    'Pengajuan': "Pengajuan",
-};
+export default function Detail({ auth: { user } }: PageProps) {
+    console.log(user)
 
-export default function Detail({ auth: { user }, mitra }: PageProps<{ mitra: Mitra }>) {
-    console.log(mitra)
     return (
-        <LayoutAdmin user={user}>
-            <Head title="Detail Mitra" />
+        <LayoutMitra user={user}>
+            <Head title="Profile" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">
-                    <BreadcrumbLinks basePath="/admin" pagePath="Detail" />
+                    <BreadcrumbLinks basePath="/mitra" pagePath="Profile" />
                 </div>
                 <div className="flex justify-between">
                     <h1 className="text-3xl font-bold">Profil Mitra</h1>
                     <div className="flex items-center gap-4">
                         <Button
-                            className="hover:bg-red-700 font-semibold"
                             asChild
+                            className="hover:bg-red-700 font-semibold"
                         >
                             <Link
-                                href={`/admin/mitra/${mitra.id}/edit`}
+                                href={`/mitra/perusahaan/${user.mitra.id}/edit`}
                                 className="flex gap-2 items-center"
                             >
                                 <Pencil className="w-4 h-4" />
                                 Ubah Profil
                             </Link>
                         </Button>
-                        {
-                            (mitra.status === 'Aktif' || mitra.status === 'Non-Aktif') && (
-                                <DialogToggleStatus data={mitra.id} status={mitra.status} />
-                            )
-                        }
                     </div>
                 </div>
                 <div className="bg-white border rounded-md py-10 px-6 space-y-5">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div className="w-full flex items-center md:pr-10">
-                            <div className="bg-neutral-100 w-full overflow-hidden rounded-md">
-                                <img src={`/storage/${mitra.image}`} className="w-full" alt="perusahaan_image" />
-                            </div>
+                            {user.mitra.image ? (
+                                <div className="bg-neutral-100 w-full overflow-hidden rounded-md">
+                                    <img src={`/storage/${user.mitra.image}`} className="w-full" alt="perusahaan_image" />
+                                </div>
+
+                            ) : (
+                                <div className="bg-neutral-100 w-full h-72 rounded-md"></div>
+                            )}
                         </div>
                         <div className="w-full md-w-1/2 flex items-center">
                             <div className="space-y-4">
                                 <div className="space-y-2">
-                                    <div className="flex gap-4 items-center">
-                                        <h1 className="font-bold text-2xl">
-                                            {mitra.name}
-                                        </h1>
-                                        <Badge className={statusClass[mitra.status]}>
-                                            {statusText[mitra.status]}
-                                        </Badge>
-                                    </div>
+                                    <h1 className="font-bold text-2xl">
+                                        {user.mitra.name}
+                                    </h1>
                                     <p className="font-semibold">
-                                        {mitra.perusahaan}
+                                        {user.mitra.perusahaan}
                                     </p>
                                 </div>
                                 <ul className="space-y-3">
@@ -76,29 +59,29 @@ export default function Detail({ auth: { user }, mitra }: PageProps<{ mitra: Mit
                                         <div className="p-2 border-4 text-primary bg-[#FFDDDC] rounded-full border-primary-bg">
                                             <Mail className="w-5 h-5" />
                                         </div>
-                                        <span>{mitra.email}</span>
+                                        <span>{user.mitra.email}</span>
                                     </li>
                                     <li className="flex items-center gap-2">
                                         <div className="p-2 border-4 text-primary bg-[#FFDDDC] rounded-full border-primary-bg">
                                             <Phone className="w-5 h-5" />
                                         </div>
-                                        <span>{mitra.no_telepon ?? '-'}</span>
+                                        <span>{user.mitra.no_telepon ?? '-'}</span>
                                     </li>
                                     <li className="flex items-center gap-2">
                                         <div className="p-2 border-4 text-primary bg-[#FFDDDC] rounded-full border-primary-bg">
                                             <MapPin className="w-5 h-5" />
                                         </div>
-                                        <span>{mitra.alamat ?? '-'}</span>
+                                        <span>{user.mitra.alamat ?? '-'}</span>
                                     </li>
                                 </ul>
                                 <p>
-                                    {mitra.deskripsi}
+                                    {user.mitra.deskripsi}
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </LayoutAdmin>
+        </LayoutMitra>
     );
 }
