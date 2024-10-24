@@ -50,9 +50,9 @@ class MasyarakatController extends Controller
                 'countTotalDanaRealized' => $laporan->sum('realisasi'),
             ],
             'realisasi' => [
-                'dataCSR' => $dashboardFunction->getRealisasiBy(clone $laporan, 'sektor_id', 'sektor', 'name', true, null, true, true)->values(),
-                'persenTotalMitra' => $dashboardFunction->getRealisasiBy(clone $laporan, 'mitra_id', 'mitra', 'name', null, null, true, true)->values(),
-                'persenTotalKecamatan' => $dashboardFunction->getRealisasiBy(clone $laporan, 'lokasi', 'kecamatan', 'lokasi', null, null, true)->values(),
+                'dataCSR' => $dashboardFunction->getRealisasiBy(clone $laporan, 'sektor_id', 'sektor', 'name', true, 6, null, true)->values(),
+                'persenTotalMitra' => $dashboardFunction->getRealisasiBy(clone $laporan, 'mitra_id', 'mitra', 'name', null, 6, null, true)->values(),
+                'persenTotalKecamatan' => $dashboardFunction->getRealisasiBy(clone $laporan, 'lokasi', 'kecamatan', 'lokasi', null, 6, null, false)->values(),
             ],
             'filters' => [
                 'tahun' => $dashboardFunction->getPossibleYear(clone $proyek, clone $mitra, clone $laporan)->values(),

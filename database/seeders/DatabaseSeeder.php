@@ -35,6 +35,19 @@ class DatabaseSeeder extends Seeder
                 'email' => 'mitra@gmail.com',
                 'password' => '123123'
             ]);
+
+            User::create([
+                'name' => 'Eririk',
+                'email' => 'emforakaem@gmail.com',
+                'password' => '123123'
+            ]);
+
+            User::create([
+                'name' => 'Eririk Admin',
+                'email' => 'arfounded@gmail.com',
+                'role' => 'admin',
+                'password' => '123123'
+            ]);
         } catch (\Throwable $th) {
             // do nothing
         }

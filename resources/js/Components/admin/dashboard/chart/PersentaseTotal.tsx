@@ -153,7 +153,7 @@ function barChart({
                     layout="vertical"
                     fill="var(--color-desktop)"
                     radius={0}
-                    barSize={40}
+                    barSize={60}
                 >
                     <LabelList
                         dataKey="total"

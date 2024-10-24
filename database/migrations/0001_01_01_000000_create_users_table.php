@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('deskripsi')->nullable();
             $table->string('image')->nullable();
             $table->enum('role', ['mitra', 'admin'])->default('mitra');
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
