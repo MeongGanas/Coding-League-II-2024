@@ -7,6 +7,7 @@ use App\Models\Mitra;
 use App\Models\Proyek;
 use App\Models\Sektor;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use ZipArchive;
 
@@ -21,6 +22,7 @@ class DashboardController extends Controller
         $this->applyFilters(clone $proyek, clone $mitra, clone $laporan);
 
         return Inertia::render('Admin/Dashboard', [
+            'notifications' => Auth::user()->notifications->take(5),
             'counts' => [
                 'countProyek' => $proyek->count(),
                 'countProyekRealized' => $laporan->count(),

@@ -12,7 +12,7 @@ import SearchForm from "@/Components/admin/Search";
 
 export default function Dashboard({ auth: { user }, counts, realisasi, filters, laporans }: PageProps<{ counts: Counts, realisasi: Realisasi, filters: any, laporans: LaporanProps }>) {
     return (
-        <LayoutMitra user={user}>
+        <LayoutMitra user={user} >
             <Head title="Dashboard Mitra" />
 
             <WelcomeMitra />

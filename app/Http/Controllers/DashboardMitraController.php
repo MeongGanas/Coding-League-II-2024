@@ -1,4 +1,5 @@
 <?php
+// TODO: refactir this controller, use dashboardController function instead to filter etc
 
 namespace App\Http\Controllers;
 

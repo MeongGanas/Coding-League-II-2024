@@ -20,46 +20,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        try {
-            User::create([
-                'name' => 'SMK Telkom Makassar',
-                'email' => 'admin@gmail.com',
-                'role' => 'admin',
-                'password' => '123123'
-            ]);
-
-            User::create([
-                'name' => 'Mitra User',
-                'email' => 'mitra@gmail.com',
-                'password' => '123123'
-            ]);
-
-            User::create([
-                'name' => 'Eririk',
-                'email' => 'emforakaem@gmail.com',
-                'password' => '123123'
-            ]);
-
-            User::create([
-                'name' => 'Eririk Admin',
-                'email' => 'arfounded@gmail.com',
-                'role' => 'admin',
-                'password' => '123123'
-            ]);
-        } catch (\Throwable $th) {
-            // do nothing
-        }
-
-        User::factory(10)->create();
 
         // realdata
         $this->call([
+            UserSeeder::class,
             MitraSeeder::class,
             SektorSeeder::class,
         ]);
 
+        User::factory(10)->create();
         // Sektor::factory(15)->create();
         Proyek::factory(15)->create();
         // Mitra::factory(15)->create();

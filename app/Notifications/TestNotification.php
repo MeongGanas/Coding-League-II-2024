@@ -11,12 +11,14 @@ class TestNotification extends Notification
 {
     use Queueable;
 
+    protected array $via;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($via)
     {
-        //
+        $this->via = $via;
     }
 
     /**
@@ -26,7 +28,8 @@ class TestNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+
+        return $this->via ?? ['mail', 'database'];
     }
 
     /**
@@ -48,11 +51,12 @@ class TestNotification extends Notification
     public function toArray(object $notifiable): array
     {
         $severity = 'info';
-        $actionUrl = url('/');
+        // $actionUrl = url('/');
 
         return [
             'title' => 'Test Notification',
             'body' => 'This is a test notification',
+            'badgeTitle' => 'Testnoti badge title',
             'severity' => $severity,
             'action_url' => $actionUrl ?? null,
         ];

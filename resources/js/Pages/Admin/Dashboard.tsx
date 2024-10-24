@@ -6,9 +6,9 @@ import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { Head } from "@inertiajs/react";
 import { Counts, Mitra, PageProps, Realisasi } from "@/types";
 
-export default function Dashboard({ auth: { user }, counts, realisasi, filters }: PageProps<{ counts: Counts, realisasi: Realisasi, filters: any, mitras: Mitra[] }>) {
+export default function Dashboard({ auth: { user }, counts, realisasi, filters, notifications }: PageProps<{ counts: Counts, realisasi: Realisasi, filters: any, mitras: Mitra[], notifications: any }>) {
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Dashboard Admin" />
 
             <WelcomeAdmin />

@@ -36,8 +36,9 @@ class SendTestNotification extends Command
             return 1;
         }
 
-        Notification::send($user, new TestNotification());
+        Notification::send($user, new TestNotification(['database']));
         $this->info('Notification sent successfully');
+
         return 0;
     }
 }
