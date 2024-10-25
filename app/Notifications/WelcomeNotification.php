@@ -39,11 +39,13 @@ class WelcomeNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $actionUrl = $this->user->role === 'admin' ? url('/admin/profile') : url('/mitra/user');
+
         return (new MailMessage)
             ->subject('Selamat datang ke ' . Config::get('app.name') . '!')
             ->greeting('Halo, ' . $this->user->name . '!')
             ->line('Selamat datang ke ' . Config::get('app.name') . '!')
-            ->action('Klik di sini untuk melihat profil', url('/profile'))
+            ->action('Klik di sini untuk melihat profil', $actionUrl)
             ->line('Terima kasih telah bergabung dengan kami!');
     }
 
