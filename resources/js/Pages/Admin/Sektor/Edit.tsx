@@ -30,7 +30,7 @@ const sektorSchema = z.object({
 
 type SektorSchema = z.infer<typeof sektorSchema>;
 
-export default function Edit({ auth: { user }, sektor }: PageProps<{ sektor: Sektor }>) {
+export default function Edit({ auth: { user }, sektor, notifications }: PageProps<{ sektor: Sektor, notifications: any }>) {
     console.log(sektor)
     const [preview, setPreview] = useState<string | null>(`/storage/${sektor.image}`);
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -84,7 +84,7 @@ export default function Edit({ auth: { user }, sektor }: PageProps<{ sektor: Sek
     };
 
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Ubah Sektor" />
             <div className="container px-5 py-10">
                 <div className="mb-10">

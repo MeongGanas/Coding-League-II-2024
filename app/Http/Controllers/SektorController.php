@@ -46,7 +46,9 @@ class SektorController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/Sektor/Create');
+        return Inertia::render('Admin/Sektor/Create', [
+            'notifications' => Auth::user()->notifications->take(5),
+        ]);
     }
 
     /**
@@ -73,6 +75,7 @@ class SektorController extends Controller
     public function show(Sektor $sektor)
     {
         return Inertia::render('Admin/Sektor/Detail', [
+            'notifications' => Auth::user()->notifications->take(5),
             'sektor' => $sektor
         ]);
     }
@@ -83,6 +86,7 @@ class SektorController extends Controller
     public function edit(Sektor $sektor)
     {
         return Inertia::render('Admin/Sektor/Edit', [
+            'notifications' => Auth::user()->notifications->take(5),
             'sektor' => $sektor
         ]);
     }

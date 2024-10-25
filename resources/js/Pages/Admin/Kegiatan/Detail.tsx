@@ -12,9 +12,9 @@ import { id } from "date-fns/locale";
 import { BriefcaseBusiness, Plus } from "lucide-react";
 import Markdown from "react-markdown";
 
-export default function Detail({ auth: { user }, kegiatan }: PageProps<{ kegiatan: any }>) {
+export default function Detail({ auth: { user }, kegiatan, notifications }: PageProps<{ kegiatan: any, notifications: any }>) {
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Detail Kegiatan" />
             <div className="bg-[url('/images/admin/dashboard_bg.png')] bg-cover bg-no-repeat bg-center w-full h-72 relative">
                 <div className="h-full w-full bg-black/40 absolute top-0 left-0 flex items-center">
@@ -40,7 +40,7 @@ export default function Detail({ auth: { user }, kegiatan }: PageProps<{ kegiata
                                 {kegiatan.name}
                             </h1>
                             <p className="text-white text-sm md:text-lg">
-                                { format(new Date(kegiatan.created_at), "dd MMMM yyyy", {locale: id}) }
+                                {format(new Date(kegiatan.created_at), "dd MMMM yyyy", { locale: id })}
                             </p>
                         </div>
                     </div>

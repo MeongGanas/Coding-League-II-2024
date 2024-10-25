@@ -18,10 +18,10 @@ const statusText: { [key: string]: string } = {
     'Pengajuan': "Pengajuan",
 };
 
-export default function Detail({ auth: { user }, mitra }: PageProps<{ mitra: Mitra }>) {
+export default function Detail({ auth: { user }, mitra, notifications }: PageProps<{ mitra: Mitra, notifications: any }>) {
     console.log(mitra)
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Detail Mitra" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">

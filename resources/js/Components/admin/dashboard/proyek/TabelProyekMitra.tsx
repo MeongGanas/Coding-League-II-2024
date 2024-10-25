@@ -67,6 +67,7 @@ export default function DataTableProyekMitra({ proyek }: { proyek: Proyek }) {
                                 </TableRow>
                             );
                         }) : (
+                            // TODO real kh ini?? knp proyek skira mitra
                             <TableRow className="odd:bg-[#FCFCFD] even:bg-white">=
                                 <TableCell colSpan={5}>Belum ada proyek tersedia</TableCell>=
                             </TableRow>

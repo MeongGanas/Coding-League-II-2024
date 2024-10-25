@@ -65,7 +65,7 @@ export default function NavbarMitra({ user, notifications }: { user: UserType, n
                                     <LogoutButton />
                                 </DropdownMenuContent>
                             </DropdownMenu>
-                            <Notifikasi notifications={notifications} />
+                            <Notifikasi notifications={notifications} user={user} />
                         </div>
                     </div>
                 </div>

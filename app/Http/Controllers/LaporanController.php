@@ -105,6 +105,7 @@ class LaporanController extends Controller
     public function show(Laporan $laporan)
     {
         return Inertia::render('Admin/Laporan/Detail', [
+            'notifications' => Auth::user()->notifications->take(5),
             'laporan' => $laporan->load(['mitra', 'sektor', 'proyek'])
         ]);
     }

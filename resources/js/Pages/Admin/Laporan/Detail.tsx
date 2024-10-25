@@ -25,7 +25,7 @@ const status: { [key: string]: string } = {
     'Ditolak': "bg-error-bg text-error hover:bg-error-bg",
 }
 
-export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan: Laporan }>) {
+export default function Detail({ auth: { user }, laporan, notifications }: PageProps<{ laporan: Laporan, notifications: any }>) {
 
     const [isSubmitted, setIsSubmitted] = useState(false)
 
@@ -55,7 +55,7 @@ export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan:
     }
 
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Detail Laporan" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">

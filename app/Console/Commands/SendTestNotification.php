@@ -2,8 +2,10 @@
 
 namespace App\Console\Commands;
 
+use App\Events\NotificationEvent;
 use App\Models\User;
 use App\Notifications\TestNotification;
+use App\Notifications\WelcomeNotification;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Notification;
 
@@ -36,7 +38,9 @@ class SendTestNotification extends Command
             return 1;
         }
 
-        Notification::send($user, new TestNotification(['database']));
+        $notification = new WelcomeNotification(['database'], $user);
+        Notification::send($user, $notification);
+
         $this->info('Notification sent successfully');
 
         return 0;

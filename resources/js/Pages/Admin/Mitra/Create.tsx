@@ -36,7 +36,7 @@ const mitraSchema = z.object({
 
 type MitraSchema = z.infer<typeof mitraSchema>;
 
-export default function Create({ auth: { user } }: PageProps) {
+export default function Create({ auth: { user }, notifications }: PageProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const [showPass, setShowPass] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
@@ -97,7 +97,7 @@ export default function Create({ auth: { user } }: PageProps) {
     };
 
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Buat Mitra" />
             <div className="container px-5 py-10">
                 <div className="mb-10">

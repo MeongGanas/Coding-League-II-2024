@@ -54,7 +54,7 @@ const proyekSchema = z.object({
 
 type ProyekSchema = z.infer<typeof proyekSchema>;
 
-export default function Create({ auth: { user }, sektors }: PageProps<{ sektors: Sektor[] }>) {
+export default function Create({ auth: { user }, sektors, notifications }: PageProps<{ sektors: Sektor[], notifications: any }>) {
     const [preview, setPreview] = useState<string | null>(null);
     const [status, setStatus] = useState("terbit");
     const [kecamatan, setKecamatan] = useState<Kecamatan[] | null>(null);
@@ -127,7 +127,7 @@ export default function Create({ auth: { user }, sektors }: PageProps<{ sektors:
     }, [])
 
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Buat Proyek" />
             <div className="container px-5 py-10">
                 <div className="mb-10">

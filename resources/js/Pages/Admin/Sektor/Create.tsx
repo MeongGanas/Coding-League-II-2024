@@ -31,7 +31,7 @@ const sektorSchema = z.object({
 
 type SektorSchema = z.infer<typeof sektorSchema>;
 
-export default function Create({ auth: { user } }: PageProps) {
+export default function Create({ auth: { user }, notifications }: PageProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -80,7 +80,7 @@ export default function Create({ auth: { user } }: PageProps) {
     };
 
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Buat Sektor" />
             <div className="container px-5 py-10">
                 <div className="mb-10">

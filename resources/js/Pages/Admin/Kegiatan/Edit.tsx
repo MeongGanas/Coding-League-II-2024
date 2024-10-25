@@ -29,7 +29,7 @@ const proyekSchema = z.object({
 
 type ProyekSchema = z.infer<typeof proyekSchema>;
 
-export default function Create({ auth: { user } }: PageProps) {
+export default function Create({ auth: { user }, notifications }: PageProps<{ notifications: any }>) {
     const [preview, setPreview] = useState<string | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -58,7 +58,7 @@ export default function Create({ auth: { user } }: PageProps) {
     };
 
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Ubah Sektor" />
             <div className="container px-5 py-10">
                 <BreadcrumbLinks

@@ -54,7 +54,9 @@ class MitraController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/Mitra/Create');
+        return Inertia::render('Admin/Mitra/Create', [
+            'notifications' => Auth::user()->notifications->take(5),
+        ]);
     }
 
     /**
@@ -89,6 +91,7 @@ class MitraController extends Controller
     public function show(Mitra $mitra)
     {
         return Inertia::render('Admin/Mitra/Detail', [
+            'notifications' => Auth::user()->notifications->take(5),
             'mitra' => $mitra
         ]);
     }
@@ -99,6 +102,7 @@ class MitraController extends Controller
     public function edit(Mitra $mitra)
     {
         return Inertia::render('Admin/Mitra/Edit', [
+            'notifications' => Auth::user()->notifications->take(5),
             'mitra' => $mitra
         ]);
     }

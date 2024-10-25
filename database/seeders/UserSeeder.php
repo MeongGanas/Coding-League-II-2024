@@ -44,6 +44,7 @@ class UserSeeder extends Seeder
                     'user_id' => $user->id
                 ]);
             }
+
             Notification::send($user, new WelcomeNotification(['database', 'mail'], $user));
         }
     }

@@ -34,7 +34,7 @@ const mitraSchema = z.object({
 
 type MitraSchema = z.infer<typeof mitraSchema>;
 
-export default function Edit({ auth: { user }, mitra }: PageProps<{ mitra: Mitra }>) {
+export default function Edit({ auth: { user }, mitra, notifications }: PageProps<{ mitra: Mitra, notifications: any }>) {
     const [preview, setPreview] = useState<string | null>(`/storage/${mitra.image}`);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -95,7 +95,7 @@ export default function Edit({ auth: { user }, mitra }: PageProps<{ mitra: Mitra
     };
 
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Ubah Profil" />
             <div className="container px-5 py-10">
                 <div className="mb-10">
