@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Laporan;
 use App\Models\Partisipasi;
+use App\Notifications\StatusNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -156,6 +158,16 @@ class LaporanController extends Controller
                 'mitra_id' => $laporan->mitra_id
             ]);
         }
+
+
+        $notification = new StatusNotification(
+            ['mail', 'database'],
+            Auth::user(),
+            $request->status,
+            $request->message,
+            $laporan
+        );
+        Notification::send(Auth::user(), $notification);
 
         return redirect()->intended(route('laporan.index'));
     }
