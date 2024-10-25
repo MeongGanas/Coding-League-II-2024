@@ -166,7 +166,7 @@ export interface Kegiatan {
     tgl_terbit: string;
     deskripsi: string;
     image: string;
-    status: string;
+    status: "Terbit" | "Draf";
     tags: string[];
 }
 

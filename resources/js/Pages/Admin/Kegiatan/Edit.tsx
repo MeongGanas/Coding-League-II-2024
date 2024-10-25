@@ -9,44 +9,51 @@ import {
 } from "@/Components/ui/form";
 import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { Head } from "@inertiajs/react";
-import { SyntheticEvent, useState } from "react";
+import { KeyboardEvent, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
-import { CloudUpload, Send } from "lucide-react";
-import { Textarea } from "@/Components/ui/textarea";
-import { PageProps } from "@/types";
+import { CloudUpload, Send, X } from "lucide-react";
+import { Kegiatan, PageProps } from "@/types";
+import { Editor } from '@tinymce/tinymce-react';
 
-const proyekSchema = z.object({
-    nama: z.string(),
-    deskripsi: z.string(),
-    foto_thumbnail: z
-        .instanceof(FileList)
-        .refine((file) => file?.length == 1, "File is required."),
+const kegiatanSchema = z.object({
+    judul: z.string(),
+    tags: z.array(z.string()).min(1, { message: "Minimal terdapat 1 tags" }),
+    image: z
+        .instanceof(FileList).optional(),
 });
 
-type ProyekSchema = z.infer<typeof proyekSchema>;
+type KegiatanSchema = z.infer<typeof kegiatanSchema>;
 
-export default function Create({ auth: { user }, notifications }: PageProps<{ notifications: any }>) {
-    const [preview, setPreview] = useState<string | null>(null);
+
+export default function Edit({ auth: { user }, notifications, kegiatan }: PageProps<{ notifications: any, kegiatan: Kegiatan }>) {
+    const [preview, setPreview] = useState<string | null>(`/storage/${kegiatan.image}`);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [deskripsi, setDeskripsi] = useState(kegiatan.deskripsi);
+    const [tags, setTags] = useState<string[]>(kegiatan.tags);
 
-    const form = useForm<ProyekSchema>({
-        resolver: zodResolver(proyekSchema),
+    const handleEditorChange = (newContent: string) => {
+        setDeskripsi(newContent);
+    };
+
+    const form = useForm<KegiatanSchema>({
+        resolver: zodResolver(kegiatanSchema),
         defaultValues: {
-            nama: "",
-            deskripsi: "",
+            judul: kegiatan.name,
+            tags: kegiatan.tags
         },
     });
 
-    const { handleSubmit, control } = form;
+    const { handleSubmit, control, setValue } = form;
 
-    const fileRef = form.register("foto_thumbnail");
+    const fileRef = form.register("image");
 
     const submit = handleSubmit((values) => {
-        console.log(values);
+        const data = { ...values, deskripsi };
+        console.log(data)
     });
 
     const handlePreview = (e: SyntheticEvent) => {
@@ -57,21 +64,49 @@ export default function Create({ auth: { user }, notifications }: PageProps<{ no
         }
     };
 
+    const addTag = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+
+            const target = e.target as HTMLInputElement;
+            const newTag = target.value.trim();
+
+            if (newTag && !tags.includes(newTag)) {
+                const currentTags = [...tags, newTag];
+                setTags(currentTags);
+                setValue("tags", currentTags)
+
+                target.value = '';
+            }
+        }
+    };
+
+
+
+    const removeTag = (index: number) => {
+        const updatedTags = tags.filter((_, i) => i !== index);
+        setTags(updatedTags);
+        setValue("tags", updatedTags);
+    };
+
     return (
         <LayoutAdmin user={user} notifications={notifications}>
-            <Head title="Ubah Sektor" />
+            <Head title="Buat Kegiatan" />
             <div className="container px-5 py-10">
-                <BreadcrumbLinks
-                    basePath="/admin"
-                    pagePath="Ubah data sektor"
-                />
-                <h1 className="font-bold text-2xl mb-5">Ubah Data Sektor</h1>
+                <div className="mb-10">
+                    <BreadcrumbLinks
+                        basePath="/admin"
+                        pagePath="Ubah Kegiatan"
+                    />
+                </div>
+                <h1 className="font-bold text-2xl mb-5">Ubah Kegiatan</h1>
+
                 <Form {...form}>
                     <form onSubmit={submit} className="space-y-5">
                         <div className="bg-white rounded-md p-6 space-y-5 border">
                             <FormField
                                 control={form.control}
-                                name="foto_thumbnail"
+                                name="image"
                                 render={({ field }) => (
                                     <FormItem>
                                         <FormLabel className="font-bold text-base">
@@ -90,10 +125,10 @@ export default function Create({ auth: { user }, notifications }: PageProps<{ no
                                                         <img
                                                             src={preview}
                                                             alt=""
-                                                            className="w-60"
+                                                            className="w-60 mb-3"
                                                         />
                                                     )}
-                                                    <div className="rounded-full border-4 bg-[#FFDDDC] border-[#FFF1F0] text-primary p-2">
+                                                    <div className="rounded-full border-4 mb-2 bg-[#FFDDDC] border-[#FFF1F0] text-primary p-2">
                                                         <CloudUpload className="w-5 h-5" />
                                                     </div>
                                                     <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 font-semibold">
@@ -112,7 +147,7 @@ export default function Create({ auth: { user }, notifications }: PageProps<{ no
                                                     id="dropzone-file"
                                                     type="file"
                                                     accept="image/png, image/jpg"
-                                                    className="hidden"
+                                                    className="h-0 opacity-0"
                                                     onChange={(e) =>
                                                         handlePreview(e)
                                                     }
@@ -125,11 +160,11 @@ export default function Create({ auth: { user }, notifications }: PageProps<{ no
                             />
                             <FormField
                                 control={control}
-                                name="nama"
+                                name="judul"
                                 render={({ field }) => (
                                     <FormItem className="grid gap-2">
                                         <FormLabel className="font-bold text-base">
-                                            Nama Sektor{" "}
+                                            Judul Kegiatan{" "}
                                             <span className="text-red-800">
                                                 *
                                             </span>
@@ -137,7 +172,7 @@ export default function Create({ auth: { user }, notifications }: PageProps<{ no
                                         <FormControl>
                                             <Input
                                                 required
-                                                placeholder="Masukan nama proyek CSR"
+                                                placeholder="Masukan Judul Kegiatan"
                                                 {...field}
                                             />
                                         </FormControl>
@@ -146,29 +181,70 @@ export default function Create({ auth: { user }, notifications }: PageProps<{ no
                                 )}
                             />
                             <FormField
-                                control={form.control}
-                                name="deskripsi"
+                                control={control}
+                                name="tags"
                                 render={({ field }) => (
-                                    <FormItem>
+                                    <FormItem className="grid gap-2">
                                         <FormLabel className="font-bold text-base">
-                                            Deskripsi{" "}
+                                            Tags{" "}
                                             <span className="text-red-800">
                                                 *
                                             </span>
                                         </FormLabel>
                                         <FormControl>
-                                            <Textarea
-                                                placeholder="Masukan Deskripsi Proyek"
-                                                className="resize-none"
-                                                {...field}
-                                            />
+                                            <div className="flex border rounded-md items-center overflow-hidden">
+                                                {tags.length > 0 && (
+                                                    <div className="px-2 flex items-center gap-2">
+                                                        {tags.map((tag, i) => (
+                                                            <div className="flex h-fit bg-blue-900 py-1 px-2 text-sm text-white rounded-md items-center gap-2" key={i}>
+                                                                <span>{tag}</span>
+                                                                <X className="w-4 h-4 cursor-pointer" onClick={() => removeTag(i)} />
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                                <Input
+                                                    className="border-none rounded-none focus-visible:ring-0 "
+                                                    placeholder="Masukan Tags Kegiatan"
+                                                    onKeyDown={addTag}
+                                                />
+                                            </div>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
+                            <FormItem>
+                                <FormLabel className="font-bold text-base">
+                                    Deskripsi{" "}
+                                    <span className="text-red-800">
+                                        *
+                                    </span>
+                                </FormLabel>
+                                <FormControl>
+                                    <Editor
+                                        apiKey='asfqgxcvcom3cj3gly6w5io6rbk2lade6yhcqehdpup4rf9k'
+                                        value={deskripsi}
+                                        onEditorChange={handleEditorChange}
+                                        init={{
+                                            height: 300,
+                                            menubar: false,
+                                            plugins: [
+                                                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                                                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                                                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                                            ],
+                                            toolbar: 'undo redo | blocks | ' +
+                                                'bold italic forecolor | alignleft aligncenter ' +
+                                                'alignright alignjustify | bullist numlist outdent indent | ' +
+                                                'removeformat | help',
+                                            content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                                        }}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
                         </div>
-
                         <div className="bg-white p-4 rounded-md border flex justify-end items-center gap-4">
                             <Button
                                 type="submit"
@@ -181,6 +257,7 @@ export default function Create({ auth: { user }, notifications }: PageProps<{ no
                         </div>
                     </form>
                 </Form>
+
             </div>
         </LayoutAdmin>
     );

@@ -78,7 +78,10 @@ class KegiatanController extends Controller
      */
     public function edit(Kegiatan $kegiatan)
     {
-        //
+        return Inertia::render('Admin/Kegiatan/Edit', [
+            'notifications' => Auth::user()->notifications->take(5),
+            'kegiatan' => $kegiatan
+        ]);
     }
 
     /**
