@@ -95,12 +95,7 @@ export default function Detail({ auth: { user }, laporan, notifications }: PageP
                         <div className="overflow-x-auto flex gap-4 scroll-hidden">
                             {
                                 laporan.photos.map((photo: string, index: number) => (
-                                    <img key={index} src={`/storage/${photo}`} className="flex-basis-1/4 min-w-[23rem] h-60 rounded-md bg-neutral-300" />
-                                ))
-                            }
-                            {
-                                laporan.photos.map((photo: string, index: number) => (
-                                    <img key={index} src={`/storage/${photo}`} className="flex-basis-1/4 min-w-[23rem] h-60 rounded-md bg-neutral-300" />
+                                    <img key={index} src={`/storage/${photo}`} className="flex-basis-1/4 min-w-[23rem] h-60 rounded-md bg-neutral-300 object-scale-down" />
                                 ))
                             }
                         </div>
