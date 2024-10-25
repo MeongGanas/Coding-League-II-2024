@@ -25,8 +25,26 @@ class DashboardMitraController extends Controller
             $searchTerm = request("search");
             $query->where('name', 'like', '%' . $searchTerm . '%');
         }
-
         $this->applyFilters($proyek, $laporan);
+
+        $secondQuery = Laporan::query();
+
+        if (request("sort")) {
+            $sort = request("sort");
+            $order = request("order") ?? 'asc';
+            if (request("with")) {
+                $relationTable = $sort . 's';
+                $relationColumn = request("with");
+                $secondQuery->join($relationTable, 'laporans.' . $sort . '_id', '=', $relationTable . '.id')
+                    ->orderBy($relationTable . '.' . $relationColumn, $order)
+                    ->select('laporans.*');
+            } else {
+                $secondQuery->orderBy($sort, $order);
+            }
+        } else {
+            $secondQuery->orderBy('updated_at', 'desc');
+        }
+
 
         return Inertia::render('Mitra/Dashboard', [
             'notifications' => Auth::user()->notifications->take(5),
@@ -43,7 +61,7 @@ class DashboardMitraController extends Controller
             'filters' => [
                 'tahun' => $this->getPossibleYear(clone $proyek, clone $laporan)->values(),
             ],
-            'laporans' => $query->latest()->paginate(5)
+            'laporans' => $secondQuery->latest()->paginate(5)
         ]);
     }
 

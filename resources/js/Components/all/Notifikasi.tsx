@@ -12,7 +12,6 @@ import { Button } from "../ui/button";
 import { Link } from "@inertiajs/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Pusher from "pusher-js";
 
 
 export default function Notifikasi({ notifications, user }: { notifications: any[], user: any }) {
@@ -36,8 +35,6 @@ export default function Notifikasi({ notifications, user }: { notifications: any
             return;
         }
     }
-
-
 
     return (
         <Popover>
@@ -82,9 +79,10 @@ export default function Notifikasi({ notifications, user }: { notifications: any
 }
 
 const statusClass: any = {
-    success: "bg-[#ECFDF3] text-success text-[12px] hover:bg-success-bg ",
-    warning: "bg-[#FEF3F2] text-primary text-[12px] hover:bg-primary-bg ",
     info: "bg-[#EFF8FF] text-[#175CD3] text-[12px] hover:bg-[#EFF6FF] ",
+    success: "bg-success-bg text-success text-[12px] hover:bg-success-bg ",
+    warning: "bg-warning-bg text-warning text-[12px] hover:bg-warning-bg",
+    error: "bg-error-bg text-error text-[12px] hover:bg-error-bg",
 }
 
 function ItemNotifikasi({ notification }: { notification: any }) {

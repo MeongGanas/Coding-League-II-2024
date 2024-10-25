@@ -163,12 +163,12 @@ class LaporanController extends Controller
 
         $notification = new StatusNotification(
             ['mail', 'database'],
-            Auth::user(),
+            $laporan->mitra->user,
             $request->status,
             $request->message,
             $laporan
         );
-        Notification::send(Auth::user(), $notification);
+        Notification::send($laporan->mitra->user, $notification);
 
         return redirect()->intended(route('laporan.index'));
     }
