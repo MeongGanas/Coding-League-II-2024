@@ -47,11 +47,23 @@ class StatusNotification extends Notification
             'Ditolak' => null
         ];
 
+        $statusText = [
+            'Revisi' => 'Laporan perlu direvisi',
+            'Diterima' => 'Laporan telah diterima',
+            'Ditolak' => 'Laporan ditolak'
+        ];
+
+        $lineText = [
+            'Revisi' => 'perlu direvisi',
+            'Diterima' => 'telah diterima',
+            'Ditolak' => 'ditolak'
+        ];
+
         return (new MailMessage)
-            ->subject('Status Laporan ' . $this->laporan->name)
+            ->subject($statusText[$this->status] . ': ' . $this->laporan->name)
             ->greeting('Halo, ' . $this->user->name)
-            ->line('Laporan ' . $this->laporan->name . $this->status === "Revisi" ? 'perlu' : 'telah' . strtolower($this->status))
-            ->line('Alasan: ' . $this->reason ?? 'Alasan tidak disebutkan')
+            ->line('Anda menerima notifikasi ini karena laporan ' . $this->laporan->name . ' ' . $lineText[$this->status] . '.')
+            ->line($this->status === 'Diterima' ? null : 'Alasan: ' . $this->reason ?? 'Alasan tidak disebutkan.')
             ->action('Klik di sini untuk melihat laporan', $actionUrls[$this->status] ?? null)
             ->line('Terima kasih telah menggunakan aplikasi kami!');
     }
