@@ -272,7 +272,8 @@ class DashboardMitraController extends Controller
     {
         return Inertia::render('Mitra/Laporan/Create', [
             'sektors' => Sektor::latest()->get(),
-            'proyeks' => Proyek::where('status', 'Terbit')->latest()->get()
+            'proyeks' => Proyek::where('status', 'Terbit')->latest()->get(),
+            'notifications' => Auth::user()->notifications->take(5),
         ]);
     }
 
@@ -281,7 +282,8 @@ class DashboardMitraController extends Controller
         $laporan->load(['sektor', 'proyek']);
 
         return Inertia::render('Mitra/Laporan/Detail', [
-            'laporan' => $laporan
+            'laporan' => $laporan,
+            'notifications' => Auth::user()->notifications->take(5),
         ]);
     }
 
@@ -290,7 +292,8 @@ class DashboardMitraController extends Controller
         return Inertia::render('Mitra/Laporan/Edit', [
             'laporan' => $laporan,
             'sektors' => Sektor::latest()->get(),
-            'proyeks' => Proyek::where('status', 'Terbit')->latest()->get()
+            'proyeks' => Proyek::where('status', 'Terbit')->latest()->get(),
+            'notifications' => Auth::user()->notifications->take(5),
         ]);
     }
 

@@ -50,9 +50,11 @@ export default function Notifikasi({ notifications, user }: { notifications: any
                         onClick={markAsRead}
                     >
                         <Bell className="h-6 w-6" />
-                        <Badge className={`w-6 -right-2 absolute top-0 aspect-square bg-[#98100A] flex hover:bg-red-700 items-center justify-center ${unreadCount === 0 ? '' : didUnread ? '' : 'pulse'}`}>
-                            {unreadCount}
-                        </Badge>
+                        {unreadCount > 0 && (
+                            <Badge className={`w-6 -right-2 absolute top-0 aspect-square bg-[#98100A] flex hover:bg-red-700 items-center justify-center ${unreadCount === 0 ? '' : didUnread ? '' : 'pulse'}`}>
+                                {unreadCount}
+                            </Badge>
+                        )}
                     </Button>
                 </div>
             </PopoverTrigger>

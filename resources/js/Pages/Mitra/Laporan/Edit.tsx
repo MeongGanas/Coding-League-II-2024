@@ -54,7 +54,7 @@ const proyekSchema = z.object({
 
 type ProyekSchema = z.infer<typeof proyekSchema>;
 
-export default function Edit({ auth: { user }, laporan, sektors, proyeks }: PageProps<{ sektors: Sektor[], proyeks: Proyek[], laporan: Laporan }>) {
+export default function Edit({ auth: { user }, laporan, sektors, proyeks, notifications }: PageProps<{ sektors: Sektor[], proyeks: Proyek[], laporan: Laporan, notifications: any }>) {
     const [preview, setPreview] = useState<File[]>([]);
     const [status, setStatus] = useState("Dikirim");
     const [kecamatan, setKecamatan] = useState<Kecamatan[] | null>(null);
@@ -145,7 +145,7 @@ export default function Edit({ auth: { user }, laporan, sektors, proyeks }: Page
     }, [])
 
     return (
-        <LayoutMitra user={user}>
+        <LayoutMitra user={user} notifications={notifications}>
             <Head title="Edit Laporan" />
             <div className="container px-5 py-10">
                 <div className="mb-10">

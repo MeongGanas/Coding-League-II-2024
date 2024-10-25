@@ -13,9 +13,9 @@ import { id } from "date-fns/locale";
 import { BriefcaseBusiness, Home, Pencil, Trash2, TriangleAlert } from "lucide-react";
 import Markdown from "react-markdown";
 
-export default function Detail({ auth: { user }, laporan }: PageProps<{ laporan: Laporan }>) {
+export default function Detail({ auth: { user }, laporan, notifications }: PageProps<{ laporan: Laporan, notifications: any }>) {
     return (
-        <LayoutMitra user={user}>
+        <LayoutMitra user={user} notifications={notifications}>
             <Head title="Detail Laporan" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">

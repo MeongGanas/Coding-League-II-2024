@@ -58,6 +58,8 @@ class LaporanController extends Controller
             } else {
                 $query->orderBy($sort, $order);
             }
+        } else {
+            $query->orderBy('updated_at', 'desc');
         }
 
         $paginate = request("paginate") ?? 5;
@@ -158,7 +160,6 @@ class LaporanController extends Controller
                 'mitra_id' => $laporan->mitra_id
             ]);
         }
-
 
         $notification = new StatusNotification(
             ['mail', 'database'],

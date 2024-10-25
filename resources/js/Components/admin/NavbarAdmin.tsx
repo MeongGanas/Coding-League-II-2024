@@ -53,7 +53,7 @@ export default function NavbarAdmin({ user, notifications }: { user: UserType, n
                 </nav>
                 <div className="flex items-center">
                     <div className="flex items-center md:gap-2">
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2">
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
                                     <div className="flex items-center gap-2">
