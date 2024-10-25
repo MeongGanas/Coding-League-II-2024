@@ -49,7 +49,9 @@ class KegiatanController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Admin/Kegiatan/Create');
+        return Inertia::render('Admin/Kegiatan/Create', [
+            'notifications' => Auth::user()->notifications->take(5),
+        ]);
     }
 
     /**
@@ -66,6 +68,7 @@ class KegiatanController extends Controller
     public function show(Kegiatan $kegiatan)
     {
         return Inertia::render('Admin/Kegiatan/Detail', [
+            'notifications' => Auth::user()->notifications->take(5),
             'kegiatan' => $kegiatan
         ]);
     }

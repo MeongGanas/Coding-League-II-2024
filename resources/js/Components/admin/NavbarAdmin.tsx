@@ -86,7 +86,7 @@ export default function NavbarAdmin({ user, notifications }: { user: UserType, n
                                     <LogoutButton />
                                 </DropdownMenuContent>
                             </DropdownMenu>
-                            <Notifikasi notifications={notifications} />
+                            <Notifikasi notifications={notifications} user={user} />
                         </div>
                     </div>
                     <AdminSheet />

@@ -12,9 +12,10 @@ import { Button } from "../ui/button";
 import { Link } from "@inertiajs/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Pusher from "pusher-js";
 
 
-export default function Notifikasi({ notifications }: { notifications: any[] }) {
+export default function Notifikasi({ notifications, user }: { notifications: any[], user: any }) {
 
     const [localNotification, setLocalNotification] = useState<any[]>(notifications);
     const [didUnread, setDidUnread] = useState(false);
@@ -36,15 +37,7 @@ export default function Notifikasi({ notifications }: { notifications: any[] }) 
         }
     }
 
-    const hydrateNotifications = async () => {
-        const { data } = await axios.get('/notifications')
-        setLocalNotification(data.notifications);
-        return data.notifications;
-    }
 
-    useEffect(() => {
-        hydrateNotifications();
-    }, []);
 
     return (
         <Popover>

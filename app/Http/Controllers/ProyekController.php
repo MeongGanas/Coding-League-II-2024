@@ -70,6 +70,7 @@ class ProyekController extends Controller
     public function create()
     {
         return Inertia::render('Admin/Proyek/Create', [
+            'notifications' => Auth::user()->notifications->take(5),
             'sektors' => Sektor::latest()->get()
         ]);
     }
@@ -114,6 +115,7 @@ class ProyekController extends Controller
         }]);
 
         return Inertia::render('Admin/Proyek/Detail', [
+            'notifications' => Auth::user()->notifications->take(5),
             'proyek' => $proyek
         ]);
     }

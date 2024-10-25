@@ -5,9 +5,9 @@ import LayoutAdmin from "@/Layouts/LayoutAdmin";
 import { PageProps, Sektor } from "@/types";
 import { Head } from "@inertiajs/react";
 
-export default function Detail({ auth: { user }, sektor }: PageProps<{ sektor: Sektor }>) {
+export default function Detail({ auth: { user }, sektor, notifications }: PageProps<{ sektor: Sektor, notifications: any }>) {
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Detail Sektor" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">
@@ -31,7 +31,8 @@ export default function Detail({ auth: { user }, sektor }: PageProps<{ sektor: S
                         <h1 className="font-bold text-2xl mb-4">
                             Mitra Yang Berpartisipasi
                         </h1>
-                        <DataTableMitra />
+                        {/* TODO */}
+                        {/* <DataTableMitra /> */}
                     </div>
                 </div>
             </div>

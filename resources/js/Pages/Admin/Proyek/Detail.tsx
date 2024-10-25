@@ -15,7 +15,7 @@ import { BriefcaseBusiness } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
-export default function Detail({ auth: { user }, proyek }: PageProps<{ proyek: Proyek }>) {
+export default function Detail({ auth: { user }, proyek, notifications }: PageProps<{ proyek: Proyek, notifications: any }>) {
     const [isSubmitted, setIsSubmitted] = useState(false)
 
     const terbitkan = () => {
@@ -41,7 +41,7 @@ export default function Detail({ auth: { user }, proyek }: PageProps<{ proyek: P
     }
 
     return (
-        <LayoutAdmin user={user}>
+        <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Detail Proyek" />
             <div className="container py-10 px-5 space-y-5">
                 <div className="mb-10">
