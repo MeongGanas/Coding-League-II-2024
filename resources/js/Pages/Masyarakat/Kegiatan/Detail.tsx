@@ -7,6 +7,7 @@ import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
 import { Kegiatan, PageProps } from "@/types";
 import { Link } from "@inertiajs/react";
 import { format } from "date-fns";
+import DOMPurify from "dompurify";
 import { Facebook, Instagram, Link as LinkIcon, Twitter, TwitterIcon } from "lucide-react";
 import toast from "react-hot-toast";
 import Markdown from 'react-markdown';
@@ -34,7 +35,7 @@ export default function KegiatanDetail({ auth: { user }, kegiatan, kegiatanLainn
             <div className="container py-10 max-w-screen-sm mx-auto space-y-4">
                 <div className="space-y-4 border-b pb-10">
                     <Garis />
-                    <Markdown>{kegiatan.deskripsi}</Markdown>
+                    <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(kegiatan.deskripsi)  }}></p>
                 </div>
                 <div className="flex flex-wrap gap-3">
                     {kegiatan.tags.map((tag) => (

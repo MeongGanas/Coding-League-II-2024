@@ -1,3 +1,4 @@
+import DOMPurify from "dompurify";
 import DetailCard from "@/Components/admin/dashboard/DetailCard";
 import { DialogTerbit } from "@/Components/admin/dashboard/proyek/DialogTerbit";
 import DataTableMitra from "@/Components/admin/dashboard/proyek/TabelProyekMitra";
@@ -49,7 +50,7 @@ export default function Detail({ auth: { user }, kegiatan, notifications }: Page
             <div className="container py-10 px-5 space-y-5">
                 <div className="bg-white border rounded-md p-6 space-y-5">
                     <img src={`/storage/${kegiatan.image}`} className="w-full h-96 object-cover rounded-md" />
-                    <Markdown>{kegiatan.rincian}</Markdown>
+                    <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(kegiatan.deskripsi)  }}></p>
                     <div className="flex gap-2">
                         <h1 className="text-neutral-500 font-semibold text-base">
                             Tags:

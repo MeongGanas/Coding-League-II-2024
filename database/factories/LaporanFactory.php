@@ -42,7 +42,7 @@ class LaporanFactory extends Factory
             ]),
             'realisasi' => $this->faker->randomFloat(2, 0, 1000000000),
             'realisasi_date' => $pastYear,
-            'status' => $this->faker->randomElement(['Diterima', 'Revisi', 'Draf']),
+            'status' => $this->faker->randomElement(['Diterima', 'Revisi', 'Draf', 'Dikirim', 'Ditolak']),
             'rincian' => $this->faker->paragraph(4),
             'photos' => [
                 'example.jpg',

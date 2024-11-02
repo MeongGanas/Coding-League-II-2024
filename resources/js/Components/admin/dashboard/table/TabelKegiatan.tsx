@@ -1,3 +1,4 @@
+import DOMPurify from "dompurify";
 import { Badge } from "@/Components/ui/badge";
 import {
     Select,
@@ -22,6 +23,7 @@ import { Button } from "@/Components/ui/button";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { KegiatanProps } from "@/types";
+import Markdown from "react-markdown";
 
 const statusColor = {
     "Terbit": "text-success bg-success-bg hover:bg-success-bg",
@@ -112,12 +114,13 @@ export default function DataTableKegiatan({ kegiatans }: { kegiatans: KegiatanPr
                                     {kegiatan.name}
                                 </TableCell>
                                 <TableCell className="text-base">
-                                    {kegiatan.deskripsi}
+                                    <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(kegiatan.deskripsi)  }}></p>
                                 </TableCell>
                                 <TableCell className="text-base">
-                                    {
+                                    {/* {
                                         kegiatan.tgl_terbit ? format(new Date(kegiatan.tgl_terbit), 'dd MMMM y', { locale: id }) : "-"
-                                    }
+                                    } */}
+                                    {kegiatan.tgl_terbit}
                                 </TableCell>
                                 <TableCell>
                                     <Badge className={statusColor[kegiatan.status]}>

@@ -29,8 +29,7 @@ const selectComponent = ({
     customValue?: string;
 }) => {
     return (
-        <Select onValueChange={(value) => onValueChange(label, value)}
-        >
+        <Select onValueChange={(value) => onValueChange(label, value)}>
             <SelectTrigger className="w-full">
                 <SelectValue
                     placeholder={`Pilih ${
@@ -89,6 +88,7 @@ export default function SelectAndDownload({
     menu: string;
 }) {
     const params = new URLSearchParams(window.location.search);
+    console.log(tahunOptions);
     let paramchanged: boolean = false;
 
     const handleParamSet = (param: string, value: string) => {
@@ -126,7 +126,7 @@ export default function SelectAndDownload({
             }, {});
         }
         return {};
-    }
+    };
 
     return (
         <div
@@ -154,13 +154,12 @@ export default function SelectAndDownload({
                     options: newSektorOptions(),
                     onValueChange: handleParamSet,
                 })}
-            {mitra && (
+            {mitra &&
                 selectComponent({
                     label: "mitra",
                     options: newMitraOptions(),
                     onValueChange: handleParamSet,
-                })
-            )}
+                })}
             <div className="col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-5">
                 <Button
                     onClick={commitParams}

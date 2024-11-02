@@ -10,7 +10,6 @@ export default {
         "./resources/views/**/*.blade.php",
         "./resources/js/**/*.tsx",
     ],
-
     theme: {
         extend: {
             fontFamily: {
@@ -87,5 +86,5 @@ export default {
         },
     },
 
-    plugins: [forms, require("tailwindcss-animate")],
+    plugins: [forms, require("tailwindcss-animate"), require("@tailwindcss/typography")],
 };

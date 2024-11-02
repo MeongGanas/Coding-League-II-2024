@@ -76,6 +76,12 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::prefix('mitra')->middleware(['auth', 'checkMitra'])->group(function () {
+
+    Route::prefix('download')->group(function () {
+        Route::get('dashboard/csv', [DashboardMitraController::class, 'downloadCSV']);
+        Route::get('dashboard/pdf', [DashboardMitraController::class, 'downloadPDF']);
+    });
+
     Route::get("/dashboard", [DashboardMitraController::class, 'index'])->name('dashboardMitra');
 
     Route::get("/laporan/create", [DashboardMitraController::class, 'CreateLaporan'])->name('laporan.mitra.create');

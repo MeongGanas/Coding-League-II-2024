@@ -15,12 +15,14 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
-import { CloudUpload, Send, X } from "lucide-react";
+import { CloudUpload, Send, X, Save} from "lucide-react";
 import { Kegiatan, PageProps } from "@/types";
 import { Editor } from '@tinymce/tinymce-react';
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const kegiatanSchema = z.object({
-    judul: z.string(),
+    name: z.string(),
     tags: z.array(z.string()).min(1, { message: "Minimal terdapat 1 tags" }),
     image: z
         .instanceof(FileList).optional(),
@@ -34,6 +36,7 @@ export default function Edit({ auth: { user }, notifications, kegiatan }: PagePr
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [deskripsi, setDeskripsi] = useState(kegiatan.deskripsi);
     const [tags, setTags] = useState<string[]>(kegiatan.tags);
+    const [status, setStatus] = useState("Terbit");
 
     const handleEditorChange = (newContent: string) => {
         setDeskripsi(newContent);
@@ -42,7 +45,7 @@ export default function Edit({ auth: { user }, notifications, kegiatan }: PagePr
     const form = useForm<KegiatanSchema>({
         resolver: zodResolver(kegiatanSchema),
         defaultValues: {
-            judul: kegiatan.name,
+            name: kegiatan.name,
             tags: kegiatan.tags
         },
     });
@@ -52,8 +55,37 @@ export default function Edit({ auth: { user }, notifications, kegiatan }: PagePr
     const fileRef = form.register("image");
 
     const submit = handleSubmit((values) => {
-        const data = { ...values, deskripsi };
-        console.log(data)
+
+        setIsSubmitted(true);
+
+        const formData = new FormData();
+
+        formData.append("name", values.name);
+        formData.append("deskripsi", deskripsi);
+        formData.append("status", status);
+        values.tags.forEach((tag, index) => {
+            formData.append(`tags[${index}]`, tag);
+        });
+        formData.append("image", values.image ? values.image[0] : null);
+        formData.append('_method', 'PATCH');
+
+        const promise = axios.post(`/admin/kegiatan/${kegiatan.id}`
+            , formData);
+
+        toast.promise(promise, {
+            loading: "Loading...",
+            success: () => {
+                setIsSubmitted(false)
+                window.location.replace('/admin/kegiatan')
+                return "Edit Kegiatan Success"
+            },
+            error: (err) => {
+                console.log(err.response.data)
+                setIsSubmitted(false)
+                return err?.response.data.message || "Something went wrong"
+            }
+        })
+
     });
 
     const handlePreview = (e: SyntheticEvent) => {
@@ -160,7 +192,7 @@ export default function Edit({ auth: { user }, notifications, kegiatan }: PagePr
                             />
                             <FormField
                                 control={control}
-                                name="judul"
+                                name="name"
                                 render={({ field }) => (
                                     <FormItem className="grid gap-2">
                                         <FormLabel className="font-bold text-base">
@@ -246,6 +278,15 @@ export default function Edit({ auth: { user }, notifications, kegiatan }: PagePr
                             </FormItem>
                         </div>
                         <div className="bg-white p-4 rounded-md border flex justify-end items-center gap-4">
+                        <Button
+                                type="submit"
+                                className="border bg-transparent text-neutral-600 gap-2 font-semibold"
+                                disabled={isSubmitted}
+                                onClick={() => {setStatus('Draf')}}
+                            >
+                                <Save className="w-5 h-5" />
+                                Simpan Sebagai Draft
+                            </Button>
                             <Button
                                 type="submit"
                                 className="hover:bg-red-700 font-semibold gap-2"

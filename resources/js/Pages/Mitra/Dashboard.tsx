@@ -9,8 +9,34 @@ import DataTableLaporanMitra from "@/Components/mitra/TabelLaporan";
 import { Button } from "@/Components/ui/button";
 import { Plus } from "lucide-react";
 import SearchForm from "@/Components/admin/Search";
+import { useEffect, useRef } from "react";
 
-export default function Dashboard({ auth: { user }, counts, realisasi, filters, laporans, notifications }: PageProps<{ counts: Counts, realisasi: Realisasi, filters: any, laporans: LaporanProps, notifications: any }>) {
+export default function Dashboard({
+    auth: { user },
+    counts,
+    realisasi,
+    filters,
+    laporans,
+    notifications,
+}: PageProps<{
+    counts: Counts;
+    realisasi: Realisasi;
+    filters: any;
+    laporans: LaporanProps;
+    notifications: any;
+}>) {
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has("search") || params.has("sort")) {
+            setTimeout(() => {
+                const laporanMitraElement = document.getElementById("laporan-mitra");
+                if (laporanMitraElement) {
+                    laporanMitraElement.scrollIntoView({ behavior: "smooth" });
+                }
+            }, 20);
+        }
+    }, []);
+
     return (
         <LayoutMitra user={user} notifications={notifications}>
             <Head title="Dashboard Mitra" />
@@ -28,10 +54,18 @@ export default function Dashboard({ auth: { user }, counts, realisasi, filters, 
                 <RealisasiProyek realisasi={realisasi} />
             </div>
 
-            <div className="container px-5 pb-10 space-y-5">
+            <div id="laporan-mitra" className="container px-5 pb-10 space-y-5">
                 <div className="flex items-center justify-between">
-                    <h1 className="font-bold text-2xl">Data Statistik</h1>
-                    <Button asChild className="hover:bg-red-700"><Link href="/mitra/laporan/create" className="flex items-center gap-1"><Plus className="w-4 h-4" />Buat Laporan Baru</Link></Button>
+                    <h1 className="font-bold text-2xl">Laporan Mitra</h1>
+                    <Button asChild className="hover:bg-red-700">
+                        <Link
+                            href="/mitra/laporan/create"
+                            className="flex items-center gap-1"
+                        >
+                            <Plus className="w-4 h-4" />
+                            Buat Laporan Baru
+                        </Link>
+                    </Button>
                 </div>
                 <SearchForm />
                 <DataTableLaporanMitra laporans={laporans} />

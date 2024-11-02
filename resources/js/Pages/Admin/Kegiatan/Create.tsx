@@ -15,12 +15,14 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
-import { CloudUpload, Send, X } from "lucide-react";
+import { CloudUpload, Send, X, Save } from "lucide-react";
 import { PageProps } from "@/types";
 import { Editor } from '@tinymce/tinymce-react';
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const kegiatanSchema = z.object({
-    judul: z.string(),
+    name: z.string(),
     tags: z.array(z.string()).min(1, { message: "Minimal terdapat 1 tags" }),
     image: z
         .instanceof(FileList)
@@ -33,6 +35,8 @@ type KegiatanSchema = z.infer<typeof kegiatanSchema>;
 export default function Create({ auth: { user }, notifications }: PageProps) {
     const [preview, setPreview] = useState<string | null>(null);
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [status, setStatus] = useState("Terbit");
+
     const [deskripsi, setDeskripsi] = useState('');
     const [tags, setTags] = useState<string[]>([]);
 
@@ -44,8 +48,8 @@ export default function Create({ auth: { user }, notifications }: PageProps) {
     const form = useForm<KegiatanSchema>({
         resolver: zodResolver(kegiatanSchema),
         defaultValues: {
-            judul: "",
-            tags: []
+            name: "",
+            tags: [],
         },
     });
 
@@ -54,8 +58,34 @@ export default function Create({ auth: { user }, notifications }: PageProps) {
     const fileRef = form.register("image");
 
     const submit = handleSubmit((values) => {
-        const data = { ...values, deskripsi };
-        console.log(data)
+        setIsSubmitted(true);
+
+        const formData = new FormData();
+
+        formData.append("name", values.name);
+        formData.append("deskripsi", deskripsi);
+        formData.append("status", status);
+        values.tags.forEach((tag, index) => {
+            formData.append(`tags[${index}]`, tag);
+        });
+        formData.append("image", values.image[0]);
+
+        const promise = axios.post('/admin/kegiatan', formData);
+
+        toast.promise(promise, {
+            loading: "Loading...",
+            success: () => {
+                setIsSubmitted(false)
+                window.location.replace('/admin/kegiatan')
+                return "Add Kegiatan Success"
+            },
+            error: (err) => {
+                console.log(err.response.data)
+                setIsSubmitted(false)
+                return err?.response.data.message || "Something went wrong"
+            }
+        })
+
     });
 
     const handlePreview = (e: SyntheticEvent) => {
@@ -72,6 +102,22 @@ export default function Create({ auth: { user }, notifications }: PageProps) {
 
             const target = e.target as HTMLInputElement;
             const newTag = target.value.trim();
+
+            if (newTag && !tags.includes(newTag)) {
+                const currentTags = [...tags, newTag];
+                setTags(currentTags);
+                setValue("tags", currentTags)
+
+                target.value = '';
+            }
+        }
+        if (e.key === 'Backspace' && e.currentTarget.value === '' && tags.length > 0) {
+            removeTag(tags.length - 1);
+        }
+        if (e.key === ',') {
+            e.preventDefault();
+            const target = e.target as HTMLInputElement;
+            const newTag = target.value.trim().replace(',', '');
 
             if (newTag && !tags.includes(newTag)) {
                 const currentTags = [...tags, newTag];
@@ -162,7 +208,7 @@ export default function Create({ auth: { user }, notifications }: PageProps) {
                             />
                             <FormField
                                 control={control}
-                                name="judul"
+                                name="name"
                                 render={({ field }) => (
                                     <FormItem className="grid gap-2">
                                         <FormLabel className="font-bold text-base">
@@ -198,7 +244,7 @@ export default function Create({ auth: { user }, notifications }: PageProps) {
                                                 {tags.length > 0 && (
                                                     <div className="px-2 flex items-center gap-2">
                                                         {tags.map((tag, i) => (
-                                                            <div className="flex h-fit bg-blue-900 py-1 px-2 text-sm text-white rounded-md items-center gap-2" key={i}>
+                                                            <div className="flex h-fit bg-blue-900 py-1 px-2 text-sm text-white rounded-md text-nowrap items-center gap-2" key={i}>
                                                                 <span>{tag}</span>
                                                                 <X className="w-4 h-4 cursor-pointer" onClick={() => removeTag(i)} />
                                                             </div>
@@ -248,6 +294,16 @@ export default function Create({ auth: { user }, notifications }: PageProps) {
                             </FormItem>
                         </div>
                         <div className="bg-white p-4 rounded-md border flex justify-end items-center gap-4">
+
+                        <Button
+                                type="submit"
+                                className="border bg-transparent text-neutral-600 gap-2 font-semibold"
+                                disabled={isSubmitted}
+                                onClick={() => {setStatus('Draf')}}
+                            >
+                                <Save className="w-5 h-5" />
+                                Simpan Sebagai Draft
+                            </Button>
                             <Button
                                 type="submit"
                                 className="hover:bg-red-700 font-semibold gap-2"

@@ -18,7 +18,6 @@ class DashboardController extends Controller
         $proyek = Proyek::where('status', 'Terbit');
         $mitra = Mitra::where('status', '!=', 'Pengajuan');
         $laporan = Laporan::where('status', 'Diterima')->with('sektor', 'mitra');
-
         $this->applyFilters(clone $proyek, clone $mitra, clone $laporan);
 
         return Inertia::render('Admin/Dashboard', [
@@ -42,35 +41,49 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function applyFilters($proyek = null, $mitra = null, $laporan = null)
+    public function applyFilters($proyek = null, $mitra = null, $laporan = null,
+     $yearfilter = ['tgl_awal', 'tgl_daftar', 'realisasi_date'],
+     $quarterfilter = ['tgl_awal', 'tgl_daftar', 'realisasi_date'],
+     $sektorfilter = ['sektor_id', 'sektor_id'], $mitrafilter = ['mitra_id'])
     {
         if (request("tahun")) {
             $tahun = request("tahun");
-            if ($proyek) $proyek->whereYear('tgl_awal', $tahun);
-            if ($mitra) $mitra->whereYear('tgl_daftar', $tahun);
-            if ($laporan) $laporan->whereYear('realisasi_date', $tahun);
+            if ($proyek) $proyek->whereYear($yearfilter[0], $tahun);
+            if ($mitra) $mitra->whereYear($yearfilter[1], $tahun);
+            if ($laporan) $laporan->whereYear($yearfilter[2], $tahun);
         }
         if (request("kuartal")) {
             $kuartal = request("kuartal");
-            if ($proyek) $proyek->whereRaw('QUARTER(tgl_awal) = ?', $kuartal);
-            if ($mitra) $mitra->whereRaw('QUARTER(tgl_daftar) = ?', $kuartal);
-            if ($laporan) $laporan->whereRaw('QUARTER(realisasi_date) = ?', $kuartal);
+            if ($proyek) $proyek->whereRaw('QUARTER(' . $quarterfilter[0] . ') = ?', $kuartal);
+            if ($mitra) $mitra->whereRaw('QUARTER(' . $quarterfilter[1] . ') = ?', $kuartal);
+            if ($laporan) $laporan->whereRaw('QUARTER(' . $quarterfilter[2] . ') = ?', $kuartal);
         }
         if (request("sektor")) {
-            if ($proyek) $proyek->where('sektor_id', request("sektor"));
-            if ($laporan) $laporan->where('sektor_id', request("sektor"));
+            if ($proyek) $proyek->where($sektorfilter[0], request("sektor"));
+            if ($laporan) $laporan->where($sektorfilter[1], request("sektor"));
         }
         if (request("mitra")) {
-            if ($laporan) $laporan->where('mitra_id', request("mitra"));
+            if ($laporan) $laporan->where($mitrafilter[0], request("mitra"));
             // if ($proyek) $proyek->where('mitra_id', request("mitra"));
+
         }
     }
 
-    public function getPossibleYear($proyek, $mitra, $laporan)
+    public function getPossibleYear($proyek = null, $mitra = null, $laporan = null, $selectOptions = ['tgl_awal', 'tgl_daftar', 'realisasi_date'])
     {
-        $possibleYearProyek = $proyek->selectRaw('YEAR(tgl_awal) as year')->distinct()->get()->pluck('year');
-        $possibleYearMitra = $mitra->selectRaw('YEAR(tgl_daftar) as year')->distinct()->get()->pluck('year');
-        $possibleYearLaporan = $laporan->selectRaw('YEAR(realisasi_date) as year')->distinct()->get()->pluck('year');
+        $possibleYearProyek = collect();
+        $possibleYearMitra = collect();
+        $possibleYearLaporan = collect();
+
+        if ($proyek) {
+            $possibleYearProyek = $proyek->selectRaw('YEAR(' . $selectOptions[0] . ') as year')->distinct()->get()->pluck('year');
+        }
+        if ($mitra) {
+            $possibleYearMitra = $mitra->selectRaw('YEAR(' . $selectOptions[1] . ') as year')->distinct()->get()->pluck('year');
+        }
+        if ($laporan) {
+            $possibleYearLaporan = $laporan->selectRaw('YEAR(' . $selectOptions[2] . ') as year')->distinct()->get()->pluck('year');
+        }
         $possibleYear = $possibleYearProyek->merge($possibleYearMitra)->merge($possibleYearLaporan)->unique();
 
         return $possibleYear;
@@ -205,34 +218,31 @@ class DashboardController extends Controller
             'deskripsi',
             'tgl_daftar',
             'status'
-
         ]);
 
         $csvDataLaporan = $this->generateCSVData($laporan, [
             'ID',
             'Name',
-            'Proyek Name',
             'Mitra ID',
             'Sektor ID',
             'Proyek ID',
             'Lokasi',
             'Realisasi',
             'Realisasi Date',
-            'Rincian',
+            'Deskripsi',
             'Tgl Kirim',
             'Status',
         ], [
             'id',
             'name',
-            'proyek_name',
             'mitra_id',
             'sektor_id',
             'proyek_id',
             'lokasi',
             'realisasi',
             'realisasi_date',
-            'rincian',
-            'tgl_kirim',
+            'deskripsi',
+            'created_at',
             'status'
         ]);
 
@@ -249,7 +259,7 @@ class DashboardController extends Controller
         return response()->download(storage_path($zipFileName))->deleteFileAfterSend(true);
     }
 
-    private function generateCSVData($data, $headers, $columnNames)
+    public function generateCSVData($data, $headers, $columnNames)
     {
         $csvData = implode(',', $headers) . "\n";
 

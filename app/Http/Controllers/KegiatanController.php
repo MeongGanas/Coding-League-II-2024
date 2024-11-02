@@ -7,6 +7,7 @@ use App\Http\Requests\StoreKegiatanRequest;
 use App\Http\Requests\UpdateKegiatanRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class KegiatanController extends Controller
@@ -34,10 +35,18 @@ class KegiatanController extends Controller
             $query->orderBy($sort, $order);
         }
 
+
+
         $paginate = request("paginate") ?? 5;
 
         $items = $query->paginate($paginate);
 
+        $items->getCollection()->transform(function ($item) {
+            $item->deskripsi = strip_tags($item->deskripsi);
+            $item->deskripsi = mb_strimwidth($item->deskripsi, 0, 200, '...');
+            $item->deskripsi = str_replace(["\r", "\n", "&nbsp;"], ' ', $item->deskripsi);
+            return $item;
+        });
         return Inertia::render('Admin/Kegiatan/Index', [
             'notifications' => Auth::user()->notifications->take(5),
             'kegiatans' => $items
@@ -59,7 +68,22 @@ class KegiatanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $v = $request->validate([
+            'image' => 'required',
+            'name' => 'required',
+            'deskripsi' => 'required',
+            'status' => 'required',
+            'tags' => 'required|array',
+        ]);
+
+        $v['image'] = $request->file('image')->store('kegiatan_image', 'public');
+        if ($v['status'] === 'Terbit') {
+            $v['tgl_terbit'] = now();
+        }
+
+        Kegiatan::create($v);
+
+        return redirect()->intended(route('kegiatan.index'));
     }
 
     /**
@@ -89,7 +113,31 @@ class KegiatanController extends Controller
      */
     public function update(Request $request, Kegiatan $kegiatan)
     {
-        //
+
+        $v = $request->validate([
+            'image' => 'nullable',
+            'name' => 'required',
+            'deskripsi' => 'required',
+            'status' => 'required',
+            'tags' => 'required|array',
+        ]);
+
+        if ($request->hasFile('image')) {
+            Storage::disk('public')->delete($kegiatan->image);
+            $v['image'] = $request->file('image')->store('kegiatan_image', 'public');
+        } else {
+            $v['image'] = $kegiatan->image;
+        }
+
+        if ($v['status'] === 'Terbit') {
+            $v['tgl_terbit'] = now();
+        } else {
+            $v['tgl_terbit'] = null;
+        }
+
+        $kegiatan->update($v);
+
+        return redirect()->intended(route('kegiatan.index'));
     }
 
     /**

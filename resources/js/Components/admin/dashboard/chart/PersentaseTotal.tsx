@@ -119,8 +119,13 @@ function barChart({
     tooltipFormatter: (value: any, name: any) => string;
     labelFormatter: (value: any, index: number) => string;
 }) {
+    const height = chartData.length * 80;
     return (
-        <ChartContainer config={chartConfig}>
+        <ChartContainer
+            config={chartConfig}
+            style={{ height: `${height}px` }}
+            className="min-h-[200px] max-h-[450px] w-full"
+        >
             <BarChart
                 accessibilityLayer
                 data={chartData}
@@ -171,13 +176,14 @@ function barChart({
 }
 
 export function PersentaseTotalCSR({ data }: { data: DataCSR[] }) {
-    const chartData = getChartData(data, "count", "sektor");
+    const chartData = getChartData(data, "total", "sektor");
     const chartConfig = getChartConfig(data);
     return (
         <div className="space-y-5">
             <h1
-                className={`font-bold text-xl ${data.length === 0 ? "text-center" : null
-                    }`}
+                className={`font-bold text-xl ${
+                    data.length === 0 ? "text-center" : null
+                }`}
             >
                 Persentase total realisasi berdasarkan sektor CSR
             </h1>
@@ -190,7 +196,14 @@ export function PersentaseTotalCSR({ data }: { data: DataCSR[] }) {
                         <PieChart>
                             <ChartTooltip
                                 cursor={false}
-                                content={<ChartTooltipContent hideLabel />}
+                                content={
+                                    <ChartTooltipContent
+                                        indicator="line"
+                                        formatter={(value: any, name: any) => {
+                                            return `${formatPrice(value)}`;
+                                        }}
+                                    />
+                                }
                             />
                             <Pie
                                 data={chartData}
@@ -229,26 +242,27 @@ export function TotalRealisasiCSR({ data }: { data: DataCSR[] }) {
     return (
         <div className="space-y-5">
             <h1
-                className={`font-bold text-xl ${data.length === 0 ? "text-center" : null
-                    }`}
+                className={`font-bold text-xl ${
+                    data.length === 0 ? "text-center" : null
+                }`}
             >
                 Persentase total realisasi berdasarkan sektor CSR
             </h1>
             {chartData.length > 0
                 ? barChart({
-                    chartData,
-                    chartConfig,
-                    type: "sektor",
-                    key: "sektor",
-                    tooltipFormatter: (value, name) => {
-                        return `${formatPrice(value)}`;
-                    },
-                    labelFormatter: (value, index) => {
-                        return `${chartData[index]["sektor"]} ${formatPrice(
-                            value
-                        )}`;
-                    },
-                })
+                      chartData,
+                      chartConfig,
+                      type: "sektor",
+                      key: "sektor",
+                      tooltipFormatter: (value, name) => {
+                          return `${formatPrice(value)}`;
+                      },
+                      labelFormatter: (value, index) => {
+                          return `${chartData[index]["sektor"]} ${formatPrice(
+                              value
+                          )}`;
+                      },
+                  })
                 : noData()}
         </div>
     );
@@ -261,56 +275,63 @@ export function PersentaseTotalMitra({ data }: { data: PersenTotalMitra[] }) {
     return (
         <div className="space-y-5">
             <h1
-                className={`font-bold text-xl ${data.length === 0 ? "text-center" : null
-                    }`}
+                className={`font-bold text-xl ${
+                    data.length === 0 ? "text-center" : null
+                }`}
             >
                 Persentase total realisasi berdasarkan Mitra
             </h1>
             {chartData.length > 0
                 ? barChart({
-                    chartData,
-                    chartConfig,
-                    type: "mitra",
-                    key: "mitra",
-                    tooltipFormatter: (value, name) => {
-                        return `${formatPrice(value)}`;
-                    },
-                    labelFormatter: (value, index) => {
-                        return `${chartData[index]["mitra"]} ${formatPrice(
-                            value
-                        )}`;
-                    },
-                })
+                      chartData,
+                      chartConfig,
+                      type: "mitra",
+                      key: "mitra",
+                      tooltipFormatter: (value, name) => {
+                          return `${formatPrice(value)}`;
+                      },
+                      labelFormatter: (value, index) => {
+                          return `${chartData[index]["mitra"]} ${formatPrice(
+                              value
+                          )}`;
+                      },
+                  })
                 : noData()}
         </div>
     );
 }
 
-export function PersentaseTotalKecamatan({ data }: { data: PersenTotalKecamatan[] }) {
+export function PersentaseTotalKecamatan({
+    data,
+}: {
+    data: PersenTotalKecamatan[];
+}) {
     const chartData = getChartData(data, "total", "kecamatan");
     const chartConfig = getChartConfig(data);
     return (
-        <div className="space-y-5">
+        <div className="space-y-5 w-full">
             <h1
-                className={`font-bold text-xl ${data.length === 0 ? "text-center" : null
-                    }`}
+                className={`font-bold text-xl ${
+                    data.length === 0 ? "text-center" : null
+                }`}
             >
                 Persentase total realisasi berdasarkan Kecamatan
             </h1>
             {chartData.length > 0
                 ? barChart({
-                    chartData,
-                    chartConfig,
-                    type: "kecamatan",
-                    key: "kecamatan",
-                    tooltipFormatter: (value, name) => {
-                        return `${formatPrice(value)}`;
-                    },
-                    labelFormatter: (value, index) => {
-                        return `${chartData[index]["kecamatan"]
-                            } ${formatPrice(value)}`;
-                    },
-                })
+                      chartData,
+                      chartConfig,
+                      type: "kecamatan",
+                      key: "kecamatan",
+                      tooltipFormatter: (value, name) => {
+                          return `${formatPrice(value)}`;
+                      },
+                      labelFormatter: (value, index) => {
+                          return `${
+                              chartData[index]["kecamatan"]
+                          } ${formatPrice(value)}`;
+                      },
+                  })
                 : noData()}
         </div>
     );

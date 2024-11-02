@@ -15,7 +15,13 @@ import { User as UserType } from "@/types";
 import { AvatarFallback, AvatarImage, Avatar } from "../ui/avatar";
 import Notifikasi from "../all/Notifikasi";
 
-export default function NavbarMitra({ user, notifications }: { user: UserType, notifications: any }) {
+export default function NavbarMitra({
+    user,
+    notifications,
+}: {
+    user: UserType;
+    notifications: any;
+}) {
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background">
             <div className="container flex py-4 justify-between items-center gap-4 px-4 md:px-6">
@@ -27,8 +33,8 @@ export default function NavbarMitra({ user, notifications }: { user: UserType, n
                         <div className="flex items-center gap-2">
                             <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                    <div className="flex items-center gap-2">
-                                        <div className="text-end hidden sm:block cursor-pointer -space-y-1">
+                                    <div className="flex items-center gap-2 cursor-pointer">
+                                        <div className="text-end hidden sm:block  -space-y-1">
                                             <h1 className="text-sm font-bold">
                                                 {user.name}
                                             </h1>
@@ -38,9 +44,14 @@ export default function NavbarMitra({ user, notifications }: { user: UserType, n
                                         </div>
                                         <Avatar>
                                             {user.image && (
-                                                <AvatarImage src={`/storage/${user.image}`} alt="user_image" />
+                                                <AvatarImage
+                                                    src={`/storage/${user.image}`}
+                                                    alt="user_image"
+                                                />
                                             )}
-                                            <AvatarFallback><User className="w-5 h-5" /></AvatarFallback>
+                                            <AvatarFallback>
+                                                <User className="w-5 h-5" />
+                                            </AvatarFallback>
                                         </Avatar>
                                     </div>
                                 </DropdownMenuTrigger>
@@ -65,7 +76,10 @@ export default function NavbarMitra({ user, notifications }: { user: UserType, n
                                     <LogoutButton />
                                 </DropdownMenuContent>
                             </DropdownMenu>
-                            <Notifikasi notifications={notifications} user={user} />
+                            <Notifikasi
+                                notifications={notifications}
+                                user={user}
+                            />
                         </div>
                     </div>
                 </div>

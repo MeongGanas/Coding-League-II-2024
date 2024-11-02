@@ -91,79 +91,100 @@
 
     <div class="card">
         <h3>Filters</h3>
-        <span class="select-style"><span class="label">Tahun:</span> {{ $filters['tahun'] ?? '-' }}</span>
-        <span class="select-style"><span class="label">Kuartal:</span> {{ $filters['kuartal'] ?? '-' }}</span>
-        <span class="select-style"><span class="label">Sektor:</span> {{ $filters['sektor'] ? $filters['sektor']->name : '-' }}</span>
-        <span class="select-style"><span class="label">Mitra:</span> {{ $filters['mitra'] ? $filters['mitra']->name : '-' }}</span>
+        @if(!empty($filters['tahun']))
+            <span class="select-style"><span class="label">Tahun:</span> {{ $filters['tahun'] }}</span>
+        @endif
+        @if(!empty($filters['kuartal']))
+            <span class="select-style"><span class="label">Kuartal:</span> {{ $filters['kuartal'] }}</span>
+        @endif
+        @if(!empty($filters['sektor']))
+            <span class="select-style"><span class="label">Sektor:</span> {{ $filters['sektor']->name }}</span>
+        @endif
+        @if(!empty($filters['mitra']))
+            <span class="select-style"><span class="label">Mitra:</span> {{ $filters['mitra']->name }}</span>
+        @endif
     </div>
 
     <div class="card">
         <h3>Counts</h3>
-        <p><span class="label">Total Proyek:</span> {{ $counts['countProyek'] }}</p>
-        <p><span class="label">Total Proyek Realized:</span> {{ $counts['countProyekRealized'] }}</p>
-        <p><span class="label">Total Mitra:</span> {{ $counts['countMitra'] }}</p>
-        <p><span class="label">Total Dana Realized:</span> Rp {{ number_format($counts['countTotalDanaRealized'], 0, ',', '.') }}</p>
+        @if(!empty($counts['countProyek']))
+            <p><span class="label">Total Proyek:</span> {{ $counts['countProyek'] }}</p>
+        @endif
+        @if(!empty($counts['countProyekRealized']))
+            <p><span class="label">Total Proyek Terealisasi:</span> {{ $counts['countProyekRealized'] }}</p>
+        @endif
+        @if(!empty($counts['countMitra']))
+            <p><span class="label">Total Mitra:</span> {{ $counts['countMitra'] }}</p>
+        @endif
+        @if(!empty($counts['countTotalDanaRealized']))
+            <p><span class="label">Total Dana Terealisasi:</span> Rp {{ number_format($counts['countTotalDanaRealized'], 0, ',', '.') }}</p>
+        @endif
     </div>
 
-    <div class="card" style="margin-top: 10rem;">
+    <div class="card">
         <h3>Realisasi</h3>
+        @if(!empty($realisasi['dataCSR']))
         <h4>Data CSR</h4>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Sektor</th>
-                    <th>Total</th>
-                    <th>Count</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($realisasi['dataCSR'] as $item)
-                <tr>
-                    <td>{{ $item['sektor'] }}</td>
-                    <td>Rp {{ number_format($item['total'], 2, ',', '.') }}</td>
-                    <td>{{ $item['count'] }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Sektor</th>
+                        <th>Total</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($realisasi['dataCSR'] as $item)
+                    <tr>
+                        <td>{{ $item['sektor'] }}</td>
+                        <td>Rp {{ number_format($item['total'], 2, ',', '.') }}</td>
+                        <td>{{ $item['count'] }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
 
+        @if(!empty($realisasi['persenTotalMitra']))
         <h4>Total Mitra</h4>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Mitra</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($realisasi['persenTotalMitra'] as $item)
-                <tr>
-                    <td>{{ $item['mitra'] }}</td>
-                    <td>Rp {{ number_format($item['total'], 2, ',', '.') }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Mitra</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($realisasi['persenTotalMitra'] as $item)
+                    <tr>
+                        <td>{{ $item['mitra'] }}</td>
+                        <td>Rp {{ number_format($item['total'], 2, ',', '.') }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
 
+        @if(!empty($realisasi['persenTotalKecamatan']))
         <h4>Total Kecamatan</h4>
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Kecamatan</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($realisasi['persenTotalKecamatan'] as $item)
-                <tr>
-                    <td>{{ $item['kecamatan'] }}</td>
-                    <td>Rp {{ number_format($item['total'], 2, ',', '.') }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Kecamatan</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($realisasi['persenTotalKecamatan'] as $item)
+                    <tr>
+                        <td>{{ $item['kecamatan'] }}</td>
+                        <td>Rp {{ number_format($item['total'], 2, ',', '.') }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
     </div>
-
 
 </body>
 

@@ -1,7 +1,16 @@
 import { Realisasi } from "@/types";
-import { PersentaseTotalCSR, PersentaseTotalKecamatan, TotalRealisasiCSR } from "../admin/dashboard/chart/PersentaseTotal";
+import {
+    PersentaseTotalCSR,
+    PersentaseTotalKecamatan,
+    TotalRealisasiCSR,
+} from "../admin/dashboard/chart/PersentaseTotal";
 
-export default function RealisasiProyek({ realisasi }: { realisasi: Realisasi }) {
+export default function RealisasiProyek({
+    realisasi,
+}: {
+    realisasi: Realisasi;
+}) {
+    console.log(realisasi);
     return (
         <div className="w-full mt-5">
             <h1 className="font-bold text-2xl py-5">Realisasi Proyek CSR</h1>
@@ -12,8 +21,10 @@ export default function RealisasiProyek({ realisasi }: { realisasi: Realisasi })
                 <div className="col-span-2 lg:col-span-1">
                     <TotalRealisasiCSR data={realisasi.dataCSR} />
                 </div>
-                <div className="col-span-2">
-                    <PersentaseTotalKecamatan data={realisasi.persenTotalKecamatan} />
+                <div className="col-span-2 ">
+                    <PersentaseTotalKecamatan
+                        data={realisasi.persenTotalKecamatan}
+                    />
                 </div>
             </div>
         </div>
