@@ -4,9 +4,11 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
-class CheckMitra
+class mustVerify
 {
     /**
      * Handle an incoming request.
@@ -15,10 +17,14 @@ class CheckMitra
      */
     public function handle(Request $request, Closure $next): Response
     {
-
-        if ($request->user()->role === "admin") {
-            return redirect(route('dashboardAdmin'));
+        if (!$request->user()->hasVerifiedEmail()) {
+            Auth::logout();
+            return redirect(route('login'))->with([
+                'severity' => 'error',
+                'message' => 'Please verify your email address.',
+            ]);
         }
+
         return $next($request);
     }
 }

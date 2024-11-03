@@ -16,14 +16,16 @@ class StatusNotification extends Notification
     protected $status;
     protected $reason;
     protected $laporan;
+    protected $senderID;
 
-    public function __construct($via, $user, $status, $reason, $laporan)
+    public function __construct($via, $user, $status, $reason, $laporan, $senderID)
     {
         $this->via = $via;
         $this->user = $user;
         $this->status = $status;
         $this->reason = $reason;
         $this->laporan = $laporan;
+        $this->senderID = $senderID ?? null;
     }
 
     /**
@@ -99,6 +101,7 @@ class StatusNotification extends Notification
             'badgeTitle' => $statusText[$this->status],
             'severity' => $severity[$this->status],
             'action_url' => $actionUrls[$this->status] ?? null,
+            'sender_id' => $this->senderID
         ];
     }
 }

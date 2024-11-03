@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Laporan;
 use App\Models\Partisipasi;
+use App\Models\User;
+use App\Notifications\generalDatabaseNotification;
 use App\Notifications\StatusNotification;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -38,7 +40,8 @@ class LaporanController extends Controller
 
         if (request("search")) {
             $searchTerm = request("search");
-            $query->where('name', 'like', '%' . $searchTerm . '%');
+            $query->where('mitras.name', 'like', '%' . $searchTerm . '%')
+                ->orWhere('laporans.name', 'like', '%' . $searchTerm . '%');
         }
 
         if (request("category")) {
@@ -98,7 +101,18 @@ class LaporanController extends Controller
 
         $v['photos'] = $imagesPath;
 
-        Laporan::create($v);
+        $laporan = Laporan::create($v);
+
+        $notification = new generalDatabaseNotification(
+            'Laporan ' . strtolower($v['name']),
+            $request->user()->mitra->name,
+            'Laporan baru!',
+            'info',
+            url('/admin/laporan/' . $laporan->id)
+        );
+        $admins = User::where('role', 'admin')->get();
+        Notification::send($admins, $notification);
+
 
         return redirect()->intended(route('dashboardMitra'));
     }
@@ -144,6 +158,17 @@ class LaporanController extends Controller
 
         $laporan->update($v);
 
+        $notification = new generalDatabaseNotification(
+            'Laporan ' . strtolower($v['name']),
+            $request->user()->mitra->name,
+            'Laporan diperbarui!',
+            'info',
+            url('/admin/laporan/' . $laporan->id)
+        );
+
+        $admins = User::where('role', 'admin')->get();
+        Notification::send($admins, $notification);
+
         return redirect()->intended(route('dashboardMitra'));
     }
 
@@ -162,11 +187,13 @@ class LaporanController extends Controller
         }
 
         $notification = new StatusNotification(
-            ['mail', 'database'],
+//            ['mail', 'database'],
+            ['database'],
             $laporan->mitra->user,
             $request->status,
             $request->message,
-            $laporan
+            $laporan,
+            Auth::user()->id
         );
         Notification::send($laporan->mitra->user, $notification);
 

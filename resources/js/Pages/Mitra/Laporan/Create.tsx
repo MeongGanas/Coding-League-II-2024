@@ -7,7 +7,7 @@ import {
     FormMessage,
 } from "@/Components/ui/form";
 import { Head, Link } from "@inertiajs/react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -102,7 +102,7 @@ export default function Create({ auth: { user }, sektors, proyeks, notifications
 
         toast.promise(promise, {
             loading: "Loading...",
-            success: (res) => {
+            success: () => {
                 setIsSubmitted(false)
                 window.location.replace('/mitra/dashboard')
                 return "Add Laporan Success"
@@ -422,7 +422,7 @@ export default function Create({ auth: { user }, sektors, proyeks, notifications
                             <FormField
                                 control={form.control}
                                 name="images"
-                                render={({ field }) => (
+                                render={() => (
                                     <FormItem>
                                         <FormLabel className="font-bold text-base">
                                             Foto Laporan Kegiatan{" "}

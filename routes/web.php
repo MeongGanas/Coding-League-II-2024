@@ -11,6 +11,7 @@ use App\Http\Controllers\ProyekController;
 use App\Http\Controllers\SektorController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
 use Inertia\Inertia;
 
 Route::get('/', [MasyarakatController::class, 'home'])->name('beranda');
@@ -38,7 +39,7 @@ Route::prefix('download')->group(function () {
     Route::get('statistik/pdf', [MasyarakatController::class, 'downloadPDF']);
 });
 
-Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'mustVerify', 'checkAdmin'])->group(function () {
     Route::get("dashboard", [DashboardController::class, 'index'])->name('dashboardAdmin');
 
     Route::prefix('download')->group(function () {
@@ -73,9 +74,10 @@ Route::prefix('admin')->middleware(['auth', 'checkAdmin'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::post("notifications/read", [NotificationController::class, 'read']);
+    Route::get("notifications", [NotificationController::class, 'index']);
 });
 
-Route::prefix('mitra')->middleware(['auth', 'checkMitra'])->group(function () {
+Route::prefix('mitra')->middleware(['auth','mustVerify', 'checkMitra'])->group(function () {
 
     Route::prefix('download')->group(function () {
         Route::get('dashboard/csv', [DashboardMitraController::class, 'downloadCSV']);

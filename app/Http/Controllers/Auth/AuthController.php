@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use App\Notifications\verifyNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -21,7 +25,22 @@ class AuthController extends Controller
      */
     public function login(): Response
     {
-        return Inertia::render('Auth/Login');
+        $severity = session('severity');
+        $message = session('message');
+
+        Log::channel('main')->info('login', [
+            'severity' => $severity,
+            'message' => $message,
+        ]);
+
+        if (!$severity || !$message) {
+            return Inertia::render('Auth/Login');
+        }
+
+        return Inertia::render('Auth/Login', [
+            'severity' => $severity,
+            'message' => $message,
+        ]);
     }
 
     public function register(): Response
@@ -34,7 +53,21 @@ class AuthController extends Controller
      */
     public function loginPost(LoginRequest $request)
     {
+
+        $v = $request->validate([
+            'email' => 'required|email|exists:users',
+            'password' => 'required|string',
+        ]);
+
         $request->authenticate();
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user->email_verified_at) {
+            Auth::logout();
+            return response()->json([
+                'message' => 'Email belum terverifikasi',
+            ], 403);
+        }
 
         $request->session()->regenerate();
 
@@ -95,5 +128,60 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login');
+    }
+
+    public function sendEmailVerification(Request $request)
+    {
+
+        $v = $request->validate([
+            'email' => 'required|email|exists:users',
+        ]);
+
+        $user = User::where('email', $v['email'])->first();
+
+        if ($user->email_verified_at) {
+            return response()->json([
+                'message' => 'Email sudah terverifikasi',
+            ], 400);
+        }
+
+        $notification = new verifyNotification($user->id);
+        Notification::send($user, $notification);
+
+        return response()->json([
+            'message' => 'Email verifikasi telah dikirim',
+        ]);
+    }
+
+    public function verifyEmail(Request $request, $id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect()->route('login')->with([
+                'severity' => 'error',
+                'message' => 'User tidak ditemukan'
+            ]);
+        }
+
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->route('login')->with([
+                'severity' => 'error',
+                'message' => 'Email sudah terverifikasi'
+            ]);
+        }
+
+        if (!URL::hasValidSignature($request)) {
+            return redirect()->route('login')->with([
+                'severity' => 'error',
+                'message' => 'Invalid signature'
+            ]);
+        }
+
+        $user->markEmailAsVerified();
+        return redirect()->route('login')->with([
+            'severity' => 'success',
+            'message' => 'Email berhasil diverifikasi'
+        ]);
     }
 }

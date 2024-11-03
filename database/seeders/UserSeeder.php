@@ -38,6 +38,7 @@ class UserSeeder extends Seeder
             if ($userExists) {
                 continue;
             }
+
             $user = User::create($userData);
             if ($user->role === "mitra") {
                 Mitra::factory()->create([

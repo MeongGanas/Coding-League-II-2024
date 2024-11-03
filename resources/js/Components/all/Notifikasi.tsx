@@ -17,13 +17,15 @@ import { useEffect, useState } from "react";
 export default function Notifikasi({ notifications, user }: { notifications: any[], user: any }) {
 
     const [localNotification, setLocalNotification] = useState<any[]>(notifications);
-    const [didUnread, setDidUnread] = useState(false);
+    const [notifOpenCount, setNotifOpenCount] = useState(0);
     const [unreadCount, setUnreadCount] = useState(notifications.filter((notification) => !notification.read_at).length);
 
+
     const markAsRead = async () => {
-        if (!didUnread) {
+        if (notifOpenCount % 2 === 0) {
+            const { data } = await axios.get('/notifications');
+            setLocalNotification(data.notifications);
             await axios.post('/notifications/read');
-            setDidUnread(true);
         } else {
             setUnreadCount(0);
             setLocalNotification(localNotification.map((notification) => {
@@ -32,8 +34,8 @@ export default function Notifikasi({ notifications, user }: { notifications: any
                     read_at: new Date().toISOString()
                 }
             }));
-            return;
         }
+        setNotifOpenCount(notifOpenCount + 1);
     }
 
     return (
@@ -48,7 +50,7 @@ export default function Notifikasi({ notifications, user }: { notifications: any
                     >
                         <Bell className="h-6 w-6" />
                         {unreadCount > 0 && (
-                            <Badge className={`w-6 -right-2 absolute top-0 aspect-square bg-[#98100A] flex hover:bg-red-700 items-center justify-center ${unreadCount === 0 ? '' : didUnread ? '' : 'pulse'}`}>
+                            <Badge className={`w-6 -right-2 absolute top-0 aspect-square bg-[#98100A] flex hover:bg-red-700 items-center justify-center ${unreadCount === 0 ? '' : notifOpenCount > 0 ? '' : 'pulse'}`}>
                                 {unreadCount}
                             </Badge>
                         )}

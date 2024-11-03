@@ -19,7 +19,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'checkAdmin' => App\Http\Middleware\CheckAdmin::class,
-            'checkMitra' => App\Http\Middleware\CheckMitra::class
+            'checkMitra' => App\Http\Middleware\CheckMitra::class,
+            'mustVerify' => App\Http\Middleware\mustVerify::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
