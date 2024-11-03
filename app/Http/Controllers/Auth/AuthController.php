@@ -103,8 +103,10 @@ class AuthController extends Controller
         return redirect()->intended(route('dashboardMitra'));
     }
 
-    public function updateUser(Request $request, User $user)
+    public function updateUser(Request $request)
     {
+        $user = Auth::user();
+
         $v = $request->validate([
             'name' => 'required|string|min:2|max:255',
             'deskripsi' => 'nullable|string|min:5',
@@ -142,7 +144,7 @@ class AuthController extends Controller
                 $user->name . ', Klik disini untuk melengkapi profil perusahaan anda',
                 'Akun',
                 'info',
-                url('/mitra/perusahaan/' . $user->mitra->id . '/edit')
+                url('/mitra/perusahaan/edit')
             );
             Notification::send($user, $notification);
         }

@@ -80,7 +80,6 @@ export default function Edit({ auth: { user }, notifications, kegiatan }: PagePr
                 return "Edit Kegiatan Success"
             },
             error: (err) => {
-                console.log(err.response.data)
                 setIsSubmitted(false)
                 return err?.response.data.message || "Something went wrong"
             }

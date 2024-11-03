@@ -26,8 +26,6 @@ export default function DetailSektorProyek({
         (laporan) => laporan.photos
     );
 
-    console.log(partisipasi)
-
     return (
         <LayoutMasyarakat user={user} title="Sektor Proyek">
             <OtherWelcomeSection

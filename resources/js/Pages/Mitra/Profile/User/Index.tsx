@@ -16,7 +16,7 @@ export default function Index({ auth: { user }, notifications }: PageProps<{ not
                 <div className="flex justify-between">
                     <h1 className="font-bold text-3xl">Profil</h1>
                     <Button className="hover:bg-red-700 gap-2" asChild>
-                        <Link href={`/mitra/user/${user.id}/edit`}>
+                        <Link href={`/mitra/user/edit`}>
                             <Pencil className="w-5 h-5" />
                             Ubah Profil
                         </Link>

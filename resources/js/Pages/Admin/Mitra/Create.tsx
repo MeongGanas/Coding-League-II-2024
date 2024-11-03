@@ -81,7 +81,6 @@ export default function Create({ auth: { user }, notifications }: PageProps) {
                 return "Add Mitra Success"
             },
             error: (err) => {
-                console.log(err.response.data)
                 setIsSubmitted(false)
                 return err?.response.data.message || "Something went wrong"
             }

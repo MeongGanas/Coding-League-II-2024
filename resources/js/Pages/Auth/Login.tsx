@@ -65,7 +65,6 @@ export default function Login(
                 return "Login Success"
             },
             error: (err) => {
-                console.log(err)
                 setIsSubmitted(false)
                 seterrorStatus(err?.response.status.toString())
                 return err?.response.data.message || "Something went wrong!"

@@ -31,7 +31,6 @@ const sektorSchema = z.object({
 type SektorSchema = z.infer<typeof sektorSchema>;
 
 export default function Edit({ auth: { user }, sektor, notifications }: PageProps<{ sektor: Sektor, notifications: any }>) {
-    console.log(sektor)
     const [preview, setPreview] = useState<string | null>(`/storage/${sektor.image}`);
     const [isSubmitted, setIsSubmitted] = useState(false);
 

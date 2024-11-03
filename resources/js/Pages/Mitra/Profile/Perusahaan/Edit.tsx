@@ -70,7 +70,7 @@ export default function Edit({ auth: { user }, mitra, notifications }: PageProps
             formData.append('image', values.image[0]);
         }
 
-        const promise = axios.post(`/mitra/perusahaan/${mitra.id}`, formData);
+        const promise = axios.post(`/mitra/perusahaan`, formData);
 
         toast.promise(promise, {
             loading: "Loading...",

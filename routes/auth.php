@@ -12,9 +12,8 @@ Route::middleware('guest')->group(function () {
     Route::get('email/verify/{id}', [AuthController::class, 'verifyEmail'])->name('verification.verify');
 });
 
-
 Route::middleware('auth')->group(function () {
-    Route::patch('/profil/{user}', [AuthController::class, 'updateUser']);
+    Route::patch('/profile/patch', [AuthController::class, 'updateUser']);
 
     Route::post('logout', [AuthController::class, 'destroy'])
         ->name('logout');

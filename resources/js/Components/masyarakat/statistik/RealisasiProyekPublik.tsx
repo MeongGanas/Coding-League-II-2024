@@ -3,7 +3,6 @@ import Garis from "../Garis";
 import { Realisasi } from "@/types";
 
 export default function RealisasiProyekPublik({ realisasi }: { realisasi: Realisasi }) {
-    console.log(realisasi);
     return (
         <div className="container space-y-5 py-10 px-5">
             <Garis />

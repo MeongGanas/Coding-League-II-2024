@@ -21,7 +21,7 @@ export default function Detail({ auth: { user }, notifications }: PageProps<{ no
                             className="hover:bg-red-700 font-semibold"
                         >
                             <Link
-                                href={`/mitra/perusahaan/${user.mitra.id}/edit`}
+                                href={`/mitra/perusahaan/edit`}
                                 className="flex gap-2 items-center"
                             >
                                 <Pencil className="w-4 h-4" />

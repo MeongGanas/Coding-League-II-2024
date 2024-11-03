@@ -88,7 +88,6 @@ export default function SelectAndDownload({
     menu: string;
 }) {
     const params = new URLSearchParams(window.location.search);
-    console.log(tahunOptions);
     let paramchanged: boolean = false;
 
     const handleParamSet = (param: string, value: string) => {

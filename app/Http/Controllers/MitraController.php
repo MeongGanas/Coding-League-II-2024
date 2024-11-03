@@ -110,8 +110,10 @@ class MitraController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mitra $mitra)
+    public function update(Request $request)
     {
+        $mitra = Auth::user()->mitra;
+
         $v = $request->validate([
             'name' => 'string|min:3',
             'no_telepon' => 'string|min:3',

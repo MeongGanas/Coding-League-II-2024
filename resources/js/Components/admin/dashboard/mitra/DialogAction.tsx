@@ -15,7 +15,6 @@ import { Check, Info, Pencil, Power, X } from "lucide-react";
 import toast from "react-hot-toast";
 
 export function DialogToggleStatus({ data, status }: { data: number, status: string }) {
-    console.log(data, status);
     const handleSubmit = () => {
         const promise = axios.post(`/admin/mitra/${data}/toggle`);
         toast.promise(promise, {
