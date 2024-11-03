@@ -101,7 +101,6 @@ export default function Create({ auth: { user }, sektors, notifications }: PageP
                 return "Add Proyek Success"
             },
             error: (err) => {
-                console.log(err.response.data)
                 setIsSubmitted(false)
                 return err?.response.data.message || "Something went wrong"
             }

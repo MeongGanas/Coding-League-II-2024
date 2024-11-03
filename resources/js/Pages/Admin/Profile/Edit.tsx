@@ -60,7 +60,7 @@ export default function Edit({ auth: { user }, notifications }: PageProps<{ noti
             formData.append('image', values.image[0]);
         }
 
-        const promise = axios.post(`/profil/${user.id}`, formData);
+        const promise = axios.post(`/profile/patch`, formData);
 
         toast.promise(promise, {
             loading: "Loading...",

@@ -109,7 +109,6 @@ export default function Edit({ auth: { user }, laporan, sektors, proyeks, notifi
                 return "Update Laporan Success"
             },
             error: (err) => {
-                console.log(err.response.data)
                 setIsSubmitted(false)
                 return err?.response.data.message || "Something went wrong"
             }

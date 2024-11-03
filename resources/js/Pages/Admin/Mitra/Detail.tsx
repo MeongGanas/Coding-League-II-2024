@@ -19,7 +19,6 @@ const statusText: { [key: string]: string } = {
 };
 
 export default function Detail({ auth: { user }, mitra, notifications }: PageProps<{ mitra: Mitra, notifications: any }>) {
-    console.log(mitra)
     return (
         <LayoutAdmin user={user} notifications={notifications}>
             <Head title="Detail Mitra" />

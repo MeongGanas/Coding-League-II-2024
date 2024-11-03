@@ -46,7 +46,6 @@ export default function Detail({ auth: { user }, laporan, notifications }: PageP
                 return "Status Laporan Diupdate"
             },
             error: (err) => {
-                console.log(err.response.data)
                 setIsSubmitted(false)
                 return err?.response.data.message || "Something went wrong"
             }

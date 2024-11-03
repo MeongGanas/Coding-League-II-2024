@@ -216,11 +216,11 @@ class DashboardMitraController extends Controller
             'notifications' => Auth::user()->notifications->take(5),
         ]);
     }
-    public function editProfilePerusahaan(Mitra $mitra)
+    public function editProfilePerusahaan()
     {
         return Inertia::render('Mitra/Profile/Perusahaan/Edit', [
             'notifications' => Auth::user()->notifications->take(5),
-            'mitra' => $mitra
+            'mitra' => Auth::user()->mitra,
         ]);
     }
 

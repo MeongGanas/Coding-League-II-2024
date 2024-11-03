@@ -38,7 +38,6 @@ export function TablePagination({ data }: { data: PaginationProps }) {
 
     const next = () => {
         const currentPage = parseInt(page)
-        console.log(data.links.slice(1, -1))
         if (currentPage < data.links.slice(1, -1).length) {
             changePage((currentPage + 1).toString())
         }

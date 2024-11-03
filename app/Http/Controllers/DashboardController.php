@@ -41,6 +41,20 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function profile()
+    {
+        return Inertia::render('Admin/Profile/Index', [
+            'notifications' => Auth::user()->notifications->take(5),
+        ]);
+    }
+
+    public function profileEdit()
+    {
+        return Inertia::render('Admin/Profile/Edit', [
+            'notifications' => Auth::user()->notifications->take(5),
+        ]);
+    }
+
     public function applyFilters($proyek = null, $mitra = null, $laporan = null,
      $yearfilter = ['tgl_awal', 'tgl_daftar', 'realisasi_date'],
      $quarterfilter = ['tgl_awal', 'tgl_daftar', 'realisasi_date'],

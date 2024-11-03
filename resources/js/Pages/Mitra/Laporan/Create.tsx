@@ -78,8 +78,6 @@ export default function Create({ auth: { user }, sektors, proyeks, notifications
     const submit = handleSubmit((values) => {
         setIsSubmitted(true)
 
-        console.log(values.images)
-
         const formData = new FormData()
         formData.append('name', values.name)
         formData.append('sektor_id', values.sektor_id)
@@ -108,7 +106,6 @@ export default function Create({ auth: { user }, sektors, proyeks, notifications
                 return "Add Laporan Success"
             },
             error: (err) => {
-                console.log(err.response.data)
                 setIsSubmitted(false)
                 return err?.response.data.message || "Something went wrong"
             }

@@ -14,34 +14,36 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use Inertia\Inertia;
 
-Route::get('/', [MasyarakatController::class, 'home'])->name('beranda');
+// Masyarakat
+Route::group([], function () {
+    Route::prefix('download')->group(function () {
+        Route::get('statistik/csv', [MasyarakatController::class, 'downloadCSV']);
+        Route::get('statistik/pdf', [MasyarakatController::class, 'downloadPDF']);
+    });
 
-Route::get('/tentang', [MasyarakatController::class, 'about'])->name('tentang');
-Route::get('/tentang/pengajuan', [MasyarakatController::class, 'pengajuan'])->name('tentang.pengajuan');
+    Route::get('/', [MasyarakatController::class, 'home'])->name('beranda');
 
-Route::get('/statistik', [MasyarakatController::class, 'statistik'])->name('statistik');
+    Route::get('/tentang', [MasyarakatController::class, 'about'])->name('tentang');
+    Route::get('/tentang/pengajuan', [MasyarakatController::class, 'pengajuan'])->name('tentang.pengajuan');
 
-Route::get('/sektor', [MasyarakatController::class, 'sektor'])->name('sektor');
-Route::get('/sektor/{sektor}/detail', [MasyarakatController::class, 'sektorDetail'])->name('sektor.detail');
-Route::get('/program/{proyek}/proyek', [MasyarakatController::class, 'sektorProyek'])->name('sektor.proyek');
+    Route::get('/statistik', [MasyarakatController::class, 'statistik'])->name('statistik');
 
-Route::get('/laporan', [MasyarakatController::class, 'laporan'])->name('laporan');
-Route::get('/laporan/{laporan}/detail', [MasyarakatController::class, 'laporanDetail'])->name('laporan.detail');
+    Route::get('/sektor', [MasyarakatController::class, 'sektor'])->name('sektor');
+    Route::get('/sektor/{sektor}/detail', [MasyarakatController::class, 'sektorDetail'])->name('sektor.detail');
+    Route::get('/program/{proyek}/proyek', [MasyarakatController::class, 'sektorProyek'])->name('sektor.proyek');
 
-Route::get('/kegiatan', [MasyarakatController::class, 'kegiatan'])->name('kegiatan');
-Route::get('/kegiatan/{kegiatan}/detail', [MasyarakatController::class, 'kegiatanDetail'])->name('kegiatan.detail');
+    Route::get('/laporan', [MasyarakatController::class, 'laporan'])->name('laporan');
+    Route::get('/laporan/{laporan}/detail', [MasyarakatController::class, 'laporanDetail'])->name('laporan.detail');
 
-Route::get('/mitra', [MasyarakatController::class, 'mitra'])->name('mitra');
-Route::get('/mitra/{mitra}/detail', [MasyarakatController::class, 'mitraDetail'])->name('mitra.detail');
+    Route::get('/kegiatan', [MasyarakatController::class, 'kegiatan'])->name('kegiatan');
+    Route::get('/kegiatan/{kegiatan}/detail', [MasyarakatController::class, 'kegiatanDetail'])->name('kegiatan.detail');
 
-Route::prefix('download')->group(function () {
-    Route::get('statistik/csv', [MasyarakatController::class, 'downloadCSV']);
-    Route::get('statistik/pdf', [MasyarakatController::class, 'downloadPDF']);
+    Route::get('/mitra', [MasyarakatController::class, 'mitra'])->name('mitra');
+    Route::get('/mitra/{mitra}/detail', [MasyarakatController::class, 'mitraDetail'])->name('mitra.detail');
 });
 
+// Admin
 Route::prefix('admin')->middleware(['auth', 'mustVerify', 'checkAdmin'])->group(function () {
-    Route::get("dashboard", [DashboardController::class, 'index'])->name('dashboardAdmin');
-
     Route::prefix('download')->group(function () {
         Route::get('laporan/csv', [LaporanController::class, 'downloadCSV']);
         Route::get('laporan/pdf', [LaporanController::class, 'downloadPDF']);
@@ -50,56 +52,53 @@ Route::prefix('admin')->middleware(['auth', 'mustVerify', 'checkAdmin'])->group(
         Route::get('dashboard/csv', [DashboardController::class, 'downloadCSV']);
         Route::get('dashboard/pdf', [DashboardController::class, 'downloadPDF']);
     });
-
-    Route::resource("laporan", LaporanController::class);
+    Route::resources([
+        'laporan' => LaporanController::class,
+        'proyek' => ProyekController::class,
+        'sektor' => SektorController::class,
+        'mitra' => MitraController::class,
+        'kegiatan' => KegiatanController::class,
+    ]);
+    Route::get("dashboard", [DashboardController::class, 'index'])->name('dashboardAdmin');
     Route::patch("laporan/{laporan}/updateStatus", [LaporanController::class, 'updateStatus']);
-
-    Route::resource("proyek", ProyekController::class);
-    Route::resource('sektor', SektorController::class);
-    Route::resource("mitra", MitraController::class);
     Route::post("mitra/{mitra}/toggle", [MitraController::class, 'toggleStatus']);
-    Route::resource("kegiatan", KegiatanController::class);
-
-    Route::get("profile", function () {
-        return Inertia::render('Admin/Profile/Index', [
-            'notifications' => Auth::user()->notifications->take(5),
-        ]);
-    })->name('adminProfile');
-    Route::get("profile/{id}/edit", function () {
-        return Inertia::render('Admin/Profile/Edit', [
-            'notifications' => Auth::user()->notifications->take(5),
-        ]);
-    })->name('editProfile');
+    Route::get("profile", [DashboardController::class, 'profile'])->name('adminProfile');
+    Route::get("profile/edit", [DashboardController::class, 'profileEdit'])->name('adminProfileUpdate');
 });
 
+// Notification
 Route::middleware(['auth'])->group(function () {
     Route::post("notifications/read", [NotificationController::class, 'read']);
     Route::get("notifications", [NotificationController::class, 'index']);
 });
 
+// Mitra
 Route::prefix('mitra')->middleware(['auth','mustVerify', 'checkMitra'])->group(function () {
-
     Route::prefix('download')->group(function () {
         Route::get('dashboard/csv', [DashboardMitraController::class, 'downloadCSV']);
         Route::get('dashboard/pdf', [DashboardMitraController::class, 'downloadPDF']);
     });
 
     Route::get("/dashboard", [DashboardMitraController::class, 'index'])->name('dashboardMitra');
-
-    Route::get("/laporan/create", [DashboardMitraController::class, 'CreateLaporan'])->name('laporan.mitra.create');
-    Route::post("/laporan", [LaporanController::class, 'store'])->name('laporan.store');
-    Route::get("/laporan/{laporan}/edit", [DashboardMitraController::class, 'LaporanEdit'])->name('laporan.mitra.edit');
-    Route::patch("/laporan/{laporan}", [LaporanController::class, 'update'])->name('laporan.mitra.update');
-    Route::get("/laporan/{laporan}", [DashboardMitraController::class, 'LaporanDetail'])->name('laporan.mitra.detail');
-    Route::delete("/laporan/{laporan}", [LaporanController::class, 'destroy'])->name('laporan.delete');
-
     Route::get('/user', [DashboardMitraController::class, 'profileUser'])->name('mitra.profile.user');
-    Route::get('/user/{user}/edit', [DashboardMitraController::class, 'editProfileUser'])->name('mitra.profile.user.edit');
-    Route::patch('/perusahaan/{mitra}', [MitraController::class, 'update'])->name('mitra.profile.perusahaan.patch');
+    Route::get('/user/edit', [DashboardMitraController::class, 'editProfileUser'])->name('mitra.profile.user.edit');
 
-    Route::get('/perusahaan', [DashboardMitraController::class, 'profilePerusahaan'])->name('mitra.profile.perusahaan');
-    Route::get('/perusahaan/{mitra}/edit', [DashboardMitraController::class, 'editProfilePerusahaan'])->name('mitra.profile.perusahaan.edit');
-    Route::patch('/perusahaan/{mitra}', [MitraController::class, 'update'])->name('mitra.profile.perusahaan.patch');
+    // Laporan
+    Route::group([], function(){
+        Route::get("/laporan/{laporan}", [DashboardMitraController::class, 'LaporanDetail'])->name('laporan.mitra.detail');
+        Route::get("/laporan/create", [DashboardMitraController::class, 'CreateLaporan'])->name('laporan.mitra.create');
+        Route::get("/laporan/{laporan}/edit", [DashboardMitraController::class, 'LaporanEdit'])->name('laporan.mitra.edit');
+        Route::post("/laporan", [LaporanController::class, 'store'])->name('laporan.store');
+        Route::patch("/laporan/{laporan}", [LaporanController::class, 'update'])->name('laporan.mitra.update');
+        Route::delete("/laporan/{laporan}", [LaporanController::class, 'destroy'])->name('laporan.delete');
+    });
+
+    // Perusahaan
+    Route::group([], function(){
+        Route::patch('/perusahaan', [MitraController::class, 'update'])->name('mitra.profile.perusahaan.patch');
+        Route::get('/perusahaan', [DashboardMitraController::class, 'profilePerusahaan'])->name('mitra.profile.perusahaan');
+        Route::get('/perusahaan/edit', [DashboardMitraController::class, 'editProfilePerusahaan'])->name('mitra.profile.perusahaan.edit');
+    });
 });
 
 require __DIR__ . '/auth.php';

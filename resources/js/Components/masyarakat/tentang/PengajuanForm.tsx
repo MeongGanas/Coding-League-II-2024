@@ -68,7 +68,6 @@ export default function PengajuanForm({ proyeks, mitras }: { proyeks: Proyek[], 
                 return "Add Mitra Success"
             },
             error: (err) => {
-                console.log(err.response.data)
                 setIsSubmitted(false)
                 return err?.response.data.message || "Something went wrong"
             }

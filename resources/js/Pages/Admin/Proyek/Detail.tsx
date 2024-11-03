@@ -33,7 +33,6 @@ export default function Detail({ auth: { user }, proyek, notifications }: PagePr
                 return "Terbitkan Proyek Success"
             },
             error: (err) => {
-                console.log(err.response.data)
                 setIsSubmitted(false)
                 return err?.response.data.message || "Something went wrong"
             }
