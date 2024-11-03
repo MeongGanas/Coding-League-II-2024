@@ -21,7 +21,7 @@ import toast from "react-hot-toast";
 
 const registerSchema = z.object({
     email: z.string().email(),
-    perusahaan: z.string(),
+    name: z.string(),
     password: z.string(),
     confirm_password: z.string(),
 });
@@ -38,7 +38,7 @@ export default function Register() {
         resolver: zodResolver(registerSchema),
         defaultValues: {
             email: "",
-            perusahaan: "",
+            name: "",
             password: "",
             confirm_password: "",
         },
@@ -54,6 +54,7 @@ export default function Register() {
             toast.promise(promise, {
                 loading: "Loading...",
                 success: () => {
+                    form.reset()
                     setIsSubmitted(false)
                     return "Register Success! Silahkan cek email anda."
                 },
@@ -129,7 +130,7 @@ export default function Register() {
                                 />
                                 <FormField
                                     control={control}
-                                    name="perusahaan"
+                                    name="name"
                                     render={({ field }) => (
                                         <FormItem className="grid gap-2">
                                             <FormLabel className="font-bold text-base">

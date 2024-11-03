@@ -21,13 +21,17 @@ class DashboardMitraController extends Controller
     {
         // $proyek = Laporan::where('mitra_id', Auth::user()->mitra->id);
         $laporan = Laporan::where('status', 'Diterima')->where('mitra_id', Auth::user()->mitra->id);
+
         $proyek = Laporan::where('mitra_id', Auth::user()->mitra->id);
+
+
 
         $dashboardFunction = new DashboardController();
         $possibleYear = $dashboardFunction->getPossibleYear(clone $proyek, null, clone $laporan, ['realisasi_date', 'tgl_daftar', 'realisasi_date']);
-        $dashboardFunction->applyFilters($proyek, null,  $laporan, ['realisasi_date', 'tgl_daftar', 'realisasi_date']);
+        $dashboardFunction->applyFilters($proyek, null,  $laporan, ['realisasi_date', 'tgl_daftar', 'realisasi_date'],
+        ['realisasi_date', 'tgl_daftar', 'realisasi_date']);
 
-        $secondQuery = Laporan::query();
+        $secondQuery = Laporan::where('mitra_id', Auth::user()->mitra->id);
 
         if (request('search')) {
             $search = request('search');
@@ -51,11 +55,11 @@ class DashboardMitraController extends Controller
         }
 
 
+
         return Inertia::render('Mitra/Dashboard', [
             'notifications' => Auth::user()->notifications->take(5),
             'counts' => [
                 'countProyek' => $proyek->distinct('proyek_id')->count('proyek_id'),
-                // 'countProyek' => $proyek->count(),
                 'countProyekRealized' => $laporan->count(),
                 'countTotalDanaRealized' => $laporan->sum('realisasi'),
             ],

@@ -23,7 +23,8 @@ class UserSeeder extends Seeder
                 'name' => 'SMK Telkom Makassar',
                 'email' => 'emforakaem@gmail.com',
                 'role' => 'admin',
-                'password' => '123123'
+                'password' => '123123',
+                'email_verified_at' => now()
             ],
             [
                 'name' => 'Mitra User',
@@ -46,7 +47,7 @@ class UserSeeder extends Seeder
                 ]);
             }
 
-            Notification::send($user, new WelcomeNotification(['database', 'mail'], $user));
+            Notification::send($user, new WelcomeNotification(['database'], $user));
         }
     }
 }

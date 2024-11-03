@@ -181,7 +181,7 @@ export default function DataTableLaporanMitra({
                         ) : (
                             <TableRow className="odd:bg-[#FCFCFD] even:bg-white">
                                 <TableCell
-                                    className="text-base text-center"
+                                    className="text-base text-center h-[200px]"
                                     colSpan={8}
                                 >
                                     Belum ada data laporan

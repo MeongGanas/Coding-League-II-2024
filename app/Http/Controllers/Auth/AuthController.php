@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\Mitra;
 use App\Models\User;
+use App\Notifications\generalDatabaseNotification;
 use App\Notifications\verifyNotification;
+use App\Notifications\WelcomeNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -28,19 +31,17 @@ class AuthController extends Controller
         $severity = session('severity');
         $message = session('message');
 
-        Log::channel('main')->info('login', [
-            'severity' => $severity,
-            'message' => $message,
-        ]);
 
         if (!$severity || !$message) {
             return Inertia::render('Auth/Login');
         }
 
         return Inertia::render('Auth/Login', [
-            'severity' => $severity,
-            'message' => $message,
-        ]);
+                'severity' => $severity,
+                'message' => $message,
+            ]
+        );
+
     }
 
     public function register(): Response
@@ -83,10 +84,20 @@ class AuthController extends Controller
         ]);
         $v['role'] = 'mitra';
 
+
         $user = User::create($v);
+        $mitra = Mitra::create([
+            'user_id' => $user->id,
+            'name' => $user->name,
+            'perusahaan' => $user->name,
+            'email' => $user->email,
+            'tgl_daftar' => now(),
+        ]);
 
-        event(new Registered($user));
+        $notification = new verifyNotification($user->id);
+        Notification::send($user, $notification);
 
+        Notification::send($user, new WelcomeNotification(['database'], $user));
         Auth::login($user);
 
         return redirect()->intended(route('dashboardMitra'));
@@ -110,8 +121,32 @@ class AuthController extends Controller
             }
             $v['image'] = $request->file('image')->store('user_image', 'public');
         }
+        $isUserLastUpdatedMoreThanAnHour = $user->updated_at ? $user->updated_at->diffInHours(now()) > 1 : true;
+        $v['updated_at'] = now();
 
         $user->update($v);
+
+        $fields = ['image', 'no_telepon', 'alamat', 'deskripsi'];
+        $needsUpdate = false;
+
+        foreach ($fields as $field) {
+            if ($request->has($field)) {
+                $needsUpdate = true;
+                break;
+            }
+        }
+
+        if ($needsUpdate && $isUserLastUpdatedMoreThanAnHour) {
+            $notification = new generalDatabaseNotification(
+                'Lengkapi profil perusahaan anda',
+                $user->name . ', Klik disini untuk melengkapi profil perusahaan anda',
+                'Akun',
+                'info',
+                url('/mitra/perusahaan/' . $user->mitra->id . '/edit')
+            );
+            Notification::send($user, $notification);
+        }
+
 
         return redirect()->intended(route('dashboardMitra'));
     }

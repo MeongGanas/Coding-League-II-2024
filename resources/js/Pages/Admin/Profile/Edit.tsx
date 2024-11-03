@@ -223,7 +223,7 @@ export default function Edit({ auth: { user }, notifications }: PageProps<{ noti
 
                         <div className="bg-white p-4 rounded-md border flex justify-end items-center gap-4">
                             <Button variant={"outline"} asChild disabled={isSubmitted}>
-                                <Link href="/admin/mitra/1/detail">
+                                <Link href="/admin/user">
                                     Kembali
                                 </Link>
                             </Button>

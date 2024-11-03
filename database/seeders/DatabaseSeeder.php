@@ -1,5 +1,4 @@
 <?php
-
 namespace Database\Seeders;
 
 use App\Models\Kegiatan;
@@ -32,7 +31,7 @@ class DatabaseSeeder extends Seeder
         // Sektor::factory(15)->create();
         Proyek::factory(15)->create();
         // Mitra::factory(15)->create();
-        Laporan::factory(30)->create();
+        Laporan::factory(50)->create();
         Kegiatan::factory(30)->create();
         // Partisipasi::factory(30)->create();
     }
