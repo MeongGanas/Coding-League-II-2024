@@ -66,11 +66,12 @@ export default function Edit({ auth: { user }, notifications, kegiatan }: PagePr
         values.tags.forEach((tag, index) => {
             formData.append(`tags[${index}]`, tag);
         });
-        formData.append("image", values.image ? values.image[0] : null);
+        if (values.image && values.image[0]) {
+            formData.append("image", values.image[0]);
+        }
         formData.append('_method', 'PATCH');
 
-        const promise = axios.post(`/admin/kegiatan/${kegiatan.id}`
-            , formData);
+        const promise = axios.post(`/admin/kegiatan/${kegiatan.id}`, formData);
 
         toast.promise(promise, {
             loading: "Loading...",
