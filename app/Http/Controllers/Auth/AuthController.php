@@ -35,12 +35,13 @@ class AuthController extends Controller
             return Inertia::render('Auth/Login');
         }
 
-        return Inertia::render('Auth/Login', [
+        return Inertia::render(
+            'Auth/Login',
+            [
                 'severity' => $severity,
                 'message' => $message,
             ]
         );
-
     }
 
     public function register(): Response
@@ -71,15 +72,13 @@ class AuthController extends Controller
             ], 403);
         }
 
-        if ($user->role === 'mitra' && $user->mitra->status === 'Non-Aktif') {
+        if ($user->role === 'mitra' && $user->mitra->status !== 'Aktif') {
             Auth::logout();
             return response()->json([
                 'errorType' => 'inactive',
                 'message' => 'Akun anda belum aktif',
             ], 403);
         }
-
-
 
         $request->session()->regenerate();
 
@@ -239,7 +238,7 @@ class AuthController extends Controller
             Notification::send($user, $notification);
         }
 
-        if ($user->role === 'mitra'){
+        if ($user->role === 'mitra') {
             $user->mitra->status = 'Aktif';
             $user->mitra->save();
         };

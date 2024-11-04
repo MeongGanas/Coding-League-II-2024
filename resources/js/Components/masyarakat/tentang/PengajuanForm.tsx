@@ -27,8 +27,8 @@ const pengajuanSchema = z.object({
     full_name: z.string(),
     instansi: z.string(),
     no_handphone: z.string(),
-    mitra: z.string(),
-    program: z.string(),
+    mitra_id: z.string(),
+    proyek_id: z.string(),
     tgl_lahir: z.date({
         required_error: "Tanggal awal is required.",
     }),
@@ -46,26 +46,32 @@ export default function PengajuanForm({ proyeks, mitras }: { proyeks: Proyek[], 
             tgl_lahir: new Date(),
             no_handphone: "",
             instansi: "",
-            program: "",
-            mitra: "",
+            proyek_id: "",
+            mitra_id: "",
         },
     });
 
-    const { handleSubmit, control } = form;
+    const { handleSubmit, control, reset } = form;
 
     const submit = handleSubmit((values) => {
         setIsSubmitted(true)
 
         const formData = new FormData()
+        formData.append('full_name', values.full_name);
+        formData.append('tgl_lahir', values.tgl_lahir.toISOString().slice(0, 19).replace('T', ' '));
+        formData.append('no_handphone', values.no_handphone);
+        formData.append('instansi', values.instansi);
+        formData.append('proyek_id', values.proyek_id);
+        formData.append('mitra_id', values.mitra_id);
 
-        const promise = axios.post('/admin/mitra', formData);
+        const promise = axios.post('/tentang/pengajuan', formData);
 
         toast.promise(promise, {
             loading: "Loading...",
             success: () => {
                 setIsSubmitted(false)
-                window.location.replace('/admin/mitra')
-                return "Add Mitra Success"
+                window.location.replace('/tentang/pengajuan')
+                return "Berhasil mengajukan kerja sama"
             },
             error: (err) => {
                 setIsSubmitted(false)
@@ -211,7 +217,7 @@ export default function PengajuanForm({ proyeks, mitras }: { proyeks: Proyek[], 
                             />
                             <FormField
                                 control={control}
-                                name="program"
+                                name="proyek_id"
                                 render={({ field }) => (
                                     <FormItem className="grid gap-2">
                                         <FormLabel className="font-bold text-base">
@@ -248,7 +254,7 @@ export default function PengajuanForm({ proyeks, mitras }: { proyeks: Proyek[], 
                             />
                             <FormField
                                 control={control}
-                                name="mitra"
+                                name="mitra_id"
                                 render={({ field }) => (
                                     <FormItem className="grid gap-2">
                                         <FormLabel className="font-bold text-base">

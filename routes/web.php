@@ -25,6 +25,7 @@ Route::group([], function () {
 
     Route::get('/tentang', [MasyarakatController::class, 'about'])->name('tentang');
     Route::get('/tentang/pengajuan', [MasyarakatController::class, 'pengajuan'])->name('tentang.pengajuan');
+    Route::post('/tentang/pengajuan', [MasyarakatController::class, 'PengajuanPost'])->name('tentang.pengajuan.create');
 
     Route::get('/statistik', [MasyarakatController::class, 'statistik'])->name('statistik');
 
@@ -73,7 +74,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Mitra
-Route::prefix('mitra')->middleware(['auth','mustVerify', 'checkMitra'])->group(function () {
+Route::prefix('mitra')->middleware(['auth', 'mustVerify', 'checkMitra'])->group(function () {
     Route::prefix('download')->group(function () {
         Route::get('dashboard/csv', [DashboardMitraController::class, 'downloadCSV']);
         Route::get('dashboard/pdf', [DashboardMitraController::class, 'downloadPDF']);
@@ -84,7 +85,7 @@ Route::prefix('mitra')->middleware(['auth','mustVerify', 'checkMitra'])->group(f
     Route::get('/user/edit', [DashboardMitraController::class, 'editProfileUser'])->name('mitra.profile.user.edit');
 
     // Laporan
-    Route::group([], function(){
+    Route::group([], function () {
         Route::get("/laporan/create", [DashboardMitraController::class, 'CreateLaporan'])->name('laporan.mitra.create');
         Route::get("/laporan/{laporan}", [DashboardMitraController::class, 'LaporanDetail'])->name('laporan.mitra.detail');
         Route::get("/laporan/{laporan}/edit", [DashboardMitraController::class, 'LaporanEdit'])->name('laporan.mitra.edit');
@@ -94,7 +95,7 @@ Route::prefix('mitra')->middleware(['auth','mustVerify', 'checkMitra'])->group(f
     });
 
     // Perusahaan
-    Route::group([], function(){
+    Route::group([], function () {
         Route::patch('/perusahaan', [MitraController::class, 'update'])->name('mitra.profile.perusahaan.patch');
         Route::get('/perusahaan', [DashboardMitraController::class, 'profilePerusahaan'])->name('mitra.profile.perusahaan');
         Route::get('/perusahaan/edit', [DashboardMitraController::class, 'editProfilePerusahaan'])->name('mitra.profile.perusahaan.edit');

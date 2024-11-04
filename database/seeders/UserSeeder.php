@@ -30,7 +30,8 @@ class UserSeeder extends Seeder
                 'name' => 'Mitra User',
                 'email' => 'arfounded@gmail.com',
                 'role' => 'mitra',
-                'password' => '123123'
+                'password' => '123123',
+                'email_verified_at' => now()
             ],
         ];
 

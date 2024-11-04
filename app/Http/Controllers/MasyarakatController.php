@@ -11,6 +11,9 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Inertia\Inertia;
 use ZipArchive;
 use App\Http\Controllers\DashboardController;
+use App\Notifications\PengajuanNotification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 
 class MasyarakatController extends Controller
 {
@@ -223,6 +226,22 @@ class MasyarakatController extends Controller
             'proyeks' => Proyek::where('status', 'Terbit')->get(),
             'mitras' => Mitra::where('status', 'Aktif')->get()
         ]);
+    }
+    public function PengajuanPost(Request $request)
+    {
+        $v = $request->validate([
+            'full_name' => 'required|string|min:2|max:255',
+            'tgl_lahir' => 'required|string',
+            'no_handphone' => 'required|string|min:12|max:13',
+            'instansi' => 'required|string|min:2',
+            'proyek_id' => 'required|string|exists:proyeks,id',
+            'mitra_id' => 'required|string|exists:mitras,id'
+        ]);
+
+        $notification = new PengajuanNotification();
+        Notification::send($v['mitra_id'], $notification);
+
+        return redirect()->intended(route('tentang.pengajuan'));
     }
 
     public function sektor()
