@@ -6,15 +6,19 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 
 class PengajuanNotification extends Notification
 {
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+
+    protected object $data;
+
+    public function __construct($data)
     {
-        //
+        $this->data = $data;
     }
 
     /**
@@ -24,7 +28,7 @@ class PengajuanNotification extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['mail'];
+        return ['mail', 'database'];
     }
 
     /**
@@ -33,9 +37,8 @@ class PengajuanNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Surat Pengajuan Kerjasama')
-            ->line('Surat pengajuan kerjasama baru. Berikut ini data yang mengajukan kerjasama:')
-            ->line('Thank you for using our application!');
+            ->subject('Surat Pengajuan Kerjasama Baru: ' . $this->data->full_name)
+            ->view('emails.pengajuan', ['data' => $this->data]);
     }
 
     /**
@@ -46,7 +49,11 @@ class PengajuanNotification extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            //
+            'title' => 'Surat Pengajuan Kerjasama',
+            'body' => 'Surat pengajuan kerjasama baru telah diajukan, silahkan cek email anda',
+            'badgeTitle' => 'CSR',
+            'severity' => 'info',
+            'action_url' => null
         ];
     }
 }

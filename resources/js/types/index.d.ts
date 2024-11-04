@@ -33,6 +33,11 @@ export interface SektorsProps {
     total: number;
 }
 
+export interface ServerMessage {
+    message: string;
+    severity: "error" | "success";
+}
+
 export interface Proyek {
     id: number;
     name: string;
