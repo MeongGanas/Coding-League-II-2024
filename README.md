@@ -61,8 +61,6 @@ Copy the `.env.example` file to `.env`:
 Buka file .env dan tambahkan atau sesuaikan konfigurasi berikut:
 
 ```
-env
-Copy code
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.gmail.com
 MAIL_PORT=587
