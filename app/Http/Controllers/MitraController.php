@@ -128,7 +128,9 @@ class MitraController extends Controller
         ]);
 
         if ($request->file('image')) {
-            Storage::delete($mitra->image);
+            if ($mitra->image) {
+                Storage::delete($mitra->image);
+            }
             $v['image'] = $request->file('image')->store('mitra_image', 'public');
         }
 
