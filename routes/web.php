@@ -85,8 +85,8 @@ Route::prefix('mitra')->middleware(['auth','mustVerify', 'checkMitra'])->group(f
 
     // Laporan
     Route::group([], function(){
-        Route::get("/laporan/{laporan}", [DashboardMitraController::class, 'LaporanDetail'])->name('laporan.mitra.detail');
         Route::get("/laporan/create", [DashboardMitraController::class, 'CreateLaporan'])->name('laporan.mitra.create');
+        Route::get("/laporan/{laporan}", [DashboardMitraController::class, 'LaporanDetail'])->name('laporan.mitra.detail');
         Route::get("/laporan/{laporan}/edit", [DashboardMitraController::class, 'LaporanEdit'])->name('laporan.mitra.edit');
         Route::post("/laporan", [LaporanController::class, 'store'])->name('laporan.store');
         Route::patch("/laporan/{laporan}", [LaporanController::class, 'update'])->name('laporan.mitra.update');
