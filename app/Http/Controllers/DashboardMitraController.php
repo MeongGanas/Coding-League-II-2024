@@ -21,9 +21,7 @@ class DashboardMitraController extends Controller
     {
         // $proyek = Laporan::where('mitra_id', Auth::user()->mitra->id);
         $laporan = Laporan::where('status', 'Diterima')->where('mitra_id', Auth::user()->mitra->id);
-
         $proyek = Laporan::where('mitra_id', Auth::user()->mitra->id);
-
 
 
         $dashboardFunction = new DashboardController();
@@ -54,9 +52,18 @@ class DashboardMitraController extends Controller
             $secondQuery->orderBy('updated_at', 'desc');
         }
 
-
+        $serverMessage = null;
+        $message = session('message');
+        $severity = session('severity');
+        if ($message && $severity) {
+            $serverMessage = [
+                'message' => $message,
+                'severity' => $severity,
+            ];
+        }
 
         return Inertia::render('Mitra/Dashboard', [
+            'server_message' => $serverMessage ?? null,
             'notifications' => Auth::user()->notifications->take(5),
             'counts' => [
                 'countProyek' => $proyek->distinct('proyek_id')->count('proyek_id'),

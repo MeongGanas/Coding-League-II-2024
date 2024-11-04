@@ -26,6 +26,11 @@ class unverify extends Command
     public function handle()
     {
         $user = \App\Models\User::find($this->argument('user_id'));
+        if (!$user) {
+            $this->error('User not found');
+            return;
+        }
+
         $user->email_verified_at = null;
         $user->save();
 

@@ -1,5 +1,7 @@
 <?php
 
+// trash code, do not use this code
+
 namespace App\Console\Commands;
 
 use App\Models\Mitra;
@@ -27,20 +29,23 @@ class deleteAccount extends Command
      */
     public function handle()
     {
-        $email = $this->argument('email');
-        $user = User::where('email', $email)->first();
-        if ($user) {
-            $user->delete();
-            $this->info('User deleted successfully');
-        } else {
-            $this->error('User not found');
-        }
-        $mitra = Mitra::where('email', $email)->first();
-        if ($mitra) {
-            $mitra->delete();
-            $this->info('Mitra deleted successfully');
-        } else {
-            $this->error('Mitra not found');
-        }
+        $this->info('deprecated and needs fixing');
+        return;
+
+//        $email = $this->argument('email');
+//        $user = User::where('email', $email)->first();
+//        if ($user) {
+//            $user->delete();
+//            $this->info('User deleted successfully');
+//        } else {
+//            $this->error('User not found');
+//        }
+//        $mitra = Mitra::where('email', $email)->first();
+//        if ($mitra) {
+//            $mitra->delete();
+//            $this->info('Mitra deleted successfully');
+//        } else {
+//            $this->error('Mitra not found');
+//        }
     }
 }

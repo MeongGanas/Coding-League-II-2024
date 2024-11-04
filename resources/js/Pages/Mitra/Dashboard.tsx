@@ -10,7 +10,12 @@ import { Button } from "@/Components/ui/button";
 import { Plus } from "lucide-react";
 import SearchForm from "@/Components/admin/Search";
 import { useEffect, useRef } from "react";
+import {toast} from "react-hot-toast";
 
+interface ServerMessage {
+    message: string;
+    severity: "error" | "success";
+}
 export default function Dashboard({
     auth: { user },
     counts,
@@ -18,12 +23,14 @@ export default function Dashboard({
     filters,
     laporans,
     notifications,
+    server_message,
 }: PageProps<{
     counts: Counts;
     realisasi: Realisasi;
     filters: any;
     laporans: LaporanProps;
     notifications: any;
+    server_message: ServerMessage;
 }>) {
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -34,6 +41,13 @@ export default function Dashboard({
                     laporanMitraElement.scrollIntoView({ behavior: "smooth" });
                 }
             }, 20);
+        }
+
+        if (server_message) {
+            if (!['error', 'success'].includes(server_message.severity)) {
+                server_message.severity = 'error';
+            }
+            toast[server_message.severity](server_message.message);
         }
     }, []);
 

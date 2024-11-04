@@ -23,7 +23,7 @@ class generalDatabaseNotification extends Notification
         $this->body = $body;
         $this->badgeTitle = $badgeTitle;
         $this->severity = $severity;
-        $this->action_url = $action_url;
+        $this->action_url = $action_url ?? null;
     }
 
     /**

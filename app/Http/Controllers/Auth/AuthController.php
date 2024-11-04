@@ -31,7 +31,6 @@ class AuthController extends Controller
         $severity = session('severity');
         $message = session('message');
 
-
         if (!$severity || !$message) {
             return Inertia::render('Auth/Login');
         }
@@ -63,12 +62,24 @@ class AuthController extends Controller
         $request->authenticate();
 
         $user = User::where('email', $request->email)->first();
+
         if (!$user->email_verified_at) {
             Auth::logout();
             return response()->json([
+                'errorType' => 'unverified',
                 'message' => 'Email belum terverifikasi',
             ], 403);
         }
+
+        if ($user->role === 'mitra' && $user->mitra->status === 'Non-Aktif') {
+            Auth::logout();
+            return response()->json([
+                'errorType' => 'inactive',
+                'message' => 'Akun anda belum aktif',
+            ], 403);
+        }
+
+
 
         $request->session()->regenerate();
 
@@ -216,7 +227,26 @@ class AuthController extends Controller
         }
 
         $user->markEmailAsVerified();
-        return redirect()->route('login')->with([
+
+        if ($user->email_verified_at) {
+            $notification = new generalDatabaseNotification(
+                'Email Terverifikasi!',
+                $user->name . ', Email anda berhasil diverifikasi',
+                'Akun',
+                'success',
+                null
+            );
+            Notification::send($user, $notification);
+        }
+
+        if ($user->role === 'mitra'){
+            $user->mitra->status = 'Aktif';
+            $user->mitra->save();
+        };
+
+        Auth::login($user);
+
+        return redirect()->route('dashboardMitra')->with([
             'severity' => 'success',
             'message' => 'Email berhasil diverifikasi'
         ]);

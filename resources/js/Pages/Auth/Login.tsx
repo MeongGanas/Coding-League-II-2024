@@ -40,7 +40,7 @@ export default function Login(
 
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [showPass, setShowPass] = useState(false);
-    const [errorStatus, seterrorStatus] = useState<string | null>(null);
+    const [errorStatus, setErrorStatus] = useState<string | null>(null);
     const form = useForm<LoginSchema>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -66,7 +66,7 @@ export default function Login(
             },
             error: (err) => {
                 setIsSubmitted(false)
-                seterrorStatus(err?.response.status.toString())
+                setErrorStatus(err?.response.data.errorType)
                 return err?.response.data.message || "Something went wrong!"
             }
         })
@@ -189,13 +189,20 @@ export default function Login(
                                                 </div>
                                             </FormControl>
                                             {
-                                                errorStatus === "403" && (
-                                                    <p className="text-red-800 text-sm">
+                                                errorStatus === "unverified" && (
+                                                    <p className="text-red-800 text-sm mt-2">
                                                         Email belum terverifikasi, cek email anda atau{" "}
                                                         <span onClick={sendVerificationEmail} className="cursor-pointer text-blue-500 underline">
                                                                 Kirim ulang email verifikasi
                                                         </span>
 
+                                                    </p>
+                                                )
+                                            }
+                                            {
+                                                errorStatus === "inactive" && (
+                                                    <p className="text-red-800 text-sm mt-2">
+                                                        Akun anda berstatus tidak aktif, silahkan hubungi admin untuk informasi lebih lanjut
                                                     </p>
                                                 )
                                             }
