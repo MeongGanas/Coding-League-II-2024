@@ -43,7 +43,7 @@ export default function PengajuanForm({ proyeks, mitras }: { proyeks: Proyek[], 
         resolver: zodResolver(pengajuanSchema),
         defaultValues: {
             full_name: "",
-            tgl_lahir: new Date(),
+            tgl_lahir: new Date('2000-01-01'),
             no_handphone: "",
             instansi: "",
             proyek_id: "",
@@ -70,8 +70,8 @@ export default function PengajuanForm({ proyeks, mitras }: { proyeks: Proyek[], 
             loading: "Loading...",
             success: () => {
                 setIsSubmitted(false)
-                window.location.replace('/tentang/pengajuan')
-                return "Berhasil mengajukan kerja sama"
+                form.reset()
+                return "Pengajuan berhasil dikirim"
             },
             error: (err) => {
                 setIsSubmitted(false)
@@ -227,6 +227,7 @@ export default function PengajuanForm({ proyeks, mitras }: { proyeks: Proyek[], 
                                             </span>
                                         </FormLabel>
                                         <Select
+                                            value={field.value}
                                             onValueChange={field.onChange}
                                             defaultValue={field.value}
                                         >
@@ -264,6 +265,7 @@ export default function PengajuanForm({ proyeks, mitras }: { proyeks: Proyek[], 
                                             </span>
                                         </FormLabel>
                                         <Select
+                                            value={field.value}
                                             onValueChange={field.onChange}
                                             defaultValue={field.value}
                                         >

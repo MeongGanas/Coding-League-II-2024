@@ -2,7 +2,7 @@ import DataStatistik from "@/Components/mitra/DataStatistik";
 import RealisasiProyek from "@/Components/mitra/RealisasiProyek";
 import SelectAndDownload from "@/Components/admin/SelectAndDownload";
 import { Head, Link } from "@inertiajs/react";
-import { Counts, LaporanProps, PageProps, Realisasi } from "@/types";
+import {Counts, LaporanProps, PageProps, Realisasi, ServerMessage} from "@/types";
 import WelcomeMitra from "@/Components/mitra/WelcomeMitra";
 import LayoutMitra from "@/Layouts/LayoutMitra";
 import DataTableLaporanMitra from "@/Components/mitra/TabelLaporan";
@@ -12,10 +12,7 @@ import SearchForm from "@/Components/admin/Search";
 import { useEffect, useRef } from "react";
 import {toast} from "react-hot-toast";
 
-interface ServerMessage {
-    message: string;
-    severity: "error" | "success";
-}
+
 export default function Dashboard({
     auth: { user },
     counts,

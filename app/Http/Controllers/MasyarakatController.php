@@ -7,7 +7,10 @@ use App\Models\Laporan;
 use App\Models\Mitra;
 use App\Models\Proyek;
 use App\Models\Sektor;
+use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use ZipArchive;
 use App\Http\Controllers\DashboardController;
@@ -229,19 +232,43 @@ class MasyarakatController extends Controller
     }
     public function PengajuanPost(Request $request)
     {
-        $v = $request->validate([
+        $validatedDataObj = (object) $request->validate([
             'full_name' => 'required|string|min:2|max:255',
             'tgl_lahir' => 'required|string',
             'no_handphone' => 'required|string|min:12|max:13',
             'instansi' => 'required|string|min:2',
             'proyek_id' => 'required|string|exists:proyeks,id',
-            'mitra_id' => 'required|string|exists:mitras,id'
+            'mitra_id' => 'required|string|exists:mitras,id',
         ]);
 
-        $notification = new PengajuanNotification();
-        Notification::send($v['mitra_id'], $notification);
+        if (Auth::user()->mitra->id == $validatedDataObj->mitra_id) {
+            return response()->json([
+                'message' => 'Tidak bisa mengajukan proyek ke mitra sendiri'
+            ], 403);
+        }
 
-        return redirect()->intended(route('tentang.pengajuan'));
+        $targetUser = User::whereHas('mitra', function ($query) use ($validatedDataObj) {
+            $query->where('id', $validatedDataObj->mitra_id);
+        })->first();
+
+        if (!$targetUser) {
+            return response()->json([
+                'message' => 'Mitra tidak ditemukan'
+            ], 404);
+        }
+
+        if ($targetUser->email_verified_at == null || $targetUser->mitra->status !== 'Aktif') {
+            return response()->json([
+                'message' => 'Mitra tidak aktif atau email belum terverifikasi'
+            ], 403);
+        }
+
+        $notification = new PengajuanNotification($validatedDataObj);
+        Notification::send($targetUser, $notification);
+
+        return response()->json([
+            'message' => 'Pengajuan berhasil dikirim'
+        ]);
     }
 
     public function sektor()
