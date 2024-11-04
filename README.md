@@ -58,6 +58,23 @@ yarn install
 
 Copy the `.env.example` file to `.env`:
 
+Buka file .env dan tambahkan atau sesuaikan konfigurasi berikut:
+
+```
+env
+Copy code
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your_email@gmail.com
+MAIL_PASSWORD=your_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=your_email@gmail.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+Catatan: Untuk menggunakan Gmail, Anda mungkin perlu mengaktifkan otentikasi dua faktor dan membuat App Password atau mengizinkan aplikasi tidak aman di akun Google Anda.
+
 ```bash
 cp .env.example .env
 ```
