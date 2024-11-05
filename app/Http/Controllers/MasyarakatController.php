@@ -223,6 +223,7 @@ class MasyarakatController extends Controller
             'laporans' => Laporan::where('status', 'Diterima')->with('mitra')->take(3)->get()
         ]);
     }
+
     public function pengajuan()
     {
         return Inertia::render('Masyarakat/Tentang/Pengajuan', [
@@ -230,9 +231,10 @@ class MasyarakatController extends Controller
             'mitras' => Mitra::where('status', 'Aktif')->get()
         ]);
     }
+
     public function PengajuanPost(Request $request)
     {
-        $validatedDataObj = (object) $request->validate([
+        $validatedDataObj = (object)$request->validate([
             'full_name' => 'required|string|min:2|max:255',
             'tgl_lahir' => 'required|string',
             'no_handphone' => 'required|string|min:12|max:13',
@@ -241,7 +243,7 @@ class MasyarakatController extends Controller
             'mitra_id' => 'required|string|exists:mitras,id',
         ]);
 
-        if (Auth::user()->role === 'mitra' && Auth::user()->mitra->id == $validatedDataObj->mitra_id) {
+        if (Auth::check() && Auth::user()->role === 'mitra' && Auth::user()->mitra->id == $validatedDataObj->mitra_id) {
             return response()->json([
                 'message' => 'Tidak bisa mengajukan proyek ke mitra sendiri'
             ], 403);
@@ -292,6 +294,7 @@ class MasyarakatController extends Controller
             'proyeks' => $proyek->with('sektor')->latest()->get(),
         ]);
     }
+
     public function sektorDetail(Sektor $sektor)
     {
         $sektor->load(['proyeks' => function ($query) {
@@ -344,6 +347,7 @@ class MasyarakatController extends Controller
             'mitras' => Mitra::where('status', 'Aktif')->get()
         ]);
     }
+
     public function laporanDetail(Laporan $laporan)
     {
         $laporan->load(['mitra', 'sektor', 'proyek']);
@@ -374,6 +378,7 @@ class MasyarakatController extends Controller
             'kegiatans' => $query->get()
         ]);
     }
+
     public function kegiatanDetail(Kegiatan $kegiatan)
     {
         return Inertia::render('Masyarakat/Kegiatan/Detail', [
@@ -405,6 +410,7 @@ class MasyarakatController extends Controller
             'mitras' => $query->get()
         ]);
     }
+
     public function mitraDetail(Mitra $mitra)
     {
         $mitra->load(['laporan' => function ($query) {
