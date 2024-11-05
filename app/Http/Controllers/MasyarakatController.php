@@ -241,7 +241,7 @@ class MasyarakatController extends Controller
             'mitra_id' => 'required|string|exists:mitras,id',
         ]);
 
-        if (Auth::user()->mitra->id == $validatedDataObj->mitra_id) {
+        if (Auth::user()->role === 'mitra' && Auth::user()->mitra->id == $validatedDataObj->mitra_id) {
             return response()->json([
                 'message' => 'Tidak bisa mengajukan proyek ke mitra sendiri'
             ], 403);
