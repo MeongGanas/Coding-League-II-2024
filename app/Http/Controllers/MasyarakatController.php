@@ -344,6 +344,8 @@ class MasyarakatController extends Controller
 
         return Inertia::render('Masyarakat/Laporan/Index', [
             'laporans' => $query->with('mitra')->get(),
+            'selectedMitra' => request('mitra'),
+            'selectedValue' => request('sortall'),
             'mitras' => Mitra::where('status', 'Aktif')->get()
         ]);
     }

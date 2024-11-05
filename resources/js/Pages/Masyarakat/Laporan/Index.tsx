@@ -5,6 +5,7 @@ import { Button } from "@/Components/ui/button";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
 import LayoutMasyarakat from "@/Layouts/LayoutMasyarakat";
 import { Laporan, Mitra, PageProps } from "@/types";
+import { router } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function LaporanPage({ auth: { user }, laporans, mitras }: PageProps<{ laporans: Laporan[], mitras: Mitra[] }>) {
@@ -24,7 +25,7 @@ export default function LaporanPage({ auth: { user }, laporans, mitras }: PagePr
             params.set("sortall", "terlama");
         }
 
-        window.location.replace(
+        router.visit(
             `${window.location.pathname}?${params.toString()}`
         )
     }
@@ -36,7 +37,7 @@ export default function LaporanPage({ auth: { user }, laporans, mitras }: PagePr
             params.set("mitra", value);
         }
 
-        window.location.replace(
+        router.visit(
             `${window.location.pathname}?${params.toString()}`
         )
     }

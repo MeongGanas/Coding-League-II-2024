@@ -1,6 +1,7 @@
 import { Search } from "lucide-react";
 import { Input } from "../ui/input";
 import { SyntheticEvent, useEffect, useRef, useState } from "react";
+import { router } from "@inertiajs/react";
 
 export default function SearchForm() {
     const [searchValue, setSearchValue] = useState<string>("");
@@ -26,7 +27,7 @@ export default function SearchForm() {
                 params.set("page", "1");
             }
 
-            window.location.replace(
+            router.visit(
                 `${window.location.pathname}?${params.toString()}`
             );
         }, 500);
