@@ -132,6 +132,7 @@ export interface Laporan {
     id: number;
     sektor_id: number;
     proyek_id: number;
+    mitra_id: number;
     name: string;
     mitra: Mitra;
     lokasi: string;
